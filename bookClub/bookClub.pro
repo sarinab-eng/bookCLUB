@@ -1,4 +1,5 @@
-QT += widgets
+QT += core gui widgets network
+
 
 CONFIG += c++17
 
@@ -9,13 +10,15 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    src/model/User.cpp \
-    src/model/book.cpp
+    src/model/Book.cpp \
+    src/model/BookManager.cpp \
+    src/model/User.cpp
 
 HEADERS += \
     mainwindow.h \
-    src/model/User.h \
-    src/model/book.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/User.h
 
 FORMS += \
     mainwindow.ui

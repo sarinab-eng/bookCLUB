@@ -1,4 +1,4 @@
-#include "book.h"
+#include "Book.h"
 
 Book::Book(QObject *parent)
     : QObject(parent), m_id(0), m_price(0.0), m_discountPercent(0.0), m_averageRating(0.0) {}
