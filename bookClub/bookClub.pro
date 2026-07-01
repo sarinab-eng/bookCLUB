@@ -9,11 +9,13 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    src/model/User.cpp
+    src/model/User.cpp \
+    src/model/book.cpp
 
 HEADERS += \
     mainwindow.h \
-    src/model/User.h
+    src/model/User.h \
+    src/model/book.h \
 
 FORMS += \
     mainwindow.ui
