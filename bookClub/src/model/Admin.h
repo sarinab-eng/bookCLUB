@@ -16,4 +16,4 @@ public:
     void validatePublisher(const QString &brandName);
 };
 
-#endif // ADMIN_H
+#endif
