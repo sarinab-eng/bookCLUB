@@ -23,7 +23,6 @@ public:
     static QString encrypt(const QString &data, const QString &key = "bookClubKey");
     static QString decrypt(const QString &data, const QString &key = "bookClubKey");
 
-    // متد کمکی برای تغییر وضعیت مسدودیت
     void setBlocked(bool status) { isBlocked = status; }
 };
 
