@@ -1,32 +1,31 @@
 #include "User.h"
+#include <QCryptographicHash>
 
-// سازنده کلاس: متغیرها را مقداردهی می‌کند و تاریخ ثبت‌نام را زمان فعلی سیستم قرار می‌دهد
-User::User(const QString &username, const QString &email, const QString &hashedPassword, QObject *parent)
-    : QObject(parent), m_username(username), m_email(email), m_hashedPassword(hashedPassword)
-{
-    m_registrationDate = QDateTime::currentDateTime();
+User::User(QObject *parent) : QObject(parent), isBlocked(false) {
+    this->username = "";
+    this->passwordHash = "";
+    this->securityQuestion = "";
+    this->securityAnswer = "";
 }
 
-// بازگرداندن نام کاربری
-QString User::getUsername() const
-{
-    return m_username;
+QString User::hashPassword(const QString &pass) {
+    return QString(QCryptographicHash::hash(pass.toUtf8(), QCryptographicHash::Sha256).toHex());
 }
 
-// بازگرداندن ایمیل
-QString User::getEmail() const
-{
-    return m_email;
+QString User::encrypt(const QString &data, const QString &key) {
+    QByteArray result = data.toUtf8();
+    QByteArray k = key.toUtf8();
+    if (k.isEmpty()) return data;
+    for (int i = 0; i < result.size(); ++i)
+        result[i] = result[i] ^ k[i % k.size()];
+    return result.toBase64();
 }
 
-// بازگرداندن تاریخ ثبت‌نام
-QDateTime User::getRegistrationDate() const
-{
-    return m_registrationDate;
-}
-
-// بررسی پسورد (فعلاً یک مقایسه ساده، در مراحل بعد می‌توان آن را با الگوریتم‌های امنیتی ترکیب کرد)
-bool User::checkPassword(const QString &password) const
-{
-    return (m_hashedPassword == password);
+QString User::decrypt(const QString &data, const QString &key) {
+    QByteArray result = QByteArray::fromBase64(data.toUtf8());
+    QByteArray k = key.toUtf8();
+    if (k.isEmpty()) return data;
+    for (int i = 0; i < result.size(); ++i)
+        result[i] = result[i] ^ k[i % k.size()];
+    return QString::fromUtf8(result);
 }

@@ -3,33 +3,29 @@
 
 #include <QObject>
 #include <QString>
-#include <QDateTime>
+#include <QCryptographicHash>
 
-// کلاس User به صورت انتزاعی (Abstract) تعریف شده است
-class User : public QObject
-{
+class User : public QObject {
     Q_OBJECT
-
 public:
-    explicit User(const QString &username, const QString &email, const QString &hashedPassword, QObject *parent = nullptr);
-    virtual ~User() {}
+    // فقط معرفی سازنده (بدون بدنه {})
+    explicit User(QObject *parent = nullptr);
 
-    // Getters
-    QString getUsername() const;
-    QString getEmail() const;
-    QDateTime getRegistrationDate() const;
+    QString username;
+    QString passwordHash;
+    QString securityQuestion;
+    QString securityAnswer;
+    bool isBlocked;
 
-    // متد بررسی صحت پسورد
-    bool checkPassword(const QString &password) const;
+    // متد خالص مجازی برای انتزاعی کردن کلاس
+    virtual QString getRole() const = 0;
 
-    // متد خالص مجازی (Pure Virtual): هر نقش باید پیاده‌سازی مخصوص خود را داشته باشد
-    virtual void logActivity(const QString &action) = 0;
+    static QString hashPassword(const QString &pass);
+    static QString encrypt(const QString &data, const QString &key = "bookClubKey");
+    static QString decrypt(const QString &data, const QString &key = "bookClubKey");
 
-protected:
-    QString m_username;
-    QString m_email;
-    QString m_hashedPassword; // ذخیره پسورد به صورت هش شده برای امنیت
-    QDateTime m_registrationDate;
+    // متد کمکی برای تغییر وضعیت مسدودیت
+    void setBlocked(bool status) { isBlocked = status; }
 };
 
-#endif // USER_H
+#endif

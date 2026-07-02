@@ -1,4 +1,4 @@
-QT += widgets
+QT += core gui widgets network
 
 CONFIG += c++17
 
@@ -9,11 +9,19 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    src/model/User.cpp
+    src/model/Admin.cpp \
+    src/model/Customer.cpp \
+    src/model/Publisher.cpp \
+    src/model/User.cpp \
+    src/network/Authmanager.cpp
 
 HEADERS += \
     mainwindow.h \
-    src/model/User.h
+    src/model/Admin.h \
+    src/model/Customer.h \
+    src/model/Publisher.h \
+    src/model/User.h \
+    src/network/Authmanager.h
 
 FORMS += \
     mainwindow.ui
@@ -22,3 +30,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+INCLUDEPATH += src/model
+INCLUDEPATH += src/network
