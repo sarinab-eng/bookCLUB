@@ -7,7 +7,6 @@
 class Admin : public User {
     Q_OBJECT
 public:
-    // فقط معرفی سازنده (بدون {})
     explicit Admin(QObject *parent = nullptr);
 
     QString getRole() const override { return "Admin"; }
