@@ -1,151 +1,106 @@
 #include "Book.h"
 
-Book::Book(QObject *parent)
-    : QObject(parent), m_id(0), m_price(0.0), m_discountPercent(0.0), m_averageRating(0.0) {}
+Book::Book() : id(0), price(0.0), salesCount(0), lastReadPage(1) {}
 
-Book::Book(int id, const QString &title, const QString &author, const QString &publisher,
-           double price, double discountPercent, const QString &pdfPath, const QString &coverPath,
-           const QVector<int> &genres, QObject *parent)
-    : QObject(parent), m_id(id), m_title(title), m_author(author), m_publisher(publisher),
-    m_price(price), m_discountPercent(discountPercent), m_pdfPath(pdfPath),
-    m_coverPath(coverPath), m_genres(genres), m_averageRating(0.0) {}
+Book::Book(int id, QString title, QString author, QString publisher, QString genre,
+           QString description, QString filePath, double price)
+    : id(id), title(title), author(author), publisherName(publisher), genre(genre),
+    description(description), filePath(filePath), price(price), salesCount(0), lastReadPage(1) {}
 
-Book::Book(const Book &other) : QObject(other.parent()) {
-    *this = other;
-}
+int Book::getId() const { return id; }
+QString Book::getTitle() const { return title; }
+QString Book::getAuthor() const { return author; }
+QString Book::getPublisher() const { return publisherName; }
+QString Book::getGenre() const { return genre; }
+QString Book::getDescription() const { return description; }
+QString Book::getFilePath() const { return filePath; }
+double Book::getPrice() const { return price; }
+int Book::getSalesCount() const { return salesCount; }
+int Book::getLastReadPage() const { return lastReadPage; }
+QVector<Review> Book::getReviews() const { return reviews; }
 
-Book& Book::operator=(const Book &other) {
-    if (this != &other) {
-        m_id = other.m_id;
-        m_title = other.m_title;
-        m_author = other.m_author;
-        m_publisher = other.m_publisher;
-        m_price = other.m_price;
-        m_discountPercent = other.m_discountPercent;
-        m_pdfPath = other.m_pdfPath;
-        m_coverPath = other.m_coverPath;
-        m_genres = other.m_genres;
-        m_averageRating = other.m_averageRating;
+void Book::setLastReadPage(int page) { if (page > 0) lastReadPage = page; }
+void Book::incrementSales(int count) { salesCount += count; }
+
+void Book::addOrUpdateReview(const QString &user, const QString &text, int score) {
+    if (score < 1) score = 1;
+    if (score > 5) score = 5;
+
+    for (auto &review : reviews) {
+        if (review.username == user) {
+            review.comment = text;
+            review.rating = score;
+            return;
+        }
     }
-    return *this;
+    reviews.append({user, text, score});
 }
 
-double Book::finalPrice() const {
-    return m_price * (1.0 - (m_discountPercent / 100.0));
-}
-
-// Setters با انتشار سیگنال در صورت تغییر مقدار
-void Book::setId(int id) {
-    if (m_id != id) {
-        m_id = id;
-        emit idChanged();
+void Book::deleteReview(const QString &user) {
+    for (int i = 0; i < reviews.size(); ++i) {
+        if (reviews[i].username == user) {
+            reviews.removeAt(i);
+            break;
+        }
     }
 }
-
 void Book::setTitle(const QString &title) {
-    if (m_title != title) {
-        m_title = title;
-        emit titleChanged();
-    }
-}
-
-void Book::setAuthor(const QString &author) {
-    if (m_author != author) {
-        m_author = author;
-        emit authorChanged();
-    }
-}
-
-void Book::setPublisher(const QString &publisher) {
-    if (m_publisher != publisher) {
-        m_publisher = publisher;
-        emit publisherChanged();
-    }
+    this->title = title;
 }
 
 void Book::setPrice(double price) {
-    if (m_price != price) {
-        m_price = price;
-        emit priceChanged();
-    }
+    this->price = price;
 }
 
-void Book::setDiscountPercent(double discountPercent) {
-    if (m_discountPercent != discountPercent) {
-        m_discountPercent = discountPercent;
-        emit discountPercentChanged();
-    }
+void Book::setDescription(const QString &desc) {
+    this->description = desc;
 }
 
-void Book::setPdfPath(const QString &pdfPath) {
-    if (m_pdfPath != pdfPath) {
-        m_pdfPath = pdfPath;
-        emit pdfPathChanged();
-    }
+
+double Book::getAverageRating() const {
+    if (reviews.isEmpty()) return 0.0;
+    double sum = 0.0;
+    for (const auto &r : reviews) sum += r.rating;
+    return sum / reviews.size();
 }
 
-void Book::setCoverPath(const QString &coverPath) {
-    if (m_coverPath != coverPath) {
-        m_coverPath = coverPath;
-        emit coverPathChanged();
-    }
-}
-
-void Book::setGenres(const QVector<int> &genres) {
-    if (m_genres != genres) {
-        m_genres = genres;
-        emit genresChanged();
-    }
-}
-
-void Book::setAverageRating(double rating) {
-    if (m_averageRating != rating) {
-        m_averageRating = rating;
-        emit averageRatingChanged();
-    }
-}
-
-// تبدیل آبجکت کتاب به JSON برای ارسال روی شبکه TCP
 QJsonObject Book::toJson() const {
     QJsonObject json;
-    json["id"] = m_id;
-    json["title"] = m_title;
-    json["author"] = m_author;
-    json["publisher"] = m_publisher;
-    json["price"] = m_price;
-    json["discountPercent"] = m_discountPercent;
-    json["pdfPath"] = m_pdfPath;
-    json["coverPath"] = m_coverPath;
-    json["averageRating"] = m_averageRating;
+    json["id"] = id;
+    json["title"] = title;
+    json["author"] = author;
+    json["publisher"] = publisherName;
+    json["genre"] = genre;
+    json["description"] = description;
+    json["filePath"] = filePath;
+    json["price"] = price;
+    json["salesCount"] = salesCount;
+    json["lastReadPage"] = lastReadPage;
 
-    QJsonArray genresArray;
-    for (int genreId : m_genres) {
-        genresArray.append(genreId);
+    QJsonArray reviewsArray;
+    for (const auto &r : reviews) {
+        reviewsArray.append(r.toJson());
     }
-    json["genres"] = genresArray;
-
+    json["reviews"] = reviewsArray;
     return json;
 }
 
-// ساخت آبجکت کتاب از روی JSON دریافتی از سرور
-Book* Book::fromJson(const QJsonObject &json, QObject *parent) {
-    Book *book = new Book(parent);
-    book->setId(json["id"].toInt());
-    book->setTitle(json["title"].toString());
-    book->setAuthor(json["author"].toString());
-    book->setPublisher(json["publisher"].toString());
-    book->setPrice(json["price"].toDouble());
-    book->setDiscountPercent(json["discountPercent"].toDouble());
-    book->setPdfPath(json["pdfPath"].toString());
-    book->setCoverPath(json["coverPath"].toString());
-    book->setAverageRating(json["averageRating"].toDouble());
+Book Book::fromJson(const QJsonObject &json) {
+    Book b(json["id"].toInt(),
+           json["title"].toString(),
+           json["author"].toString(),
+           json["publisher"].toString(),
+           json["genre"].toString(),
+           json["description"].toString(),
+           json["filePath"].toString(),
+           json["price"].toDouble());
 
-    QVector<int> genres;
-    QJsonArray genresArray = json["genres"].toArray();
-    for (const QJsonValue &value : genresArray) {
-        genres.append(value.toInt());
+    b.salesCount = json["salesCount"].toInt();
+    b.lastReadPage = json["lastReadPage"].toInt();
+
+    QJsonArray reviewsArray = json["reviews"].toArray();
+    for (const auto &val : reviewsArray) {
+        b.reviews.append(Review::fromJson(val.toObject()));
     }
-    book->setGenres(genres);
-
-    return book;
+    return b;
 }

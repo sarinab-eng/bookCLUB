@@ -1,31 +1,36 @@
 #ifndef BOOKMANAGER_H
 #define BOOKMANAGER_H
 
-#include <QObject>
-#include <QTcpSocket>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QList>
-#include "book.h" // چون هر دو در یک پوشه هستند، مسیر مستقیم دادم
+#include "book.h"
+#include <QVector>
+#include <QString>
 
-class BookManager : public QObject {
-    Q_OBJECT
-public:
-    explicit BookManager(QTcpSocket *socket, QObject *parent = nullptr);
-
-    // متدهای درخواست از سرور
-    void requestAllBooks();
-    void requestBooksByGenre(const QString &genre);
-    void addNewBook(Book *book); // ارسال کتاب جدید به سرور (توسط ناشر)
-
-signals:
-    // سیگنالی که وقتی لیست کتاب‌ها از سرور رسید، به UI خبر می‌دهد
-    void booksReceived(const QList<Book*> &books);
-    void actionFinished(bool success, const QString &message);
-
+class BookManager {
 private:
-    QTcpSocket *socket;
+    QVector<Book> allBooks; // شبیه‌ساز دیتابیس کتاب‌ها در سرور
+
+public:
+    BookManager();
+
+    // مدیریت کتاب‌ها توسط ناشر و ادمین (صفحات 4، 6 و 17)
+    void addBook(const Book &book);
+    bool editBook(int bookId, const QString &title, double price, const QString &desc);
+    bool deleteBook(int bookId); // مشترک بین ادمین و ناشر مالک اثر
+
+    // موتور جستجو و فیلتر پیشرفته (صفحه 8)
+    QVector<Book> search(const QString &query) const;
+    QVector<Book> filterByGenre(const QString &genre) const;
+    Book* findBookById(int bookId);
+
+    // آمار ناشر (صفحه 12)
+    QVector<Book> getPublisherBooks(const QString &publisherName) const;
+    QVector<Book> getBestSellers(const QString &publisherName) const;
+    QVector<Book> getWorstSellers(const QString &publisherName) const;
+    double getPublisherAverageRating(const QString &publisherName) const;
+
+    // فایلینگ و ذخیره‌سازی محلی داده‌ها
+    void loadFromFile(const QString &filePath);
+    void saveToFile(const QString &filePath) const;
 };
 
 #endif // BOOKMANAGER_H

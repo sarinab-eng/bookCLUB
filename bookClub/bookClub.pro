@@ -18,7 +18,11 @@ HEADERS += \
     mainwindow.h \
     src/model/Book.h \
     src/model/BookManager.h \
-    src/model/User.h
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h \
+    src/model/shoppingcart.h \
+    src/model/shoppingcart.h
 
 FORMS += \
     mainwindow.ui
