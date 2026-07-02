@@ -3,7 +3,7 @@
 Admin::Admin(QObject *parent) : User(parent) {
 }
 
-// پیاده‌سازی متد مسدود سازی (مثال)
+// پیاده‌سازی متد مسدود سازی
 void Admin::setBlockStatus(User* targetUser, bool status) {
     if (targetUser) {
         targetUser->setBlocked(status);

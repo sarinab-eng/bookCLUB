@@ -11,5 +11,4 @@ void Publisher::publishNewBook(int bookId) {
 }
 
 void Publisher::viewSalesStatistics() {
-    // منطق نمایش آمار فروش ناشر
 }

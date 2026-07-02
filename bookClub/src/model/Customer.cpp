@@ -1,6 +1,5 @@
 #include "Customer.h"
 
-// مقداردهی اولیه متغیرها در لیست مقداردهی سازنده
 Customer::Customer(QObject *parent) : User(parent), balance(0.0) {
 }
 

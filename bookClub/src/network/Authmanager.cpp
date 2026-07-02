@@ -5,7 +5,6 @@ AuthManager::AuthManager(QTcpSocket *socket, QObject *parent)
     : QObject(parent), m_socket(socket) {
 }
 
-// ارسال داده کمکی به سوکت
 void AuthManager::sendJson(const QJsonObject &json) {
     if (m_socket && m_socket->isOpen()) {
         QJsonDocument doc(json);
