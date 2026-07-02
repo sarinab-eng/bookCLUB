@@ -1,6 +1,5 @@
 #include "Admin.h"
 
-// پیاده‌سازی سازنده
 Admin::Admin(QObject *parent) : User(parent) {
 }
 

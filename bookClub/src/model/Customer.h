@@ -8,7 +8,6 @@
 class Customer : public User {
     Q_OBJECT
 public:
-    // فقط معرفی سازنده (بدون بدنه {})
     explicit Customer(QObject *parent = nullptr);
 
     QString getRole() const override { return "Customer"; }

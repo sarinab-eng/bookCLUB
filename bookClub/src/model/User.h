@@ -8,7 +8,6 @@
 class User : public QObject {
     Q_OBJECT
 public:
-    // فقط معرفی سازنده (بدون بدنه {})
     explicit User(QObject *parent = nullptr);
 
     QString username;

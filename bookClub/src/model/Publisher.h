@@ -8,7 +8,6 @@
 class Publisher : public User {
     Q_OBJECT
 public:
-    // فقط معرفی سازنده (بدون بدنه {})
     explicit Publisher(QObject *parent = nullptr);
 
     QString getRole() const override { return "Publisher"; }

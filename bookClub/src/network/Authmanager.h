@@ -36,4 +36,4 @@ private:
     void sendJson(const QJsonObject &json);
 };
 
-#endif // AUTHMANAGER_H
+#endif
