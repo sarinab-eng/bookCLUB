@@ -12,13 +12,15 @@ SOURCES += \
     mainwindow.cpp \
     src/model/Book.cpp \
     src/model/BookManager.cpp \
-    src/model/User.cpp
+    src/model/User.cpp \
+    src/model/bookreader.cpp
 
 HEADERS += \
     mainwindow.h \
     src/model/Book.h \
     src/model/BookManager.h \
     src/model/User.h \
+    src/model/bookreader.h \
     src/model/personallibrary.h \
     src/model/personallibrary.h \
     src/model/shoppingcart.h \
