@@ -5,6 +5,8 @@
 #include <QTcpSocket>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonArray>
+#include <QVector>
 #include "User.h"
 
 class AuthManager : public QObject {
@@ -12,28 +14,23 @@ class AuthManager : public QObject {
 public:
     explicit AuthManager(QTcpSocket *socket, QObject *parent = nullptr);
 
-    // متدهای اصلی درخواست کلاینت (ارسال به سرور)
-    void sendLoginRequest(const QString &username, const QString &password);
-    void sendRegisterRequest(const QString &username, const QString &password,
-                             const QString &secQuestion, const QString &secAnswer,
-                             const QString &role, const QVector<int> &favGenres = {});
-    void sendResetPasswordRequest(const QString &username, const QString &secAnswer, const QString &newPassword);
+    void loginUser(const QString &username, const QString &password);
 
-    // پردازش پاسخ‌های دریافتی از سرور
-    void handleServerResponse(const QJsonObject &responseObj);
+    // هماهنگ شده با ۶ پارامتر ارسالی از UI
+    void registerUser(const QString &username, const QString &password,
+                      const QString &question, const QString &answer,
+                      const QString &role, const QVector<int> &genres);
+
+private slots:
+    void onReadyRead();
 
 signals:
-    // سیگنال‌هایی که به UI متصل می‌شوند تا نتیجه را نمایش دهند
-    void loginSuccess(const QString &role, const QString &username);
-    void loginFailed(const QString &errorMsg);
-    void registrationSuccess();
-    void registrationFailed(const QString &errorMsg);
-    void passwordResetSuccess();
-    void passwordResetFailed(const QString &errorMsg);
+    void loginFinished(bool success, const QString &message);
+    void registerFinished(bool success, const QString &message);
 
 private:
-    QTcpSocket *m_socket; // سوکت شبکه مشترک با کلاینت اصلی
+    QTcpSocket *m_socket;
     void sendJson(const QJsonObject &json);
+    void handleServerResponse(const QJsonObject &responseObj);
 };
-
 #endif

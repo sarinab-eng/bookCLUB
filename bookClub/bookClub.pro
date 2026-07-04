@@ -13,7 +13,9 @@ SOURCES += \
     src/model/Customer.cpp \
     src/model/Publisher.cpp \
     src/model/User.cpp \
-    src/network/Authmanager.cpp
+    src/network/Authmanager.cpp \
+    src/ui/loginpage.cpp \
+    src/ui/registerpage.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -21,10 +23,14 @@ HEADERS += \
     src/model/Customer.h \
     src/model/Publisher.h \
     src/model/User.h \
-    src/network/Authmanager.h
+    src/network/Authmanager.h \
+    src/ui/loginpage.h \
+    src/ui/registerpage.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    src/ui/loginpage.ui \
+    src/ui/registerpage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -33,3 +39,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 INCLUDEPATH += src/model
 INCLUDEPATH += src/network
+INCLUDEPATH += $$PWD \
+               $$PWD/ui \
+               $$PWD/network \
+               $$PWD/src/model
+               INCLUDEPATH += $$PWD \
+                              $$PWD/src
