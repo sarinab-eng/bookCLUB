@@ -31,6 +31,15 @@ public:
     // فایلینگ و ذخیره‌سازی محلی داده‌ها
     void loadFromFile(const QString &filePath);
     void saveToFile(const QString &filePath) const;
+
+    // فیلترهای تکمیلی (صفحه 8)
+    QVector<Book> filterByPriceRange(double minPrice, double maxPrice) const;
+    QVector<Book> filterByMinRating(double minRating) const;
+
+    // مدیریت وضعیت و فروش (صفحه 12 و 17)
+    bool setBookAvailability(int bookId, bool status); // تغییر وضعیت موجود/ناموجود
+    void recordSale(int bookId, int quantity = 1); // ثبت فروش برای آمار
+
 };
 
 #endif // BOOKMANAGER_H

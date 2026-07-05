@@ -5,24 +5,8 @@
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
-
-struct Review {
-    QString username;
-    QString comment;
-    int rating; // 1 to 5
-
-    QJsonObject toJson() const {
-        QJsonObject json;
-        json["username"] = username;
-        json["comment"] = comment;
-        json["rating"] = rating;
-        return json;
-    }
-
-    static Review fromJson(const QJsonObject &json) {
-        return {json["username"].toString(), json["comment"].toString(), json["rating"].toInt()};
-    }
-};
+#include "Review.h"
+#include "Reviewmanager.h"
 
 class Book {
 private:
@@ -36,7 +20,8 @@ private:
     double price;
     int salesCount;   // برای آمار پرفروش‌ترین‌ها (صفحه 12)
     int lastReadPage; // ذخیره آخرین صفحه مطالعه شده (صفحه 10)
-
+    ReviewManager ReviewManager;
+    bool available;    // وضعیت موجودی کتاب
     QVector<Review> reviews;
 
 public:
@@ -65,12 +50,20 @@ public:
     void deleteReview(const QString &user);
     double getAverageRating() const;
 
+    bool getIsAvailable() const;
+    void setIsAvailable(bool status);
+
+    // Getter و Setter برای آمار فروش
+    void setSalesCount(int count);
+
     // سریال‌سازی برای بستر شبکه کلاینت-سرور
     QJsonObject toJson() const;
     static Book fromJson(const QJsonObject &json);
     void setTitle(const QString &title);
     void setPrice(double price);
     void setDescription(const QString &desc);
+    void addReview(const Review &r) { ReviewManager.addReview(r); }
+    double getRating() const { return ReviewManager.getAverageRating(); }
 
 
 };

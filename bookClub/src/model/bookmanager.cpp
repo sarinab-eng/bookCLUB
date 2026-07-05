@@ -139,3 +139,44 @@ void BookManager::loadFromFile(const QString &filePath) {
         file.close();
     }
 }
+// فیلتر بر اساس محدوده قیمت
+QVector<Book> BookManager::filterByPriceRange(double minPrice, double maxPrice) const {
+    QVector<Book> results;
+    for (const auto &book : allBooks) {
+        if (book.getPrice() >= minPrice && book.getPrice() <= maxPrice) {
+            results.append(book);
+        }
+    }
+    return results;
+}
+
+// فیلتر بر اساس حداقل امتیاز (مثلاً کتاب‌های بالای 4 ستاره)
+QVector<Book> BookManager::filterByMinRating(double minRating) const {
+    QVector<Book> results;
+    for (const auto &book : allBooks) {
+        if (book.getAverageRating() >= minRating) {
+            results.append(book);
+        }
+    }
+    return results;
+}
+
+// تغییر وضعیت موجودی (مورد نیاز پنل ادمین/ناشر - صفحه 17)
+bool BookManager::setBookAvailability(int bookId, bool status) {
+    Book* book = findBookById(bookId);
+    if (book) {
+        // فرض می‌کنیم در کلاس Book متد setIsAvailable دارید
+        book->setIsAvailable(status);
+        return true;
+    }
+    return false;
+}
+
+// ثبت فروش برای آپدیت لیست پرفروش‌ها
+void BookManager::recordSale(int bookId, int quantity) {
+    Book* book = findBookById(bookId);
+    if (book) {
+        book->setSalesCount(book->getSalesCount() + quantity);
+    }
+}
+

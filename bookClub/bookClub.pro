@@ -12,19 +12,2764 @@ SOURCES += \
     mainwindow.cpp \
     src/model/Book.cpp \
     src/model/BookManager.cpp \
-    src/model/User.cpp \
-    src/model/bookreader.cpp
+    src/model/Bookreader.cpp \
+    src/model/User.cpp
 
 HEADERS += \
     mainwindow.h \
     src/model/Book.h \
     src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
     src/model/User.h \
-    src/model/bookreader.h \
     src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
     src/model/personallibrary.h \
-    src/model/shoppingcart.h \
-    src/model/shoppingcart.h
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+HEADERS += \
+    mainwindow.h \
+    src/model/Book.h \
+    src/model/BookManager.h \
+    src/model/Bookreader.h \
+    src/model/Review.h \
+    src/model/Reviewmanager.h \
+    src/model/Shoppingcart.h \
+    src/model/User.h \
+    src/model/personallibrary.h \
+    src/model/personallibrary.h
 
 FORMS += \
     mainwindow.ui
