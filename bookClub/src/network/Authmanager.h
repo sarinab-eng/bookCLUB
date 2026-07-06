@@ -25,7 +25,7 @@ private slots:
     void onReadyRead();
 
 signals:
-    void loginFinished(bool success, const QString &message);
+    void loginFinished(bool success, const QString &message, const QString &role);
     void registerFinished(bool success, const QString &message);
 
 private:

@@ -11,15 +11,24 @@ MainWindow::MainWindow(QWidget *parent)
 
     // ۱. تنظیم شبکه
     m_socket = new QTcpSocket(this);
-    m_socket->connectToHost("127.0.0.1", 1234); // آی‌پی و پورت سرور خود را چک کنید
+    m_socket->connectToHost("127.0.0.1", 1234);
 
     // ۲. ایجاد صفحات و مدیریت هویت
     m_loginPage = new LoginPage(this);
     m_registerPage = new RegisterPage(this);
-    m_authManager = new AuthManager(m_socket, this); // ارسال سوکت به AuthManager
 
-    m_stackedWidget->addWidget(m_loginPage);
-    m_stackedWidget->addWidget(m_registerPage);
+    // ایجاد صفحات پنل (این کلاس‌ها را باید در پروژه‌تان داشته باشید یا بسازید)
+    m_adminPage = new QWidget(this); // فعلاً به عنوان جایگاه (Placeholder)
+    m_publisherPage = new QWidget(this);
+    m_customerPage = new QWidget(this);
+
+    m_authManager = new AuthManager(m_socket, this);
+
+    m_stackedWidget->addWidget(m_loginPage);     // Index 0
+    m_stackedWidget->addWidget(m_registerPage);  // Index 1
+    m_stackedWidget->addWidget(m_adminPage);     // Index 2
+    m_stackedWidget->addWidget(m_publisherPage); // Index 3
+    m_stackedWidget->addWidget(m_customerPage);  // Index 4
 
     setupConnections();
 }
@@ -34,11 +43,11 @@ void MainWindow::setupConnections() {
     connect(m_registerPage, &RegisterPage::registerRequested, this, &MainWindow::onRegisterRequested);
 
     // اتصال نتایج AuthManager به هندلرهای MainWindow
+    // توجه: سیگنال loginFinished باید ۳ پارامتر داشته باشد: (bool, QString, QString)
     connect(m_authManager, &AuthManager::loginFinished, this, &MainWindow::handleLoginResult);
     connect(m_authManager, &AuthManager::registerFinished, this, &MainWindow::handleRegisterResult);
 }
 
-// پیاده‌سازی متد ثبت‌نام که به AuthManager پاس می‌دهد
 void MainWindow::onRegisterRequested(const QString &username, const QString &password,
                                      const QString &question, const QString &answer,
                                      const QString &role, const QVector<int> &genres) {
@@ -46,12 +55,24 @@ void MainWindow::onRegisterRequested(const QString &username, const QString &pas
 }
 
 void MainWindow::onLoginRequested(const QString &username, const QString &password) {
+    qDebug() << "MainWindow received login request for:" << username;
     m_authManager->loginUser(username, password);
 }
 
-void MainWindow::handleLoginResult(bool success, const QString &message) {
+// اصلاح شده: اضافه کردن پارامتر role
+void MainWindow::handleLoginResult(bool success, const QString &message, const QString &role) {
     if (success) {
-        QMessageBox::information(this, "Login", "Welcome!");
+        QMessageBox::information(this, "Login", "Welcome! Role: " + role);
+
+        // هدایت کاربر به پنل مخصوص خودش
+        if (role == "admin") {
+            m_stackedWidget->setCurrentWidget(m_adminPage);
+        } else if (role == "publisher") {
+            m_stackedWidget->setCurrentWidget(m_publisherPage);
+        } else {
+            m_stackedWidget->setCurrentWidget(m_customerPage);
+        }
+
     } else {
         QMessageBox::critical(this, "Error", message);
     }

@@ -33,7 +33,7 @@ private slots:
     void onLoginRequested(const QString &username, const QString &password);
 
     // اسلات‌های دریافت پاسخ از سرور
-    void handleLoginResult(bool success, const QString &message);
+    void handleLoginResult(bool success, const QString &message, const QString &role);
     void handleRegisterResult(bool success, const QString &message);
 
 private:
@@ -41,6 +41,9 @@ private:
     QStackedWidget *m_stackedWidget;
     LoginPage *m_loginPage;
     RegisterPage *m_registerPage;
+    QWidget *m_adminPage;
+    QWidget *m_publisherPage;
+    QWidget *m_customerPage;
 
     QTcpSocket *m_socket;
     AuthManager *m_authManager;

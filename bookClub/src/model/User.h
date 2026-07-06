@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QString>
-#include <QCryptographicHash>
 
 class User : public QObject {
     Q_OBJECT
@@ -16,12 +15,12 @@ public:
     QString securityAnswer;
     bool isBlocked;
 
-    // متد خالص مجازی برای انتزاعی کردن کلاس
     virtual QString getRole() const = 0;
 
-    static QString hashPassword(const QString &pass);
-    static QString encrypt(const QString &data, const QString &key = "bookClubKey");
-    static QString decrypt(const QString &data, const QString &key = "bookClubKey");
+    // فقط تعریف توابع در اینجا باشد
+    static QString hashPassword(const QString& password);
+    static QString encrypt(const QString& data, const QString &key = "");
+    static QString decrypt(const QString& data, const QString &key = "");
 
     void setBlocked(bool status) { isBlocked = status; }
 };
