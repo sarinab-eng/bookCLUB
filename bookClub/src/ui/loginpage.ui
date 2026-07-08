@@ -18,12 +18,12 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>131</width>
+     <width>111</width>
      <height>26</height>
     </rect>
    </property>
    <property name="text">
-    <string>usernameLineEdit</string>
+    <string>username</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="passwordLineEdit">
@@ -36,14 +36,14 @@
     </rect>
    </property>
    <property name="text">
-    <string>passwordLineEdit</string>
+    <string>pass</string>
    </property>
   </widget>
   <widget class="QPushButton" name="loginButton">
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>130</y>
+     <y>120</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -55,7 +55,7 @@
   <widget class="QPushButton" name="goToRegisterButton">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>130</x>
      <y>160</y>
      <width>141</width>
      <height>29</height>

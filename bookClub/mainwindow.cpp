@@ -13,16 +13,16 @@ MainWindow::MainWindow(QWidget *parent)
     m_socket = new QTcpSocket(this);
     m_socket->connectToHost("127.0.0.1", 1234);
 
+    m_authManager = new AuthManager(m_socket, this);
+
     // ۲. ایجاد صفحات و مدیریت هویت
     m_loginPage = new LoginPage(this);
     m_registerPage = new RegisterPage(this);
-
-    // ایجاد صفحات پنل (این کلاس‌ها را باید در پروژه‌تان داشته باشید یا بسازید)
-    m_adminPage = new QWidget(this); // فعلاً به عنوان جایگاه (Placeholder)
+    m_adminPage = new AdminPage(m_authManager, this); // فعلاً به عنوان جایگاه (Placeholder)
     m_publisherPage = new QWidget(this);
     m_customerPage = new QWidget(this);
 
-    m_authManager = new AuthManager(m_socket, this);
+
 
     m_stackedWidget->addWidget(m_loginPage);     // Index 0
     m_stackedWidget->addWidget(m_registerPage);  // Index 1
@@ -59,20 +59,21 @@ void MainWindow::onLoginRequested(const QString &username, const QString &passwo
     m_authManager->loginUser(username, password);
 }
 
-// اصلاح شده: اضافه کردن پارامتر role
 void MainWindow::handleLoginResult(bool success, const QString &message, const QString &role) {
     if (success) {
-        QMessageBox::information(this, "Login", "Welcome! Role: " + role);
+        // تبدیل به حروف کوچک برای مقایسه امن‌تر
+        QString userRole = role.toLower();
 
-        // هدایت کاربر به پنل مخصوص خودش
-        if (role == "admin") {
+        if (userRole == "admin") {
             m_stackedWidget->setCurrentWidget(m_adminPage);
-        } else if (role == "publisher") {
+            m_adminPage->loadData(); // این خط را حتماً اضافه کنید تا لیست لود شود
+        } else if (userRole == "publisher") {
             m_stackedWidget->setCurrentWidget(m_publisherPage);
         } else {
             m_stackedWidget->setCurrentWidget(m_customerPage);
         }
 
+        QMessageBox::information(this, "Login", "Welcome! Role: " + role);
     } else {
         QMessageBox::critical(this, "Error", message);
     }

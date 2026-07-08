@@ -43,6 +43,7 @@ void AuthManager::sendJson(const QJsonObject &json) {
 
 void AuthManager::onReadyRead() {
     QByteArray data = m_socket->readAll();
+    qDebug() << "Raw data from server:" << data;
     QJsonDocument doc = QJsonDocument::fromJson(data);
     if (doc.isNull()) return;
 
@@ -60,9 +61,18 @@ void AuthManager::onReadyRead() {
         QString message = response["message"].toString();
         emit registerFinished(status == "success", message);
     }
+    else if (type == "users_list") {
+        QJsonArray users = response["users"].toArray();
+        emit usersListReceived(users);
+    }
+    else if (type == "admin_action_response") {
+        bool success = response["success"].toBool();
+        QString message = response["message"].toString();
+        emit actionFinished(success, message);
+    }
 }
 
-void AuthManager::handleServerResponse(const QJsonObject &responseObj) {
+/*void AuthManager::handleServerResponse(const QJsonObject &responseObj) {
     QString action = responseObj["action"].toString();
     if (action == "login") {
         emit loginFinished(responseObj["success"].toBool(), responseObj["message"].toString(), responseObj["role"].toString());
@@ -70,4 +80,24 @@ void AuthManager::handleServerResponse(const QJsonObject &responseObj) {
     else if (action == "register") {
         emit registerFinished(responseObj["success"].toBool(), responseObj["message"].toString());
     }
+}*/
+void AuthManager::requestUsersList() {
+    QJsonObject request;
+    request["type"] = "get_users";
+
+    // تبدیل به بایت و ارسال از طریق سوکت
+    if (m_socket && m_socket->state() == QAbstractSocket::ConnectedState) {
+    QJsonDocument doc(request);
+    m_socket->write(doc.toJson());
+    }
+}
+void AuthManager::adminAction(const QString &type, const QString &username) {
+    if (!m_socket || m_socket->state() != QAbstractSocket::ConnectedState) {
+        emit actionFinished(false, "عدم اتصال به سرور");
+        return;
+    }
+    QJsonObject request;
+    request["type"] = type; // "block_user" یا "delete_user"
+    request["username"] = username;
+    sendJson(request);
 }

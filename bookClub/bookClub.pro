@@ -14,6 +14,7 @@ SOURCES += \
     src/model/Publisher.cpp \
     src/model/User.cpp \
     src/network/Authmanager.cpp \
+    src/ui/adminpage.cpp \
     src/ui/loginpage.cpp \
     src/ui/registerpage.cpp
 
@@ -24,11 +25,13 @@ HEADERS += \
     src/model/Publisher.h \
     src/model/User.h \
     src/network/Authmanager.h \
+    src/ui/adminpage.h \
     src/ui/loginpage.h \
     src/ui/registerpage.h
 
 FORMS += \
     mainwindow.ui \
+    src/ui/adminpage.ui \
     src/ui/loginpage.ui \
     src/ui/registerpage.ui
 

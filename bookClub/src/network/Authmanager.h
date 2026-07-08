@@ -16,10 +16,13 @@ public:
 
     void loginUser(const QString &username, const QString &password);
 
-    // هماهنگ شده با ۶ پارامتر ارسالی از UI
     void registerUser(const QString &username, const QString &password,
                       const QString &question, const QString &answer,
                       const QString &role, const QVector<int> &genres);
+
+    void requestUsersList();
+
+    void adminAction(const QString &type, const QString &username);
 
 private slots:
     void onReadyRead();
@@ -27,6 +30,8 @@ private slots:
 signals:
     void loginFinished(bool success, const QString &message, const QString &role);
     void registerFinished(bool success, const QString &message);
+    void usersListReceived(const QJsonArray &users);
+    void actionFinished(bool success, const QString &message);
 
 private:
     QTcpSocket *m_socket;
