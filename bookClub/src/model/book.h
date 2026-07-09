@@ -1,3 +1,4 @@
+
 #ifndef BOOK_H
 #define BOOK_H
 
@@ -6,7 +7,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include "Review.h"
-#include "Reviewmanager.h"
+#include "ReviewManager.h"
 
 class Book {
 private:
@@ -16,20 +17,19 @@ private:
     QString publisherName;
     QString genre;
     QString description;
-    QString filePath; // آدرس فایل کتاب یا متن آن برای ماژول مطالعه (صفحه 10)
+    QString filePath;            // آدرس فایل کتاب یا متن آن برای ماژول مطالعه
     double price;
-    int salesCount;   // برای آمار پرفروش‌ترین‌ها (صفحه 12)
-    int lastReadPage; // ذخیره آخرین صفحه مطالعه شده (صفحه 10)
-    ReviewManager ReviewManager;
-    bool available;    // وضعیت موجودی کتاب
-    QVector<Review> reviews;
+    int salesCount;              // برای آمار پرفروش‌ترین‌ها
+    int lastReadPage;            // ذخیره آخرین صفحه مطالعه شده
+    ReviewManager reviewManager; // مدیریت نظرات از طریق ReviewManager
+    bool available;              // وضعیت موجودی کتاب
 
 public:
     Book();
-    Book(int id, QString title, QString author, QString publisher, QString genre,
-         QString description, QString filePath, double price);
+    Book(int id, const QString &title, const QString &author, const QString &publisher,
+         const QString &genre, const QString &description, const QString &filePath, double price);
 
-    // Getters & Setters
+    // Getters
     int getId() const;
     QString getTitle() const;
     QString getAuthor() const;
@@ -40,32 +40,28 @@ public:
     double getPrice() const;
     int getSalesCount() const;
     int getLastReadPage() const;
-    QVector<Review> getReviews() const;
+    bool getIsAvailable() const;
 
+    // گرفتن لیست نظرات و میانگین امتیازات با استفاده از ReviewManager
+    QVector<Review> getReviews() const { return reviewManager.getAllReviews(); }
+    double getRating() const { return reviewManager.getAverageRating(); }
+
+    // Setters
+    void setTitle(const QString &title);
+    void setPrice(double price);
+    void setDescription(const QString &desc);
     void setLastReadPage(int page);
+    void setIsAvailable(bool status);
+    void setSalesCount(int count);
     void incrementSales(int count = 1);
 
-    // مدیریت نظرات و امتیازدهی (صفحه 8)
-    void addOrUpdateReview(const QString &user, const QString &text, int score);
-    void deleteReview(const QString &user);
-    double getAverageRating() const;
-
-    bool getIsAvailable() const;
-    void setIsAvailable(bool status);
-
-    // Getter و Setter برای آمار فروش
-    void setSalesCount(int count);
+    // مدیریت نظرات
+    void addReview(const Review &r) { reviewManager.addReview(r); }
+    void deleteReview(int userId) { reviewManager.removeReview(userId); }
 
     // سریال‌سازی برای بستر شبکه کلاینت-سرور
     QJsonObject toJson() const;
     static Book fromJson(const QJsonObject &json);
-    void setTitle(const QString &title);
-    void setPrice(double price);
-    void setDescription(const QString &desc);
-    void addReview(const Review &r) { ReviewManager.addReview(r); }
-    double getRating() const { return ReviewManager.getAverageRating(); }
-
-
 };
 
 #endif // BOOK_H
