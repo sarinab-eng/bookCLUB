@@ -12,125 +12,35 @@ class PersonalLibrary {
 private:
     QVector<int> purchasedBookIds;            // شناسه کتاب‌های خریداری شده
     QVector<int> favoriteBookIds;             // لیست علاقه‌مندی‌ها
-    QMap<QString, QVector<int>> bookshelves;  // قفسه‌ها (نام قفسه -> لیست شناسه کتاب‌ها)
+    QMap<QString, QVector<int>> bookshelves;  // قفسه‌بندی (نام قفسه -> لیست شناسه کتاب‌ها)
 
 public:
-    PersonalLibrary() {}
+    PersonalLibrary();
 
-    // افزودن کتاب خریداری شده به کتابخانه
-    void addPurchasedBook(int bookId) {
-        if (!purchasedBookIds.contains(bookId)) {
-            purchasedBookIds.append(bookId);
-        }
-    }
+    // مدیریت کتاب‌های خریداری شده (صفحه ۹ PDF)
+    void addPurchasedBook(int bookId);
+    const QVector<int>& getPurchasedBooks() const;
+    bool hasPurchased(int bookId) const;
 
-    const QVector<int>& getPurchasedBooks() const { return purchasedBookIds; }
+    // مدیریت علاقه‌مندی‌ها
+    void addToFavorites(int bookId);
+    void removeFromFavorites(int bookId);
+    const QVector<int>& getFavorites() const;
 
-    // مدیریت علاقه‌مندی‌ها (بررسی خرید الزامی است)
-    void addToFavorites(int bookId) {
-        if (purchasedBookIds.contains(bookId) && !favoriteBookIds.contains(bookId)) {
-            favoriteBookIds.append(bookId);
-        }
-    }
+    // مدیریت قفسه‌ها و سازماندهی (صفحه ۱۰ PDF)
+    void createShelf(const QString &shelfName);
+    void deleteShelf(const QString &shelfName);
+    void renameShelf(const QString &oldName, const QString &newName);
+    void addBookToShelf(const QString &shelfName, int bookId);
+    void removeBookFromShelf(const QString &shelfName, int bookId);
 
-    void removeFromFavorites(int bookId) {
-        favoriteBookIds.removeOne(bookId);
-    }
+    // متدهای کمکی برای UI
+    QStringList getShelfNames() const;
+    QVector<int> getBooksInShelf(const QString &shelfName) const;
 
-    const QVector<int>& getFavorites() const { return favoriteBookIds; }
-
-    // مدیریت قفسه‌ها (صفحه ۱۰ مستند)
-    void createShelf(const QString &shelfName) {
-        if (!shelfName.isEmpty() && !bookshelves.contains(shelfName)) {
-            bookshelves[shelfName] = QVector<int>();
-        }
-    }
-
-    void deleteShelf(const QString &shelfName) {
-        bookshelves.remove(shelfName);
-    }
-
-    void renameShelf(const QString &oldName, const QString &newName) {
-        if (!newName.isEmpty() && bookshelves.contains(oldName) && !bookshelves.contains(newName)) {
-            bookshelves[newName] = bookshelves.take(oldName);
-        }
-    }
-
-    // اضافه کردن کتاب به قفسه (بررسی اینکه کتاب حتماً خریداری شده باشد)
-    void addBookToShelf(const QString &shelfName, int bookId) {
-        if (purchasedBookIds.contains(bookId) && bookshelves.contains(shelfName)) {
-            if (!bookshelves[shelfName].contains(bookId)) {
-                bookshelves[shelfName].append(bookId);
-            }
-        }
-    }
-
-    void removeBookFromShelf(const QString &shelfName, int bookId) {
-        if (bookshelves.contains(shelfName)) {
-            bookshelves[shelfName].removeOne(bookId);
-        }
-    }
-
-    // انتقال کتاب بین دو قفسه (الزام صریح صفحه ۱۰ مستند)
-    bool moveBookBetweenShelves(int bookId, const QString &fromShelf, const QString &toShelf) {
-        if (bookshelves.contains(fromShelf) && bookshelves.contains(toShelf)) {
-            if (bookshelves[fromShelf].contains(bookId)) {
-                bookshelves[fromShelf].removeOne(bookId);
-                if (!bookshelves[toShelf].contains(bookId)) {
-                    bookshelves[toShelf].append(bookId);
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // متدهای کمکی برای استفاده در UI
-    QStringList getShelfNames() const {
-        return bookshelves.keys();
-    }
-
-    QVector<int> getBooksInShelf(const QString &shelfName) const {
-        return bookshelves.value(shelfName, QVector<int>());
-    }
-
-    // ذخیره و بازیابی اطلاعات به صورت JSON
-    QJsonObject toJson() const {
-        QJsonObject json;
-        QJsonArray purchasedArr, favArr;
-        for (int id : purchasedBookIds) purchasedArr.append(id);
-        for (int id : favoriteBookIds) favArr.append(id);
-
-        json["purchased"] = purchasedArr;
-        json["favorites"] = favArr;
-
-        QJsonObject shelvesObj;
-        for (auto it = bookshelves.begin(); it != bookshelves.end(); ++it) {
-            QJsonArray shelfBooks;
-            for (int id : it.value()) shelfBooks.append(id);
-            shelvesObj[it.key()] = shelfBooks;
-        }
-        json["shelves"] = shelvesObj;
-        return json;
-    }
-
-    static PersonalLibrary fromJson(const QJsonObject &json) {
-        PersonalLibrary lib;
-        QJsonArray purchasedArr = json["purchased"].toArray();
-        for (auto val : purchasedArr) lib.purchasedBookIds.append(val.toInt());
-
-        QJsonArray favArr = json["favorites"].toArray();
-        for (auto val : favArr) lib.favoriteBookIds.append(val.toInt());
-
-        QJsonObject shelvesObj = json["shelves"].toObject();
-        for (const QString &key : shelvesObj.keys()) {
-            QVector<int> shelfBooks;
-            QJsonArray shelfArr = shelvesObj[key].toArray();
-            for (auto val : shelfArr) shelfBooks.append(val.toInt());
-            lib.bookshelves[key] = shelfBooks;
-        }
-        return lib;
-    }
+    // متدهای تبدیل به JSON برای ذخیره در فایل کاربران
+    QJsonObject toJson() const;
+    static PersonalLibrary fromJson(const QJsonObject &json);
 };
 
 #endif // PERSONALLIBRARY_H
