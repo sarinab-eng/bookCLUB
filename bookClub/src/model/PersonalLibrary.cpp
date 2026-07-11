@@ -1,8 +1,10 @@
 #include "PersonalLibrary.h"
 
-PersonalLibrary::PersonalLibrary() {}
+PersonalLibrary::PersonalLibrary() {
+    // سازنده کلاس
+}
 
-// طبق PDF: کتاب‌ها بعد از خرید موفق به اینجا اضافه می‌شوند
+// اضافه کردن کتاب به لیست خریداری شده ها
 void PersonalLibrary::addPurchasedBook(int bookId) {
     if (!purchasedBookIds.contains(bookId)) {
         purchasedBookIds.append(bookId);
@@ -13,14 +15,15 @@ const QVector<int>& PersonalLibrary::getPurchasedBooks() const {
     return purchasedBookIds;
 }
 
-// اصلاح خطای خط ۱۶ اسکرین‌شات (تطابق کامل با هدر)
+// بررسی وضعیت خرید کتاب
 bool PersonalLibrary::hasPurchased(int bookId) const {
     return purchasedBookIds.contains(bookId);
 }
 
+// مدیریت لیست علاقه‌مندی‌ها (Favorites/Wishlist)
 void PersonalLibrary::addToFavorites(int bookId) {
-    // منطق: فقط کتابی که خریده شده می‌تواند محبوب باشد
-    if (hasPurchased(bookId) && !favoriteBookIds.contains(bookId)) {
+    // اصلاح منطقی: کاربر می‌تواند هر کتابی را (قبل یا بعد از خرید) به لیست علاقه‌مندی‌ها اضافه کند
+    if (!favoriteBookIds.contains(bookId)) {
         favoriteBookIds.append(bookId);
     }
 }
@@ -32,6 +35,8 @@ void PersonalLibrary::removeFromFavorites(int bookId) {
 const QVector<int>& PersonalLibrary::getFavorites() const {
     return favoriteBookIds;
 }
+
+// --- مدیریت قفسه‌ها (Shelves) ---
 
 void PersonalLibrary::createShelf(const QString &shelfName) {
     if (!shelfName.isEmpty() && !bookshelves.contains(shelfName)) {
@@ -45,11 +50,13 @@ void PersonalLibrary::deleteShelf(const QString &shelfName) {
 
 void PersonalLibrary::renameShelf(const QString &oldName, const QString &newName) {
     if (!newName.isEmpty() && bookshelves.contains(oldName) && !bookshelves.contains(newName)) {
+        // انتقال داده‌ها به کلید جدید و حذف کلید قدیمی
         bookshelves[newName] = bookshelves.take(oldName);
     }
 }
 
 void PersonalLibrary::addBookToShelf(const QString &shelfName, int bookId) {
+    // طبق منطق پروژه: فقط کتاب‌های خریداری‌شده می‌توانند قفسه‌بندی شوند
     if (hasPurchased(bookId) && bookshelves.contains(shelfName)) {
         if (!bookshelves[shelfName].contains(bookId)) {
             bookshelves[shelfName].append(bookId);
@@ -71,17 +78,22 @@ QVector<int> PersonalLibrary::getBooksInShelf(const QString &shelfName) const {
     return bookshelves.value(shelfName, QVector<int>());
 }
 
-// --- بخش سریال‌سازی برای هماهنگی با بقیه سیستم (User Storage) ---
+// --- متدهای سریال‌سازی (JSON Serialization) ---
 
 QJsonObject PersonalLibrary::toJson() const {
     QJsonObject json;
-    QJsonArray purchasedArr, favArr;
+
+    // تبدیل لیست‌های int به QJsonArray
+    QJsonArray purchasedArr;
     for (int id : purchasedBookIds) purchasedArr.append(id);
+
+    QJsonArray favArr;
     for (int id : favoriteBookIds) favArr.append(id);
 
     json["purchased"] = purchasedArr;
     json["favorites"] = favArr;
 
+    // تبدیل Map قفسه‌ها به Object
     QJsonObject shelvesObj;
     for (auto it = bookshelves.begin(); it != bookshelves.end(); ++it) {
         QJsonArray shelfBooks;
@@ -89,17 +101,22 @@ QJsonObject PersonalLibrary::toJson() const {
         shelvesObj[it.key()] = shelfBooks;
     }
     json["shelves"] = shelvesObj;
+
     return json;
 }
 
 PersonalLibrary PersonalLibrary::fromJson(const QJsonObject &json) {
     PersonalLibrary lib;
+
+    // بازگردانی لیست خریدها
     QJsonArray purchasedArr = json["purchased"].toArray();
     for (auto val : purchasedArr) lib.purchasedBookIds.append(val.toInt());
 
+    // بازگردانی علاقه‌مندی‌ها
     QJsonArray favArr = json["favorites"].toArray();
     for (auto val : favArr) lib.favoriteBookIds.append(val.toInt());
 
+    // بازگردانی قفسه‌ها
     QJsonObject shelvesObj = json["shelves"].toObject();
     for (const QString &key : shelvesObj.keys()) {
         QVector<int> shelfBooks;
@@ -107,5 +124,6 @@ PersonalLibrary PersonalLibrary::fromJson(const QJsonObject &json) {
         for (auto val : shelfArr) shelfBooks.append(val.toInt());
         lib.bookshelves[key] = shelfBooks;
     }
+
     return lib;
 }

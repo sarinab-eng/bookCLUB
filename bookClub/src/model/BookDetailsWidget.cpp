@@ -1,100 +1,129 @@
 #include "BookDetailsWidget.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QInputDialog>
 #include <QMessageBox>
+#include <QHeaderView>
+#include "Review.h"
+#include "GlobalReviewManager.h"
+#include "Shoppingcart.h"
+
 
 BookDetailsWidget::BookDetailsWidget(QWidget *parent) : QWidget(parent) {
-    // ایجاد لایوت اصلی صفحه (عمودی)
+    setupUi();
+}
+
+void BookDetailsWidget::setupUi() {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-    // بخش بالایی: اطلاعات متنی کتاب
-    titleLabel = new QLabel("عنوان کتاب", this);
-    titleLabel->setStyleSheet("font-size: 18px; font-weight: bold;");
+    // بخش اطلاعات کتاب
+    titleLabel = new QLabel();
+    titleLabel->setStyleSheet("font-size: 24px; font-weight: bold; color: #2C3E50;");
 
-    authorLabel = new QLabel("نویسنده: ", this);
-    publisherLabel = new QLabel("ناشر: ", this);
-    ratingLabel = new QLabel("امتیاز: ", this);
-    priceLabel = new QLabel("قیمت: ", this);
-    priceLabel->setStyleSheet("color: green; font-weight: bold;");
+    authorLabel = new QLabel();
+    authorLabel->setStyleSheet("font-size: 18px; color: #555;");
 
-    descriptionBrowser = new QTextBrowser(this);
-    descriptionBrowser->setPlaceholderText("توضیحات کتاب...");
+    publisherLabel = new QLabel();
+    genreLabel = new QLabel();
 
-    // افزودن اطلاعات به لایوت عمودی بالا
+    descriptionLabel = new QLabel();
+    descriptionLabel->setWordWrap(true);
+    descriptionLabel->setStyleSheet("margin-top: 10px; line-height: 1.5;");
+
+    priceLabel = new QLabel();
+    priceLabel->setStyleSheet("font-size: 20px; color: #E74C3C; font-weight: bold;");
+
+    addToCartButton = new QPushButton("افزودن به سبد خرید");
+    addToCartButton->setStyleSheet("background-color: #27AE60; color: white; padding: 10px; font-size: 16px;");
+
+    // بخش نظرات
+    reviewsTable = new QTableWidget(0, 3);
+    reviewsTable->setHorizontalHeaderLabels({"کاربر", "امتیاز", "نظر"});
+    reviewsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    ratingSpinBox = new QSpinBox();
+    ratingSpinBox->setRange(1, 5);
+    reviewTextEdit = new QTextEdit();
+    reviewTextEdit->setPlaceholderText("نظر خود را بنویسید...");
+    reviewTextEdit->setMaximumHeight(80);
+
+    submitReviewButton = new QPushButton("ثبت نظر");
+
+    // چیدمان
     mainLayout->addWidget(titleLabel);
     mainLayout->addWidget(authorLabel);
     mainLayout->addWidget(publisherLabel);
-    mainLayout->addWidget(ratingLabel);
+    mainLayout->addWidget(genreLabel);
+    mainLayout->addWidget(descriptionLabel);
     mainLayout->addWidget(priceLabel);
-    mainLayout->addWidget(new QLabel("توضیحات:", this));
-    mainLayout->addWidget(descriptionBrowser);
-
-    // دکمه افزودن به سبد خرید
-    addToCartButton = new QPushButton("افزودن به سبد خرید", this);
     mainLayout->addWidget(addToCartButton);
+    mainLayout->addWidget(new QLabel("<h3>نظرات کاربران</h3>"));
+    mainLayout->addWidget(reviewsTable);
+    mainLayout->addWidget(new QLabel("ثبت نظر جدید:"));
+    mainLayout->addWidget(ratingSpinBox);
+    mainLayout->addWidget(reviewTextEdit);
+    mainLayout->addWidget(submitReviewButton);
 
-    // بخش نظرات
-    mainLayout->addWidget(new QLabel("نظرات کاربران:", this));
-    reviewsListWidget = new QListWidget(this);
-    mainLayout->addWidget(reviewsListWidget);
-
-    // بخش ثبت نظر جدید
-    QHBoxLayout *newReviewLayout = new QHBoxLayout();
-    ratingSpinBox = new QSpinBox(this);
-    ratingSpinBox->setRange(1, 5); // فقط امتیاز بین ۱ تا ۵ ستاره
-
-    addReviewButton = new QPushButton("ثبت نظر و امتیاز", this);
-
-    newReviewLayout->addWidget(new QLabel("امتیاز شما (۱-۵):"));
-    newReviewLayout->addWidget(ratingSpinBox);
-    newReviewLayout->addWidget(addReviewButton);
-    mainLayout->addLayout(newReviewLayout);
-
-    // اتصال سیگنال‌ها به اسلات‌ها
+    // اتصال سیگنال‌ها
     connect(addToCartButton, &QPushButton::clicked, this, &BookDetailsWidget::onAddToCartClicked);
-    connect(addReviewButton, &QPushButton::clicked, this, &BookDetailsWidget::onAddReviewClicked);
+    connect(submitReviewButton, &QPushButton::clicked, this, &BookDetailsWidget::onSubmitReviewClicked);
 }
 
 void BookDetailsWidget::setBook(const Book &book) {
     currentBook = book;
 
-    // پر کردن فیلدهای متنی بر اساس اطلاعات کتاب
     titleLabel->setText(book.getTitle());
     authorLabel->setText("نویسنده: " + book.getAuthor());
     publisherLabel->setText("ناشر: " + book.getPublisher());
+    genreLabel->setText("ژانر: " + book.getGenre());
+    descriptionLabel->setText(book.getDescription());
     priceLabel->setText(QString("قیمت: %1 تومان").arg(book.getPrice()));
-    ratingLabel->setText(QString("امتیاز میانگین: %1 / 5").arg(book.getRating()));
-    descriptionBrowser->setText(book.getDescription());
 
-    // خالی کردن لیست نظرات قبلی و نمایش نظرات جدید کتاب
-    reviewsListWidget->clear();
-    for (const Review &r : book.getReviews()) {
-        QString itemText = QString("کاربر %1 (امتیاز: %2/5):\n%3")
-                               .arg(r.getUserId()) // یا نام کاربری در صورت وجود
-                               .arg(r.getRating())
-                               .arg(r.getComment());
-        reviewsListWidget->addItem(itemText);
+    updateReviewsList();
+}
+
+void BookDetailsWidget::updateReviewsList() {
+    reviewsTable->setRowCount(0);
+    // استفاده از متد getReviews() که در کلاس Book خودتان تعریف کردید
+    QVector<Review> reviews = currentBook.getReviews();
+
+    for (const auto &review : reviews) {
+        int row = reviewsTable->rowCount();
+        reviewsTable->insertRow(row);
+        // فرض بر این است که کلاس Review متدهای getUserName, getRating و getText را دارد
+        reviewsTable->setItem(row, 0, new QTableWidgetItem(review.getUserName()));
+        reviewsTable->setItem(row, 1, new QTableWidgetItem(QString::number(review.getRating())));
+        reviewsTable->setItem(row, 2, new QTableWidgetItem(review.getText()));
     }
 }
 
 void BookDetailsWidget::onAddToCartClicked() {
-    emit addToCartRequested(currentBook.getId());
-    QMessageBox::information(this, "سبد خرید", "کتاب به سبد خرید اضافه شد.");
+    // استفاده از متد addItem که در ShoppingCart شما تعریف شده
+    ShoppingCart::getInstance()->addItem(currentBook);
+    QMessageBox::information(this, "سبد خرید", "کتاب با موفقیت به سبد خرید اضافه شد.");
 }
 
-void BookDetailsWidget::onAddReviewClicked() {
-    bool ok;
-    // باز کردن یک پنجره کوچک برای گرفتن متن نظر از کاربر
-    QString comment = QInputDialog::getMultiLineText(this, "ثبت نظر", "نظر خود را بنویسید:", "", &ok);
-
-    if (ok && !comment.trimmed().isEmpty()) {
-        int rating = ratingSpinBox->value();
-        emit addReviewRequested(currentBook.getId(), rating, comment);
-
-        // به صورت موقت در کلاینت اضافه می‌کنیم (در عمل باید به سرور ارسال و رفرش شود)
-        Review newReview(1, currentBook.getId(), rating, comment); // ۱ شناسه فرضی کاربر است
-        currentBook.addReview(newReview);
-        setBook(currentBook); // بروزرسانی صفحه نمایش داده‌ها
+void BookDetailsWidget::onSubmitReviewClicked() {
+    QString text = reviewTextEdit->toPlainText().trimmed();
+    if (text.isEmpty()) {
+        QMessageBox::warning(this, "خطا", "لطفاً متن نظر را وارد کنید.");
+        return;
     }
+
+    // ساخت یک شیء Review بر اساس پارامترهای کلاس شما
+    // نکته: پارامترها را بر اساس سازنده کلاس Review خودتان تنظیم کنید
+    Review newReview;
+    newReview.setText(text);
+    newReview.setRating(ratingSpinBox->value());
+    newReview.setBookTitle(currentBook.getTitle());
+    // newReview.setUserName("User"); // این بخش را بعداً با سیستم لاگین ست کنید
+
+    // استفاده از GlobalReviewManager برای ثبت سراسری
+    GlobalReviewManager::getInstance()->addReview(newReview);
+
+    // اضافه کردن به مدل محلی کتاب برای نمایش سریع
+    currentBook.addReview(newReview);
+
+    reviewTextEdit->clear();
+    updateReviewsList();
+    QMessageBox::information(this, "موفقیت", "نظر شما ثبت شد.");
 }

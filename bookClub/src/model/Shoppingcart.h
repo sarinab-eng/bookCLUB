@@ -20,13 +20,17 @@ struct DiscountInfo {
     }
 };
 
+// در فایل ShoppingCart.h
 class ShoppingCart {
 private:
     QVector<Book> items;
-    DiscountInfo activeDiscount; // تخفیف کلی اعمال شده روی سبد
+    DiscountInfo activeDiscount;
+    static ShoppingCart* instance; // اضافه شود
+    ShoppingCart(); // سازنده را به بخش private بیاورید
 
 public:
-    ShoppingCart();
+    static ShoppingCart* getInstance(); // اضافه شود
+    // بقیه متدها دست‌نخورده بماند...
 
     void addItem(const Book &book);
     void removeItem(int bookId);

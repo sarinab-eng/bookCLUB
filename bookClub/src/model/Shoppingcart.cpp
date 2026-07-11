@@ -1,5 +1,16 @@
 #include "Shoppingcart.h"
 
+// مقداردهی اولیه متغیر استاتیک
+ShoppingCart* ShoppingCart::instance = nullptr;
+
+// پیاده‌سازی متد Singleton
+ShoppingCart* ShoppingCart::getInstance() {
+    if (!instance) {
+        instance = new ShoppingCart();
+    }
+    return instance;
+}
+
 ShoppingCart::ShoppingCart() {
     activeDiscount = {"", 0.0, true, QDateTime::currentDateTime().addYears(10)};
 }
@@ -90,6 +101,8 @@ QJsonObject ShoppingCart::toJson() const {
     return json;
 }
 
+// نکته: این متد یک شیء جدید برمی‌گرداند، اگر می‌خواهید Singleton را آپدیت کنید
+// باید منطق آن را به کپی کردن داده‌ها در getInstance تغییر دهید.
 ShoppingCart ShoppingCart::fromJson(const QJsonObject &json) {
     ShoppingCart cart;
     QJsonArray itemsArray = json["items"].toArray();

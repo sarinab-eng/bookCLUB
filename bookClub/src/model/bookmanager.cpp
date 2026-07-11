@@ -2,12 +2,12 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonObject>
 #include <algorithm>
 
 BookManager::BookManager() {}
 
 void BookManager::addBook(const Book &book) {
-    // جلوگیری از ثبت شناسه تکراری
     if (findBookById(book.getId()) == nullptr) {
         allBooks.append(book);
     }
@@ -41,10 +41,9 @@ Book* BookManager::findBookById(int bookId) {
     return nullptr;
 }
 
-// جستجو بر اساس نام کتاب، نویسنده و ناشر (صفحه 8)
 QVector<Book> BookManager::search(const QString &query) const {
     QVector<Book> results;
-    QString lowerQuery = query.toLower();
+    QString lowerQuery = query.toLower().trimmed();
     for (const auto &book : allBooks) {
         if (book.getTitle().toLower().contains(lowerQuery) ||
             book.getAuthor().toLower().contains(lowerQuery) ||
@@ -75,7 +74,6 @@ QVector<Book> BookManager::getPublisherBooks(const QString &publisherName) const
     return results;
 }
 
-// گرفتن لیست پرفروش‌ترین‌ها (مرتب‌سازی نزولی بر اساس تعداد فروش - صفحه 12)
 QVector<Book> BookManager::getBestSellers(const QString &publisherName) const {
     QVector<Book> pubBooks = getPublisherBooks(publisherName);
     std::sort(pubBooks.begin(), pubBooks.end(), [](const Book &a, const Book &b) {
@@ -84,7 +82,6 @@ QVector<Book> BookManager::getBestSellers(const QString &publisherName) const {
     return pubBooks;
 }
 
-// گرفتن لیست کم‌فروش‌ترین‌ها (مرتب‌سازی صعودی - صفحه 12)
 QVector<Book> BookManager::getWorstSellers(const QString &publisherName) const {
     QVector<Book> pubBooks = getPublisherBooks(publisherName);
     std::sort(pubBooks.begin(), pubBooks.end(), [](const Book &a, const Book &b) {
@@ -93,7 +90,6 @@ QVector<Book> BookManager::getWorstSellers(const QString &publisherName) const {
     return pubBooks;
 }
 
-// میانگین امتیاز کل آثار یک ناشر (صفحه 12)
 double BookManager::getPublisherAverageRating(const QString &publisherName) const {
     QVector<Book> pubBooks = getPublisherBooks(publisherName);
     if (pubBooks.isEmpty()) return 0.0;
@@ -111,7 +107,6 @@ double BookManager::getPublisherAverageRating(const QString &publisherName) cons
     return ratedBooksCount > 0 ? (totalRatingSum / ratedBooksCount) : 0.0;
 }
 
-// ذخیره‌سازی داده‌ها در فایل JSON روی سرور
 void BookManager::saveToFile(const QString &filePath) const {
     QFile file(filePath);
     if (file.open(QIODevice::WriteOnly)) {
@@ -125,7 +120,6 @@ void BookManager::saveToFile(const QString &filePath) const {
     }
 }
 
-// لود کردن داده‌ها از فایل JSON سرور
 void BookManager::loadFromFile(const QString &filePath) {
     QFile file(filePath);
     if (file.open(QIODevice::ReadOnly)) {
@@ -139,7 +133,7 @@ void BookManager::loadFromFile(const QString &filePath) {
         file.close();
     }
 }
-// فیلتر بر اساس محدوده قیمت
+
 QVector<Book> BookManager::filterByPriceRange(double minPrice, double maxPrice) const {
     QVector<Book> results;
     for (const auto &book : allBooks) {
@@ -150,7 +144,6 @@ QVector<Book> BookManager::filterByPriceRange(double minPrice, double maxPrice) 
     return results;
 }
 
-// فیلتر بر اساس حداقل امتیاز (مثلاً کتاب‌های بالای 4 ستاره)
 QVector<Book> BookManager::filterByMinRating(double minRating) const {
     QVector<Book> results;
     for (const auto &book : allBooks) {
@@ -161,22 +154,18 @@ QVector<Book> BookManager::filterByMinRating(double minRating) const {
     return results;
 }
 
-// تغییر وضعیت موجودی (مورد نیاز پنل ادمین/ناشر - صفحه 17)
 bool BookManager::setBookAvailability(int bookId, bool status) {
     Book* book = findBookById(bookId);
     if (book) {
-        // فرض می‌کنیم در کلاس Book متد setIsAvailable دارید
         book->setIsAvailable(status);
         return true;
     }
     return false;
 }
 
-// ثبت فروش برای آپدیت لیست پرفروش‌ها
 void BookManager::recordSale(int bookId, int quantity) {
     Book* book = findBookById(bookId);
     if (book) {
         book->setSalesCount(book->getSalesCount() + quantity);
     }
 }
-

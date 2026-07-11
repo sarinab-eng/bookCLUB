@@ -5,31 +5,38 @@
 #include <QString>
 #include <QDateTime>
 
-// کلاس User به صورت انتزاعی (Abstract) تعریف شده است
 class User : public QObject
 {
     Q_OBJECT
+    // این خط اجازه می‌دهد در QML به username دسترسی داشته باشید
+    Q_PROPERTY(QString username READ getUsername CONSTANT)
 
 public:
-    explicit User(const QString &username, const QString &email, const QString &hashedPassword, QObject *parent = nullptr);
-    virtual ~User() {}
+    explicit User(QObject *parent = nullptr);
+    User(const QString &username, const QString &email, const QString &password, QObject *parent = nullptr);
+
+    // متدهای اصلی
+    static QString hashPassword(const QString &password);
+    static QString encrypt(const QString &data, const QString &key = "");
+    static QString decrypt(const QString &data, const QString &key = "");
 
     // Getters
     QString getUsername() const;
     QString getEmail() const;
     QDateTime getRegistrationDate() const;
+    bool getIsBlocked() const;
 
-    // متد بررسی صحت پسورد
+    // بررسی پسورد
     bool checkPassword(const QString &password) const;
 
-    // متد خالص مجازی (Pure Virtual): هر نقش باید پیاده‌سازی مخصوص خود را داشته باشد
-    virtual void logActivity(const QString &action) = 0;
-
-protected:
+private:
     QString m_username;
     QString m_email;
-    QString m_hashedPassword; // ذخیره پسورد به صورت هش شده برای امنیت
+    QString m_hashedPassword;
+    QString m_securityQuestion;
+    QString m_securityAnswer;
     QDateTime m_registrationDate;
+    bool m_isBlocked;
 };
 
 #endif // USER_H

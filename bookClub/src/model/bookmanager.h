@@ -1,7 +1,7 @@
 #ifndef BOOKMANAGER_H
 #define BOOKMANAGER_H
 
-#include "book.h"
+#include "Book.h"
 #include <QVector>
 #include <QString>
 
@@ -12,10 +12,10 @@ private:
 public:
     BookManager();
 
-    // مدیریت کتاب‌ها توسط ناشر و ادمین (صفحات 4، 6 و 17)
+    // مدیریت کتاب‌ها توسط ناشر و ادمین
     void addBook(const Book &book);
     bool editBook(int bookId, const QString &title, double price, const QString &desc);
-    bool deleteBook(int bookId); // مشترک بین ادمین و ناشر مالک اثر
+    bool deleteBook(int bookId);
 
     // موتور جستجو و فیلتر پیشرفته (صفحه 8)
     QVector<Book> search(const QString &query) const;
@@ -37,9 +37,8 @@ public:
     QVector<Book> filterByMinRating(double minRating) const;
 
     // مدیریت وضعیت و فروش (صفحه 12 و 17)
-    bool setBookAvailability(int bookId, bool status); // تغییر وضعیت موجود/ناموجود
-    void recordSale(int bookId, int quantity = 1); // ثبت فروش برای آمار
-
+    bool setBookAvailability(int bookId, bool status);
+    void recordSale(int bookId, int quantity = 1);
 };
 
 #endif // BOOKMANAGER_H

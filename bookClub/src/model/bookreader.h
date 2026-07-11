@@ -5,47 +5,53 @@
 #include <QObject>
 #include <QString>
 
-class BookReader : public QObject {
+class BookReader : public QObject
+{
     Q_OBJECT
 
 private:
-    Book* currentBook;
-    int currentPage;
-    int totalPages;
-    double zoomLevel;
-    const double ZOOM_STEP = 0.2;
-    const double MAX_ZOOM = 3.0;
+    Book* currentBook;    // اشاره‌گر به کتابی که در حال مطالعه است
+    int currentPage;      // شماره صفحه جاری
+    int totalPages;       // تعداد کل صفحات کتاب
+    double zoomLevel;     // درصد بزرگ‌نمایی (مثلاً 1.0 یعنی 100٪)
+
+    // مقادیر ثابت برای محدوده بزرگ‌نمایی
+    const double MAX_ZOOM = 2.5;
     const double MIN_ZOOM = 0.5;
+    const double ZOOM_STEP = 0.1; // هر بار ۱۰ درصد زوم تغییر کند
 
 public:
     explicit BookReader(QObject* parent = nullptr);
     ~BookReader();
 
-    // متدهای اصلی طبق صفحه ۱۰
-    bool openBook(Book* book, int totalPdfPages);
-    void closeAndSave();
+    // باز کردن و بستن کتاب
+    bool openBook(Book* book);
+    void closeBook();
 
-    // ناوبری و کنترل (الزامات مستند)
-    void goToNextPage();
-    void goToPrevPage();
+    // دکمه‌ها و فرمان‌های ناوبری (مطابق الزامات صفحه ۱۰)
+    bool goToNextPage();
+    bool goToPrevPage();
     bool goToPage(int pageNumber);
 
+    // فرمان‌های بزرگ‌نمایی و کوچک‌نمایی
     void zoomIn();
     void zoomOut();
     void resetZoom();
 
-    // Getters برای UI
-    int getCurrentPage() const { return currentPage; }
-    int getTotalPages() const { return totalPages; }
-    double getZoomLevel() const { return zoomLevel; }
-    QString getFilePath() const { return currentBook ? currentBook->getFilePath() : ""; }
+    // متدهای دریافت اطلاعات (Getters)
+    int getCurrentPage() const;
+    int getTotalPages() const;
+    double getZoomLevel() const;
+    bool isBookOpen() const;
+    QString getBookTitle() const;
 
 signals:
-    // این سیگنال‌ها به UI فرمان می‌دهند که نمایشگر را بروزرسانی کند
-    void requestPageRender(int page, double zoom);
-    void statusChanged(int current, int total);
-    void zoomFactorChanged(double factor);
+    // این سیگنال‌ها تغییرات را به بخش ظاهری (UI) خبر می‌دهند تا صفحه آپدیت شود
+    void pageChanged(int currentPage, int totalPages);
+    void zoomChanged(double zoomLevel);
+    void bookOpened(const QString& bookTitle);
     void bookClosed();
+    void progressSaved(int lastPage);
 };
 
-#endif
+#endif // BOOKREADER_H
