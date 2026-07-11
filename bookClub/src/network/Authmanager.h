@@ -35,6 +35,7 @@ signals:
 
 private:
     QTcpSocket *m_socket;
+    QByteArray m_buffer;
     void sendJson(const QJsonObject &json);
     void handleServerResponse(const QJsonObject &responseObj);
 };

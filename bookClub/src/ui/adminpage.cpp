@@ -3,6 +3,7 @@
 #include <QTableWidgetItem>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QDebug>
 
 AdminPage::AdminPage(AuthManager *authManager, QWidget *parent) :
     QWidget(parent),
@@ -12,23 +13,20 @@ AdminPage::AdminPage(AuthManager *authManager, QWidget *parent) :
     ui->setupUi(this);
     setupTableHeaders();
 
-    // اتصالات دکمه‌ها
     connect(ui->refreshButton, &QPushButton::clicked, this, &AdminPage::onRefreshButtonClicked);
     connect(ui->btnBlockUser, &QPushButton::clicked, this, &AdminPage::onBlockClicked);
     connect(ui->btnDeleteUser, &QPushButton::clicked, this, &AdminPage::onDeleteClicked);
 
-    // اتصال کلیک روی جدول
     connect(ui->usersTable, &QTableWidget::cellClicked, this, &AdminPage::onUserSelected);
 
-    // --- فعال‌سازی فیلترهای بالا ---
     connect(ui->txtSearch, &QLineEdit::textChanged, this, &AdminPage::filterUsers);
     connect(ui->cmbRoleFilter, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &AdminPage::filterUsers);
 
-    // اتصال به AuthManager
     if (m_authManager) {
         connect(m_authManager, &AuthManager::usersListReceived, this, &AdminPage::handleUsersList);
         connect(m_authManager, &AuthManager::actionFinished, this, &AdminPage::handleActionResponse);
     }
+    loadData();
 }
 
 AdminPage::~AdminPage() {
@@ -39,6 +37,9 @@ void AdminPage::setupTableHeaders() {
     ui->usersTable->setColumnCount(2);
     ui->usersTable->setHorizontalHeaderLabels({"نام کاربری", "نقش کاربری"});
     ui->usersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->usersTable->verticalHeader()->setVisible(false);
+    ui->usersTable->setShowGrid(false);
+    ui->usersTable->setAlternatingRowColors(true);
     ui->usersTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->usersTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->usersTable->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -49,16 +50,19 @@ void AdminPage::loadData() {
 }
 
 void AdminPage::onRefreshButtonClicked() {
+    qDebug() << "Refresh button clicked!";
     loadData();
 }
 
-// ۱. دریافت لیست از سرور و ذخیره در لیست اصلی
 void AdminPage::handleUsersList(const QJsonArray &users) {
-    m_allUsers = users;  // لیست اصلی را آپدیت کن
-    filterUsers();       // بلافاصله فیلتر را اعمال کن تا جدول پر شود
+    qDebug() << "Received users count:" << users.size();
+    m_allUsers = users;
+    m_filteredUsers = users;
+    //filterUsers();
+    updateTable(m_allUsers);
+    resetDetailLabels();
 }
 
-// ۲. منطق فیلتر کردن داده‌ها
 void AdminPage::filterUsers() {
     QString searchText = ui->txtSearch->text().trimmed().toLower();
     int roleIndex = ui->cmbRoleFilter->currentIndex();
@@ -85,34 +89,42 @@ void AdminPage::filterUsers() {
 
     m_filteredUsers = tempArray;
     updateTable(m_filteredUsers);
-    resetDetailLabels(); // بعد از هر فیلتر، جزئیات سمت راست را پاک کن
+    resetDetailLabels();
 }
 
-// ۳. نمایش داده‌ها در جدول
 void AdminPage::updateTable(const QJsonArray &usersToShow) {
     ui->usersTable->setRowCount(0);
     for (int i = 0; i < usersToShow.size(); ++i) {
         QJsonObject userObj = usersToShow[i].toObject();
         ui->usersTable->insertRow(i);
 
-        QString role = userObj["role"].toString();
-        QString displayRole = (role == "admin" ? "مدیر سیستم" : (role == "publisher" ? "ناشر" : "کاربر عادی"));
-
+        QString role = userObj["role"].toString().toLower();
+        QString displayRole;
+        if (role == "admin") displayRole = "مدیر سیستم";
+        else if (role == "publisher") displayRole = "ناشر";
+        else displayRole = "کاربر عادی";
         ui->usersTable->setItem(i, 0, new QTableWidgetItem(userObj["username"].toString()));
         ui->usersTable->setItem(i, 1, new QTableWidgetItem(displayRole));
     }
 }
 
-// ۴. وقتی کاربری از جدول انتخاب می‌شود
 void AdminPage::onUserSelected(int row, int column) {
     Q_UNUSED(column);
     if (row < 0 || row >= m_filteredUsers.size()) return;
     QJsonObject userObj = m_filteredUsers[row].toObject();
     m_selectedUsername = userObj["username"].toString();
 
-    // پر کردن لیبل‌ها
     ui->lblDetailUsername->setText("نام کاربری: " + m_selectedUsername);
     ui->lblDetailRegDate->setText("تاریخ عضویت: " + userObj["registration_date"].toString("ثبت نشده"));
+
+    QString role = userObj["role"].toString().toLower();
+    QString roleDisplay = "نقش: ";
+    if (role == "admin") roleDisplay += "مدیر سیستم";
+    else if (role == "publisher") roleDisplay += "ناشر";
+    else if (role == "customer" || role == "user") roleDisplay += "کاربر عادی";
+    else roleDisplay += "نامشخص";
+
+    ui->lblDetailRole->setText(roleDisplay); // نام لیبل نقش را در UI چک کنید (احتمالا lblDetailRole است)
 
     QString status = userObj["status"].toString("active");
     if (status == "blocked") {
@@ -125,8 +137,6 @@ void AdminPage::onUserSelected(int row, int column) {
         ui->btnBlockUser->setText("مسدود کردن");
     }
 
-    // نمایش اطلاعات اختصاصی بر اساس نقش
-    QString role = userObj["role"].toString();
     if (role == "publisher") {
         ui->lblDetailSpecific->setText("نام انتشارات: " + userObj["publisher_name"].toString("---"));
     } else {
@@ -148,7 +158,7 @@ void AdminPage::onDeleteClicked() {
 
 void AdminPage::handleActionResponse(bool success, const QString &message) {
     if (success) {
-        loadData(); // لیست را دوباره بگیر تا تغییرات اعمال شود
+        loadData();
     }
     QMessageBox::information(this, "نتیجه", message);
 }
