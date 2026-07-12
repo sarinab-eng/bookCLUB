@@ -25,7 +25,6 @@ LoginPage::~LoginPage() {
 }
 
 void LoginPage::on_loginButton_clicked() {
-    // مطمئن شو در فایل .ui نام این لایِن‌ادیت‌ها دقیقاً همین باشد
     QString username = ui->usernameLineEdit->text().trimmed();
     QString password = ui->passwordLineEdit->text();
 

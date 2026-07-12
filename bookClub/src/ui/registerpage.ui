@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
-    <height>466</height>
+    <width>923</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -86,10 +86,10 @@ QPushButton#goToLoginButton {
   <widget class="QFrame" name="registerFrame">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>70</y>
+     <x>50</x>
+     <y>90</y>
      <width>711</width>
-     <height>381</height>
+     <height>421</height>
     </rect>
    </property>
    <property name="styleSheet">

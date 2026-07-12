@@ -155,11 +155,23 @@ QTableView, QTableWidget {
 }
 
 QHeaderView::section {
-    background-color: #FFB6C1;
+    background-color: #FF69B4;
     color: white;
     padding: 6px;
-    border: 1px solid #FFF0F5;
+    border: none;
+    border-bottom: 1px solid #FFF0F5;
     font-weight: bold;
+    font-size: 13px;
+    font-family: &quot;Segoe UI&quot;, &quot;Tahoma&quot;;
+}
+
+QHeaderView::section:first {
+    border-top-left-radius: 12px;
+}
+
+/* گرد کردن گوشه بالایی سمت راست هدر */
+QHeaderView::section:last {
+    border-top-right-radius: 12px;
 }</string>
   </property>
   <widget class="QGroupBox" name="detailsGroupBox">
@@ -178,7 +190,7 @@ QHeaderView::section {
     <item>
      <widget class="QLabel" name="titleLabel">
       <property name="text">
-       <string>                                   جزئیات کاربران</string>
+       <string>                                 جزئیات کاربران</string>
       </property>
      </widget>
     </item>
@@ -229,7 +241,7 @@ QHeaderView::section {
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>10</y>
+         <y>0</y>
          <width>141</width>
          <height>41</height>
         </rect>
@@ -242,7 +254,7 @@ QHeaderView::section {
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>10</y>
+         <y>0</y>
          <width>102</width>
          <height>41</height>
         </rect>
@@ -301,7 +313,10 @@ QHeaderView::section {
       <item>
        <widget class="QLineEdit" name="txtSearch">
         <property name="text">
-         <string>                                             search</string>
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>جستجوی کاربران</string>
         </property>
        </widget>
       </item>

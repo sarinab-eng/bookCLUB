@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_registerPage = new RegisterPage(this);
     m_adminPage = new AdminPage(m_authManager, this); // فعلاً به عنوان جایگاه (Placeholder)
     m_publisherPage = new QWidget(this);
-    m_customerPage = new QWidget(this);
+    m_customerPage = new CustomerPage(m_authManager, this);
 
 
 
@@ -41,6 +41,7 @@ void MainWindow::setupConnections() {
     // اتصال درخواست‌های UI به متدهای MainWindow
     connect(m_loginPage, &LoginPage::loginRequested, this, &MainWindow::onLoginRequested);
     connect(m_registerPage, &RegisterPage::registerRequested, this, &MainWindow::onRegisterRequested);
+    //connect(m_customerPage, &CustomerPage::logoutRequested, this, &MainWindow::showLoginPage);
 
     // اتصال نتایج AuthManager به هندلرهای MainWindow
     // توجه: سیگنال loginFinished باید ۳ پارامتر داشته باشد: (bool, QString, QString)

@@ -13,8 +13,14 @@ SOURCES += \
     src/model/Customer.cpp \
     src/model/Publisher.cpp \
     src/model/User.cpp \
+    src/model/book.cpp \
+    src/model/bookmanager.cpp \
+    src/model/globalreviewmanager.cpp \
+    src/model/review.cpp \
+    src/model/reviewmanager.cpp \
     src/network/Authmanager.cpp \
     src/ui/adminpage.cpp \
+    src/ui/customerpage.cpp \
     src/ui/loginpage.cpp \
     src/ui/registerpage.cpp
 
@@ -24,14 +30,21 @@ HEADERS += \
     src/model/Customer.h \
     src/model/Publisher.h \
     src/model/User.h \
+    src/model/book.h \
+    src/model/bookmanager.h \
+    src/model/globalreviewmanager.h \
+    src/model/review.h \
+    src/model/reviewmanager.h \
     src/network/Authmanager.h \
     src/ui/adminpage.h \
+    src/ui/customerpage.h \
     src/ui/loginpage.h \
     src/ui/registerpage.h
 
 FORMS += \
     mainwindow.ui \
     src/ui/adminpage.ui \
+    src/ui/customerpage.ui \
     src/ui/loginpage.ui \
     src/ui/registerpage.ui
 
