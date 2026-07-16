@@ -1,32 +1,15 @@
 #include "Book.h"
 
 Book::Book()
-    : id(0)
-    , title("")
-    , author("")
-    , publisherName("")
-    , genre("")
-    , description("")
-    , filePath("")
-    , price(0.0)
-    , salesCount(0)
-    , lastReadPage(1)
-    , available(true)
+    : id(0), title(""), author(""), publisherName(""), genre(""), description("")
+    , filePath(""), price(0.0), salesCount(0), lastReadPage(1), m_stock(0), available(true)
 {}
 
 Book::Book(int id, const QString &title, const QString &author, const QString &publisher,
            const QString &genre, const QString &description, const QString &filePath, double price)
-    : id(id)
-    , title(title)
-    , author(author)
-    , publisherName(publisher)
-    , genre(genre)
-    , description(description)
-    , filePath(filePath)
-    , price(price)
-    , salesCount(0)
-    , lastReadPage(1)
-    , available(true)
+    : id(id), title(title), author(author), publisherName(publisher), genre(genre)
+    , description(description), filePath(filePath), price(price), salesCount(0)
+    , lastReadPage(1), m_stock(0), available(true)
 {}
 
 // Getters
@@ -41,6 +24,7 @@ double Book::getPrice() const { return price; }
 int Book::getSalesCount() const { return salesCount; }
 int Book::getLastReadPage() const { return lastReadPage; }
 bool Book::getIsAvailable() const { return available; }
+int Book::getStock() const { return m_stock; }
 
 // Setters
 void Book::setTitle(const QString &title) { this->title = title; }
@@ -49,9 +33,10 @@ void Book::setDescription(const QString &desc) { this->description = desc; }
 void Book::setLastReadPage(int page) { if (page > 0) lastReadPage = page; }
 void Book::setIsAvailable(bool status) { available = status; }
 void Book::setSalesCount(int count) { salesCount = count; }
+void Book::setStock(int stock) { m_stock = stock; }
 void Book::incrementSales(int count) { salesCount += count; }
 
-// سریال‌سازی به فرمت JSON برای شبکه و ذخیره‌سازی کلاینت-سرور
+// پیاده‌سازی یکپارچه toJson
 QJsonObject Book::toJson() const {
     QJsonObject json;
     json["id"] = id;
@@ -65,30 +50,31 @@ QJsonObject Book::toJson() const {
     json["salesCount"] = salesCount;
     json["lastReadPage"] = lastReadPage;
     json["available"] = available;
-
-    // استفاده مستقیم از متد تبدیل آرایه JSON کلاس ReviewManager
+    json["stock"] = m_stock;
     json["reviews"] = reviewManager.toJsonArray();
     return json;
 }
 
-// ساخت شیء Book از روی داده‌های JSON دریافتی
+// پیاده‌سازی یکپارچه fromJson
 Book Book::fromJson(const QJsonObject &json) {
-    Book b(json["id"].toInt(),
-           json["title"].toString(),
-           json["author"].toString(),
-           json["publisher"].toString(),
-           json["genre"].toString(),
-           json["description"].toString(),
-           json["filePath"].toString(),
-           json["price"].toDouble());
+    Book b;
+    b.id = json["id"].toInt();
+    b.title = json["title"].toString();
+    b.author = json["author"].toString();
+    b.publisherName = json["publisher"].toString();
+    b.genre = json["genre"].toString();
+    b.description = json["description"].toString();
+    b.filePath = json["filePath"].toString();
+    b.price = json["price"].toDouble();
+    b.salesCount = json["salesCount"].toInt();
+    b.lastReadPage = json["lastReadPage"].toInt();
+    b.available = json["available"].toBool();
+    b.m_stock = json["stock"].toInt();
 
-    b.setSalesCount(json["salesCount"].toInt());
-    b.setLastReadPage(json["lastReadPage"].toInt());
-    b.setIsAvailable(json["available"].toBool());
-
-    // بارگذاری نظرات از آرایه JSON داخل شیء ReviewManager همان کتاب
-    QJsonArray reviewsArray = json["reviews"].toArray();
-    b.reviewManager.fromJsonArray(reviewsArray);
+    if (json.contains("reviews")) {
+        QJsonArray reviewsArray = json["reviews"].toArray();
+        b.reviewManager.fromJsonArray(reviewsArray);
+    }
 
     return b;
 }

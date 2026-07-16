@@ -98,7 +98,7 @@ double BookManager::getPublisherAverageRating(const QString &publisherName) cons
     int ratedBooksCount = 0;
 
     for (const auto &book : pubBooks) {
-        double avg = book.getAverageRating();
+        double avg = book.getRating();
         if (avg > 0.0) {
             totalRatingSum += avg;
             ratedBooksCount++;
@@ -147,7 +147,7 @@ QVector<Book> BookManager::filterByPriceRange(double minPrice, double maxPrice) 
 QVector<Book> BookManager::filterByMinRating(double minRating) const {
     QVector<Book> results;
     for (const auto &book : allBooks) {
-        if (book.getAverageRating() >= minRating) {
+        if (book.getRating() >= minRating) {
             results.append(book);
         }
     }

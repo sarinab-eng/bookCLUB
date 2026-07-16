@@ -1,6 +1,5 @@
 #include "GlobalReviewManager.h"
 
-// مقداردهی اولیه به نمونه استاتیک
 GlobalReviewManager* GlobalReviewManager::instance = nullptr;
 
 GlobalReviewManager::GlobalReviewManager(QObject *parent) : QObject(parent)
@@ -18,7 +17,6 @@ GlobalReviewManager* GlobalReviewManager::getInstance()
 void GlobalReviewManager::addReview(const Review& review)
 {
     m_allReviews.append(review);
-    // در اینجا می‌توانید یک سیگنال emit کنید تا UI متوجه تغییرات شود
 }
 
 QList<Review> GlobalReviewManager::getReviewsForBook(const QString &bookTitle)

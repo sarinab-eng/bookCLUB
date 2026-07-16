@@ -1,4 +1,3 @@
-
 #ifndef BOOK_H
 #define BOOK_H
 
@@ -17,12 +16,13 @@ private:
     QString publisherName;
     QString genre;
     QString description;
-    QString filePath;            // آدرس فایل کتاب یا متن آن برای ماژول مطالعه
+    QString filePath;
     double price;
-    int salesCount;              // برای آمار پرفروش‌ترین‌ها
-    int lastReadPage;            // ذخیره آخرین صفحه مطالعه شده
-    ReviewManager reviewManager; // مدیریت نظرات از طریق ReviewManager
-    bool available;              // وضعیت موجودی کتاب
+    int salesCount;
+    int lastReadPage;
+    int m_stock;                  // موجودی انبار
+    bool available;
+    ReviewManager reviewManager;
 
 public:
     Book();
@@ -41,8 +41,9 @@ public:
     int getSalesCount() const;
     int getLastReadPage() const;
     bool getIsAvailable() const;
+    int getStock() const;
 
-    // گرفتن لیست نظرات و میانگین امتیازات با استفاده از ReviewManager
+    // گرفتن لیست نظرات و میانگین امتیازات
     QVector<Review> getReviews() const { return reviewManager.getAllReviews(); }
     double getRating() const { return reviewManager.getAverageRating(); }
 
@@ -53,13 +54,21 @@ public:
     void setLastReadPage(int page);
     void setIsAvailable(bool status);
     void setSalesCount(int count);
+    void setStock(int stock);
     void incrementSales(int count = 1);
+    void setId(int id) { this->id = id; }
+    void setAuthor(const QString &author) { this->author = author; }
+    void setGenre(const QString &genre) { this->genre = genre; }
+    void setPublisher(const QString &publisher) { this->publisherName = publisher; }
+    void setFilePath(const QString &path) { this->filePath = path; }
+    void setDiscountPercentage(int discount) { /* اگر فیلدش را اضافه کردید اینجا ست کنید */ }
+
 
     // مدیریت نظرات
     void addReview(const Review &r) { reviewManager.addReview(r); }
     void deleteReview(int userId) { reviewManager.removeReview(userId); }
 
-    // سریال‌سازی برای بستر شبکه کلاینت-سرور
+    // متدهای تبدیل JSON (یکبار تعریف شده)
     QJsonObject toJson() const;
     static Book fromJson(const QJsonObject &json);
 };

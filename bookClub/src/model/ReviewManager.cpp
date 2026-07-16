@@ -1,56 +1,57 @@
-#include "GlobalReviewManager.h"
+#include "ReviewManager.h"
 
-GlobalReviewManager* GlobalReviewManager::instance = nullptr;
-
-GlobalReviewManager* GlobalReviewManager::getInstance() {
-    if (!instance) {
-        instance = new GlobalReviewManager();
-    }
-    return instance;
+ReviewManager::ReviewManager() {
+    // سازنده پیش‌فرض
 }
 
-GlobalReviewManager::GlobalReviewManager(QObject *parent) : QObject(parent) {}
-
-void GlobalReviewManager::addOrUpdateReview(const Review &review) {
-    int bookId = review.getBookId();
-    int userId = review.getUserId();
-
-    QVector<Review> &reviews = bookReviews[bookId];
-    bool updated = false;
-
+void ReviewManager::addReview(const Review &review) {
+    // اگر کاربر قبلاً نظر داده، نظر قبلی حذف و نظر جدید جایگزین شود
     for (int i = 0; i < reviews.size(); ++i) {
-        if (reviews[i].getUserId() == userId) {
-            reviews[i] = review;
-            updated = true;
+        if (reviews[i].getUserId() == review.getUserId()) {
+            reviews.removeAt(i);
             break;
         }
     }
-
-    if (!updated) {
-        reviews.append(review);
-    }
-
-    emit reviewsUpdated(bookId);
+    reviews.append(review);
 }
 
-QVector<Review> GlobalReviewManager::getReviewsForBook(int bookId) const {
-    return bookReviews.value(bookId, QVector<Review>());
+void ReviewManager::removeReview(int userId) {
+    for (int i = 0; i < reviews.size(); ++i) {
+        if (reviews[i].getUserId() == userId) {
+            reviews.removeAt(i);
+            break;
+        }
+    }
 }
 
-double GlobalReviewManager::calculateAverageRating(int bookId) const {
-    if (!bookReviews.contains(bookId) || bookReviews[bookId].isEmpty()) {
-        return 0.0;
+double ReviewManager::getAverageRating() const {
+    if (reviews.isEmpty()) return 0.0;
+    double sum = 0;
+    for (const auto &r : reviews) {
+        sum += r.getRating();
     }
-
-    const QVector<Review> &reviews = bookReviews[bookId];
-    double sum = 0.0;
-    for (const auto &review : reviews) {
-        sum += review.getRating();
-    }
-
-    return sum / reviews.size();
+    return sum / static_cast<double>(reviews.size());
 }
 
-void GlobalReviewManager::clear() {
-    bookReviews.clear();
+int ReviewManager::getReviewsCount() const {
+    return reviews.size();
+}
+
+const QVector<Review>& ReviewManager::getAllReviews() const {
+    return reviews;
+}
+
+QJsonArray ReviewManager::toJsonArray() const {
+    QJsonArray arr;
+    for (const auto &r : reviews) {
+        arr.append(r.toJson());
+    }
+    return arr;
+}
+
+void ReviewManager::fromJsonArray(const QJsonArray &arr) {
+    reviews.clear();
+    for (auto ref : arr) {
+        reviews.append(Review::fromJson(ref.toObject()));
+    }
 }

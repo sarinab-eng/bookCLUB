@@ -13,6 +13,7 @@ CONFIG += c++17
 # لیست تمام فایل‌های اجرایی پروژه (بدون Bookreader)
 SOURCES += \
     main.cpp \
+    src/model/AddBookDialog.cpp \
     src/model/Admin.cpp \
     src/model/Book.cpp \
     src/model/BookDetailsWidget.cpp \
@@ -21,19 +22,20 @@ SOURCES += \
     src/model/GlobalReviewManager.cpp \
     src/model/PdfReaderWidget.cpp \
     src/model/PersonalLibrary.cpp \
-    src/model/Publisher.cpp \
+    src/model/PublisherDashboard.cpp \
+    src/model/PublisherDashboard.cpp \
     src/model/Review.cpp \
     src/model/Review.cpp \
     src/model/ReviewManager.cpp \
     src/model/Server.cpp \
     src/model/Shoppingcart.cpp \
     src/model/User.cpp \
-    src/model/UserDashboard.cpp \
     src/model/bookdetailswidget.cpp \
     src/model/personallibrary.cpp
 
 # لیست تمام هدرها (بدون Bookreader)
 HEADERS += \
+    src/model/AddBookDialog.h \
     src/model/Admin.h \
     src/model/Book.h \
     src/model/BookDetailsWidget.h \
@@ -43,17 +45,20 @@ HEADERS += \
     src/model/PdfReaderWidget.h \
     src/model/PersonalLibrary.h \
     src/model/Publisher.h \
+    src/model/PublisherDashboard.h \
+    src/model/PublisherDashboard.h \
     src/model/Review.h \
     src/model/ReviewManager.h \
     src/model/Server.h \
     src/model/Shoppingcart.h \
     src/model/User.h \
-    src/model/UserDashboard.h \
-    src/model/bookdetailswidget.h
+    src/model/bookdetailswidget.h \
+    src/model/ui_addbookdialog.h
 
 # فایل‌های طراحی رابط کاربری
 FORMS += \
-    src/model/UserDashboard.ui
+    src/model/AddBookDialog.ui \
+    src/model/AddBookDialog.ui
 
 # تنظیمات پیش‌فرض برای نصب و مسیر هدف
 target.path = $$[QT_INSTALL_EXAMPLES]/widgets/widgets/mainwindow/target
@@ -70,7 +75,7 @@ SOURCES += \
     main.cpp \
     src/model/Admin.cpp \
     src/model/Customer.cpp \
-    src/model/Publisher.cpp \
+    src/model/PublisherDashboard.cpp \
     src/model/User.cpp \
     src/network/Authmanager.cpp \
     src/ui/adminpage.cpp \
@@ -80,7 +85,7 @@ SOURCES += \
 HEADERS += \
     src/model/Admin.h \
     src/model/Customer.h \
-    src/model/Publisher.h \
+    src/model/PublisherDashboard.h \
     src/model/User.h \
     src/network/Authmanager.h \
     src/ui/adminpage.h \
@@ -148,7 +153,7 @@ SOURCES += \
     main.cpp \
     src/model/Admin.cpp \
     src/model/Customer.cpp \
-    src/model/Publisher.cpp \
+    src/model/PublisherDashboard.cpp \
     src/model/User.cpp \
     src/network/Authmanager.cpp \
     src/ui/adminpage.cpp \
@@ -158,7 +163,7 @@ SOURCES += \
 HEADERS += \
     src/model/Admin.h \
     src/model/Customer.h \
-    src/model/Publisher.h \
+    src/model/PublisherDashboard.h \
     src/model/User.h \
     src/network/Authmanager.h \
     src/ui/adminpage.h \

@@ -10,54 +10,23 @@ private:
     QVector<Review> reviews;
 
 public:
-    ReviewManager() {}
+    ReviewManager();
 
-    // اضافه کردن نظر جدید (صفحه 12: امکان ثبت نظر توسط خریداران)
-    void addReview(const Review &review) {
-        // اگر کاربر قبلاً نظر داده، نظر قبلی حذف و نظر جدید جایگزین شود (اختیاری)
-        for (int i = 0; i < reviews.size(); ++i) {
-            if (reviews[i].getUserId() == review.getUserId()) {
-                reviews.removeAt(i);
-                break;
-            }
-        }
-        reviews.append(review);
-    }
+    // اضافه کردن نظر جدید
+    void addReview(const Review &review);
 
-    // حذف نظر (توسط ادمین یا خود کاربر - صفحه 12)
-    void removeReview(int userId) {
-        for (int i = 0; i < reviews.size(); ++i) {
-            if (reviews[i].getUserId() == userId) {
-                reviews.removeAt(i);
-                break;
-            }
-        }
-    }
+    // حذف نظر توسط ID کاربر
+    void removeReview(int userId);
 
-    // محاسبه میانگین امتیازات کتاب (برای نمایش در فروشگاه)
-    double getAverageRating() const {
-        if (reviews.isEmpty()) return 0.0;
-        double sum = 0;
-        for (const auto &r : reviews) sum += r.getRating();
-        return sum / reviews.size();
-    }
+    // محاسبه میانگین امتیازات
+    double getAverageRating() const;
 
-    int getReviewsCount() const { return reviews.size(); }
-    const QVector<Review>& getAllReviews() const { return reviews; }
+    int getReviewsCount() const;
+    const QVector<Review>& getAllReviews() const;
 
-    // تبدیل لیست نظرات به JSON
-    QJsonArray toJsonArray() const {
-        QJsonArray arr;
-        for (const auto &r : reviews) arr.append(r.toJson());
-        return arr;
-    }
-
-    void fromJsonArray(const QJsonArray &arr) {
-        reviews.clear();
-        for (auto ref : arr) {
-            reviews.append(Review::fromJson(ref.toObject()));
-        }
-    }
+    // تبدیل به JSON و برعکس
+    QJsonArray toJsonArray() const;
+    void fromJsonArray(const QJsonArray &arr);
 };
 
 #endif // REVIEWMANAGER_H
