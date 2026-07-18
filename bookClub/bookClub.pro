@@ -12,6 +12,8 @@ CONFIG += c++17
 
 # لیست تمام فایل‌های اجرایی پروژه (بدون Bookreader)
 SOURCES += \
+    Autmmanager.cpp \
+    customerpage.cpp \
     main.cpp \
     src/model/AddBookDialog.cpp \
     src/model/Admin.cpp \
@@ -31,10 +33,13 @@ SOURCES += \
     src/model/Shoppingcart.cpp \
     src/model/User.cpp \
     src/model/bookdetailswidget.cpp \
+    src/model/mainwindow.cpp \
     src/model/personallibrary.cpp
 
 # لیست تمام هدرها (بدون Bookreader)
 HEADERS += \
+    Autmmanager.h \
+    customerpage.h \
     src/model/AddBookDialog.h \
     src/model/Admin.h \
     src/model/Book.h \
@@ -53,6 +58,7 @@ HEADERS += \
     src/model/Shoppingcart.h \
     src/model/User.h \
     src/model/bookdetailswidget.h \
+    src/model/mainwindow.h \
     src/model/ui_addbookdialog.h
 
 # فایل‌های طراحی رابط کاربری
