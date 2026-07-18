@@ -22,21 +22,19 @@ public:
     ~MainWindow();
 
 private slots:
-    // اسلات‌های تغییر صفحه
     void showLoginPage();
     void showRegisterPage();
-
-    // اسلات واسط ثبت‌نام (۶ پارامتر)
     void onRegisterRequested(const QString &username, const QString &password,
                              const QString &question, const QString &answer,
                              const QString &role, const QVector<int> &genres);
-
-    // اسلات واسط ورود
     void onLoginRequested(const QString &username, const QString &password);
-
-    // اسلات‌های دریافت پاسخ از سرور
-    void handleLoginResult(bool success, const QString &message, const QString &role);
+    void handleLoginResult(bool success, const QString &message, const QString &role, bool firstLogin);
     void handleRegisterResult(bool success, const QString &message);
+    void handleGenresSaved(bool success);
+    void onForgotPasswordRequested(const QString &username);
+    void handleSecurityQuestion(bool success, const QString &question);
+    void handleSecurityAnswerVerified(bool success);
+    void handlePasswordResetFinished(bool success);
 
 private:
     Ui::MainWindow *ui;
@@ -46,9 +44,10 @@ private:
     AdminPage *m_adminPage;
     CustomerPage *m_customerPage;
     QWidget *m_publisherPage;
-
+    QString m_currentUsername;
     QTcpSocket *m_socket;
     AuthManager *m_authManager;
+    QString m_resetUsername;
 
     void setupConnections();
 };

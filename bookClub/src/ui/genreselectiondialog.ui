@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GenreSelectionDialog</class>
+ <widget class="QDialog" name="GenreSelectionDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>827</width>
+    <height>578</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>40</y>
+     <width>211</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>انتخاب 1 تا 3 ژانر مورد علاقه:</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="genreListWidget">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>90</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::MultiSelection</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>Fantasy</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Science Fiction</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Romance</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mystery</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>History</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Programming</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Psychology</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Philosophy</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Horror</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Adventure</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Biography</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="saveButton">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>300</y>
+     <width>93</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ذخیره</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

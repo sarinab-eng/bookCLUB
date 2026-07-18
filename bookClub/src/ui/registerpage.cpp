@@ -13,13 +13,12 @@ void RegisterPage::on_registerButton_clicked() {
     QString password = ui->passwordLineEdit->text();
     QString confirm = ui->confirmPasswordLineEdit->text();
     QString userType = ui->userTypeComboBox->currentText();
+    QString question = "Who's your favorite author?";
+    QString answer = ui->securityAnswerLineEdit->text().trimmed();
 
-    // فیلدهای تکمیلی (اگر در UI هنوز نساختید، فعلاً مقادیر پیش‌فرض می‌روند)
-    QString question = "Your favorite color?";
-    QString answer = "Blue";
     QVector<int> genres; // فعلاً خالی
 
-    if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
+    if (username.isEmpty() || password.isEmpty() || confirm.isEmpty() || answer.isEmpty()) {
         QMessageBox::warning(this, "Error", "Fill all fields.");
         return;
     }

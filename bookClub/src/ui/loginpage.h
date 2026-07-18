@@ -16,21 +16,17 @@ public:
     ~LoginPage();
 
 signals:
-    // سیگنالی که وقتی کاربر دکمه Login را می‌زند، به MainWindow ارسال می‌شود
     void loginRequested(const QString &username, const QString &password);
-
-    // سیگنالی برای وقتی که کاربر می‌خواهد به صفحه ثبت‌نام برود
     void registerRequested();
+    void forgotPasswordRequested(const QString &username);
 
 private slots:
-    // اسلات داخلی برای کلیک شدن دکمه ورود در فایل ui
     void on_loginButton_clicked();
-
-    // اسلات داخلی برای دکمه "ثبت‌نام نکرده‌اید؟"
     void on_goToRegisterButton_clicked();
+    void on_forgotPasswordButton_clicked();
 
 private:
     Ui::LoginPage *ui;
 };
 
-#endif // LOGINPAGE_H
+#endif

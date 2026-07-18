@@ -162,8 +162,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>984</width>
-           <height>95</height>
+           <width>943</width>
+           <height>84</height>
           </rect>
          </property>
         </widget>
@@ -186,8 +186,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>984</width>
-           <height>94</height>
+           <width>943</width>
+           <height>85</height>
           </rect>
          </property>
         </widget>
@@ -210,8 +210,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>984</width>
-           <height>95</height>
+           <width>943</width>
+           <height>84</height>
           </rect>
          </property>
         </widget>
@@ -234,8 +234,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>984</width>
-           <height>94</height>
+           <width>943</width>
+           <height>84</height>
           </rect>
          </property>
         </widget>
@@ -256,14 +256,14 @@
       <item>
        <widget class="QLabel" name="titleLabel">
         <property name="text">
-         <string>                                    Book club</string>
+         <string>                          Book club</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="welcomeLabel">
         <property name="text">
-         <string>                                      Welcome</string>
+         <string>                           Welcome</string>
         </property>
        </widget>
       </item>

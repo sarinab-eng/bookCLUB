@@ -137,6 +137,16 @@ QPushButton#goToRegisterButton {
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="forgotPasswordButton">
+      <property name="text">
+       <string>Forgot Password?</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>
