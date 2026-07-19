@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QJsonArray>
+#include <QMessageBox>
 
 BookDetailPage::BookDetailPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), m_authManager(authManager)
@@ -12,6 +13,12 @@ BookDetailPage::BookDetailPage(AuthManager *authManager, QWidget *parent)
     if (m_authManager) {
         connect(m_authManager, &AuthManager::reviewsReceived,
                 this, &BookDetailPage::onReviewsReceived);
+        connect(m_authManager, &AuthManager::reviewPosted,
+                this, &BookDetailPage::onReviewPosted);
+        connect(m_authManager, &AuthManager::reviewEdited,
+                this, &BookDetailPage::onReviewEdited);
+        connect(m_authManager, &AuthManager::reviewDeleted,
+                this, &BookDetailPage::onReviewDeleted);
     }
 }
 
@@ -23,6 +30,7 @@ void BookDetailPage::setCurrentUsername(const QString &username)
 void BookDetailPage::setBookData(const QJsonObject &book)
 {
     m_currentBook = book;
+    resetReviewForm();
 
     m_titleLabel->setText("Title: " + book.value("title").toString());
     m_authorLabel->setText("Author: " + book.value("author").toString());
@@ -36,6 +44,15 @@ void BookDetailPage::setBookData(const QJsonObject &book)
     if (m_authManager && !bookId.isEmpty()) {
         m_authManager->getReviews(bookId);
     }
+}
+
+void BookDetailPage::resetReviewForm()
+{
+    m_myReviewId.clear();
+    m_ratingCombo->setCurrentIndex(0);
+    m_commentEdit->clear();
+    m_submitReviewBtn->setText("ثبت نظر");
+    m_deleteReviewBtn->hide();
 }
 
 // ساخت و چیدمان المان‌های صفحه به همراه بخش نقدها
@@ -68,7 +85,7 @@ void BookDetailPage::setupUi()
         );
     mainLayout->addWidget(m_reviewsListWidget);
 
-    // ۴. فرم ارسال نظر جدید (امتیاز و متن نظر)
+    // ۴. فرم ارسال/ویرایش نظر (امتیاز و متن نظر)
     QHBoxLayout *formLayout = new QHBoxLayout();
     m_ratingCombo = new QComboBox(this);
     for (int i = 1; i <= 5; ++i) {
@@ -80,16 +97,24 @@ void BookDetailPage::setupUi()
     m_commentEdit->setMaximumHeight(60);
     m_commentEdit->setStyleSheet("border: 1px solid #FF8DA1; border-radius: 5px;");
 
-    m_submitReviewBtn = new QPushButton("Submit Review", this);
+    m_submitReviewBtn = new QPushButton("ثبت نظر", this);
     m_submitReviewBtn->setStyleSheet(
         "QPushButton { background-color: #FF8DA1; color: white; border-radius: 5px; padding: 5px 15px; font-weight: bold; }"
         "QPushButton:hover { background-color: #FF6F88; }"
         );
 
+    m_deleteReviewBtn = new QPushButton("حذف نظر", this);
+    m_deleteReviewBtn->setStyleSheet(
+        "QPushButton { background-color: #841C26; color: white; border-radius: 5px; padding: 5px 15px; font-weight: bold; }"
+        "QPushButton:hover { background-color: #A8201A; }"
+        );
+    m_deleteReviewBtn->hide();
+
     formLayout->addWidget(new QLabel("Rating:"));
     formLayout->addWidget(m_ratingCombo);
     formLayout->addWidget(m_commentEdit);
     formLayout->addWidget(m_submitReviewBtn);
+    formLayout->addWidget(m_deleteReviewBtn);
     mainLayout->addLayout(formLayout);
 
     // ۵. دکمه‌های بازگشت و خرید
@@ -113,9 +138,10 @@ void BookDetailPage::setupUi()
         emit addToCartRequested(m_currentBook);
     });
     connect(m_submitReviewBtn, &QPushButton::clicked, this, &BookDetailPage::onPostReviewClicked);
+    connect(m_deleteReviewBtn, &QPushButton::clicked, this, &BookDetailPage::onDeleteReviewClicked);
 }
 
-// ثبت نظر جدید
+// ثبت نظر جدید یا ویرایش نظر قبلیِ همین کاربر برای این کتاب
 void BookDetailPage::onPostReviewClicked()
 {
     if (m_currentUsername.isEmpty()) {
@@ -124,25 +150,67 @@ void BookDetailPage::onPostReviewClicked()
     }
 
     QString bookId = m_currentBook.value("id").toString();
-
     int rating = m_ratingCombo->currentData().toInt();
     QString comment = m_commentEdit->toPlainText().trimmed();
 
-    if (m_authManager && !bookId.isEmpty() && !comment.isEmpty()) {
+    if (!m_authManager || bookId.isEmpty() || comment.isEmpty()) return;
+
+    if (m_myReviewId.isEmpty())
         m_authManager->postReview(m_currentUsername, bookId, rating, comment);
-        m_commentEdit->clear();
-    }
+    else
+        m_authManager->editReview(m_currentUsername, m_myReviewId, rating, comment);
+}
+
+void BookDetailPage::onDeleteReviewClicked()
+{
+    if (m_myReviewId.isEmpty() || m_currentUsername.isEmpty()) return;
+
+    if (QMessageBox::question(this, "حذف نظر", "آیا از حذف نظر خود مطمئن هستید؟")
+        != QMessageBox::Yes) return;
+
+    m_authManager->deleteReview(m_currentUsername, m_myReviewId);
+}
+
+void BookDetailPage::onReviewPosted(bool success, const QString &message)
+{
+    if (!success) QMessageBox::warning(this, "خطا", message);
+    // نمایش نظر تازه‌ثبت‌شده از طریق broadcast سرور (reviews_list) روی همه‌ی کلاینت‌ها انجام می‌شود
+}
+
+void BookDetailPage::onReviewEdited(bool success, const QString &message)
+{
+    if (!success) QMessageBox::warning(this, "خطا", message);
+}
+
+void BookDetailPage::onReviewDeleted(bool success, const QString &message)
+{
+    if (success) resetReviewForm();
+    else QMessageBox::warning(this, "خطا", message);
 }
 
 // اسلات دریافت لیست نقدها؛ چون سیگنال AuthManager::reviewsReceived فقط آرایه نقدها رو
-// می‌فرسته (نه میانگین امتیاز و تعدادشون)، این‌ها رو همینجا از روی آرایه محاسبه می‌کنیم
-void BookDetailPage::onReviewsReceived(const QJsonArray &reviews)
+// می‌فرسته (نه میانگین امتیاز و تعدادشون)، این‌ها رو همینجا از روی آرایه محاسبه می‌کنیم.
+// این پاسخ ممکن است broadcast سرور برای کتاب دیگری باشد، پس اول شناسه رو چک می‌کنیم.
+void BookDetailPage::onReviewsReceived(const QString &bookId, const QJsonArray &reviews)
 {
+    if (bookId != m_currentBook.value("id").toString()) return;
+
     m_reviewsListWidget->clear();
 
     double totalRating = 0;
+    QString myReviewId;
+    int myRating = 0;
+    QString myComment;
+
     for (const QJsonValue &val : reviews) {
-        totalRating += val.toObject().value("rating").toInt();
+        QJsonObject reviewObj = val.toObject();
+        totalRating += reviewObj.value("rating").toInt();
+
+        if (!m_currentUsername.isEmpty() && reviewObj.value("username").toString() == m_currentUsername) {
+            myReviewId = reviewObj.value("review_id").toString();
+            myRating = reviewObj.value("rating").toInt();
+            myComment = reviewObj.value("comment").toString();
+        }
     }
     int reviewCount = reviews.size();
     double averageRating = reviewCount > 0 ? totalRating / reviewCount : 0.0;
@@ -164,5 +232,17 @@ void BookDetailPage::onReviewsReceived(const QJsonArray &reviews)
                                     .arg(comment);
 
         m_reviewsListWidget->addItem(displayFormat);
+    }
+
+    // اگر کاربر فعلی قبلاً برای این کتاب نظر ثبت کرده، فرم رو به حالت ویرایش ببر
+    m_myReviewId = myReviewId;
+    if (!m_myReviewId.isEmpty()) {
+        m_ratingCombo->setCurrentIndex(myRating - 1);
+        m_commentEdit->setPlainText(myComment);
+        m_submitReviewBtn->setText("ویرایش نظر");
+        m_deleteReviewBtn->show();
+    } else {
+        m_submitReviewBtn->setText("ثبت نظر");
+        m_deleteReviewBtn->hide();
     }
 }

@@ -28,14 +28,20 @@ signals:
 
 private slots:
     void onPostReviewClicked();
-    void onReviewsReceived(const QJsonArray &reviews);
+    void onDeleteReviewClicked();
+    void onReviewsReceived(const QString &bookId, const QJsonArray &reviews);
+    void onReviewPosted(bool success, const QString &message);
+    void onReviewEdited(bool success, const QString &message);
+    void onReviewDeleted(bool success, const QString &message);
 
 private:
     void setupUi();
+    void resetReviewForm();
 
     AuthManager *m_authManager;
     QString m_currentUsername;
     QJsonObject m_currentBook;
+    QString m_myReviewId; // خالی یعنی کاربر فعلی هنوز نظری برای این کتاب ثبت نکرده
 
     // کنترل‌های اطلاعات کتاب
     QLabel *m_titleLabel;
@@ -51,5 +57,6 @@ private:
     QListWidget *m_reviewsListWidget;// نمایش لیست کامنت‌ها
     QComboBox *m_ratingCombo;        // انتخاب امتیاز ۱ تا ۵
     QTextEdit *m_commentEdit;        // نوشتن متن نظر
-    QPushButton *m_submitReviewBtn;  // دکمه ثبت نظر
+    QPushButton *m_submitReviewBtn;  // دکمه ثبت/ویرایش نظر
+    QPushButton *m_deleteReviewBtn;  // دکمه حذف نظر (فقط وقتی کاربر نظر قبلی دارد نمایش داده می‌شود)
 };

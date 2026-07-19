@@ -51,8 +51,8 @@ public:
     void searchBooks(const QString &query, const QString &field);
     void postReview(const QString &username, const QString &bookId, int rating, const QString &comment);
     void getReviews(const QString &bookId);
-    void editReview(const QString &username, const QString &bookId, int rating, const QString &comment);
-    void deleteReview(const QString &username, const QString &bookId);
+    void editReview(const QString &username, const QString &reviewId, int rating, const QString &comment);
+    void deleteReview(const QString &username, const QString &reviewId);
 
 private slots:
     void onReadyRead();
@@ -88,7 +88,7 @@ signals:
 
     void searchResultReceived(const QJsonArray &books);
     void reviewPosted(bool success, const QString &message);
-    void reviewsReceived(const QJsonArray &reviews);
+    void reviewsReceived(const QString &bookId, const QJsonArray &reviews);
     void reviewEdited(bool success, const QString &message);
     void reviewDeleted(bool success, const QString &message);
 

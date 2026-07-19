@@ -132,11 +132,17 @@ void ProfilePage::onSaveGenresClicked()
         return;
     }
 
+    m_savingGenres = true;
     if (m_authManager) m_authManager->saveGenres(m_username, selected);
 }
 
 void ProfilePage::onGenresSaved(bool success)
 {
+    // اولین ورود (انتخاب ژانر تو GenreSelectionDialog) هم از همین سیگنال استفاده می‌کنه؛
+    // این صفحه فقط وقتی باید واکنش نشون بده که خودش درخواست ذخیره رو زده باشه
+    if (!m_savingGenres) return;
+    m_savingGenres = false;
+
     if (success)
         QMessageBox::information(this, "موفق", "ژانرهای مورد علاقه ذخیره شد.");
     else

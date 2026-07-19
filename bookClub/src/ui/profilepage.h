@@ -32,6 +32,7 @@ private:
 
     AuthManager *m_authManager;
     QString m_username;
+    bool m_savingGenres = false; // فقط وقتی خودِ این صفحه ذخیره‌سازی رو شروع کرده، به genresSaved واکنش نشون بده
 
     QLabel *m_usernameValueLabel;
     QLabel *m_roleValueLabel;

@@ -121,14 +121,16 @@ void MainWindow::handleGenresSaved(bool success) {
     if (!m_awaitingFirstLoginGenres) return;
     m_awaitingFirstLoginGenres = false;
 
-    if (success) {
-        QMessageBox::information(this, "Success", "ژانرهای مورد علاقه ذخیره شد.");
-        m_customerPage->setUsername(m_currentUsername);
-        m_stackedWidget->setCurrentWidget(m_customerPage);
-        QMessageBox::information(this, "Login", "Welcome!");
-    } else {
-        QMessageBox::critical(this, "Error", "ذخیره ژانرها انجام نشد.");
-    }
+    QTimer::singleShot(0, this, [this, success]() {
+        if (success) {
+            QMessageBox::information(this, "Success", "ژانرهای مورد علاقه ذخیره شد.");
+            m_customerPage->setUsername(m_currentUsername);
+            m_stackedWidget->setCurrentWidget(m_customerPage);
+            QMessageBox::information(this, "Login", "Welcome!");
+        } else {
+            QMessageBox::critical(this, "Error", "ذخیره ژانرها انجام نشد.");
+        }
+    });
 }
 
 void MainWindow::onForgotPasswordRequested(const QString &username) {
