@@ -13,6 +13,7 @@ struct Book {
     QString coverImage;
     QString description;
     int stock = 0;
+
 };
 
 struct CartItem {
