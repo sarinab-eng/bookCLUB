@@ -72,7 +72,9 @@ private:
 
     QJsonArray m_allBooks;
     QStringList m_favoriteGenres;
+    int m_previousPageIndex = 0;
 
+    void openBookDetail(const QJsonObject &book);
     QWidget *createBookCard(const QJsonObject &book);
     void populateSection(QHBoxLayout *layout, const QJsonArray &books);
     void updateRecommendedSection();

@@ -7,6 +7,20 @@
 #include <QPushButton>
 #include <QListWidgetItem>
 #include <QTimer>
+#include <QMouseEvent>
+#include <functional>
+
+// QFrame ساده که با کلیک، callback داده‌شده رو صدا می‌زند؛ برای کلیک‌پذیر
+// کردن کارت‌های کتاب تو صفحه‌ی Home
+class ClickableFrame : public QFrame {
+public:
+    std::function<void()> onClick;
+protected:
+    void mousePressEvent(QMouseEvent *event) override {
+        if (onClick) onClick();
+        QFrame::mousePressEvent(event);
+    }
+};
 
 CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), ui(new Ui::CustomerPage), m_authManager(authManager)
@@ -100,14 +114,12 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     // کلیک روی نتیجه‌ی جست‌وجو، جزئیات کتاب رو باز می‌کنه
     connect(m_searchResults, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
         QJsonObject b = QJsonObject::fromVariantMap(item->data(Qt::UserRole).toMap());
-        m_bookDetailPage->setCurrentUsername(m_username);
-        m_bookDetailPage->setBookData(b);
-        m_stack->setCurrentWidget(m_bookDetailPage);
+        openBookDetail(b);
     });
 
-    // اتصال دکمه بازگشتِ صفحه جزئیات به صفحه جست‌وجو
+    // اتصال دکمه بازگشتِ صفحه جزئیات به همون صفحه‌ای که کاربر ازش وارد شده بود
     connect(m_bookDetailPage, &BookDetailPage::backRequested, this, [this](){
-        m_stack->setCurrentIndex(1);
+        m_stack->setCurrentIndex(m_previousPageIndex);
     });
 
     // ۳) جایگزینی layout قدیمی contentFrame با stack
@@ -134,8 +146,7 @@ void CustomerPage::setUsername(const QString &username) {
     m_cartPage->setUsername(username);
     if (m_libraryPage) {
         m_libraryPage->setUsername(username);
-        // todo
-        // m_libraryPage->requestLibraryRefresh(); // اولین لود داده‌ها به محض ورود کاربر
+        m_libraryPage->requestLibraryRefresh(); // اولین لود داده‌ها به محض ورود کاربر
     }
     if (m_profilePage) {
         m_profilePage->setUsername(username);
@@ -149,9 +160,10 @@ void CustomerPage::setUsername(const QString &username) {
 }
 
 QWidget *CustomerPage::createBookCard(const QJsonObject &book) {
-    QFrame *card = new QFrame;
+    ClickableFrame *card = new ClickableFrame;
     card->setFrameShape(QFrame::StyledPanel);
     card->setFixedSize(150, 90);
+    card->setCursor(Qt::PointingHandCursor);
 
     QVBoxLayout *layout = new QVBoxLayout(card);
     layout->setContentsMargins(6, 6, 6, 6);
@@ -166,11 +178,24 @@ QWidget *CustomerPage::createBookCard(const QJsonObject &book) {
     double price = book["price"].toDouble();
     QLabel *priceLabel = new QLabel(price > 0 ? QString("%1 تومان").arg(price) : "رایگان");
 
+    // بدون این، کلیک روی خودِ لیبل‌ها می‌گیره و به کارتِ زیرشون (ClickableFrame) نمی‌رسه
+    for (QLabel *label : {titleLabel, authorLabel, priceLabel})
+        label->setAttribute(Qt::WA_TransparentForMouseEvents);
+
     layout->addWidget(titleLabel);
     layout->addWidget(authorLabel);
     layout->addWidget(priceLabel);
 
+    card->onClick = [this, book]() { openBookDetail(book); };
+
     return card;
+}
+
+void CustomerPage::openBookDetail(const QJsonObject &book) {
+    m_previousPageIndex = m_stack->currentIndex();
+    m_bookDetailPage->setCurrentUsername(m_username);
+    m_bookDetailPage->setBookData(book);
+    m_stack->setCurrentWidget(m_bookDetailPage);
 }
 
 void CustomerPage::populateSection(QHBoxLayout *layout, const QJsonArray &books) {

@@ -69,6 +69,8 @@ void LibraryPage::onLibraryReceived(const QJsonArray &books)
         QString purchaseDate = bookObj.contains("purchaseDate") ? bookObj["purchaseDate"].toString() : "-";
         ui->libraryTable->setItem(i, 3, new QTableWidgetItem(purchaseDate));
     }
+
+    ui->libraryCountLabel->setText(QString("تعداد کتاب‌های خریداری‌شده: %1").arg(books.size()));
 }
 
 void LibraryPage::onPurchaseHistoryReceived(const QJsonArray &history)
