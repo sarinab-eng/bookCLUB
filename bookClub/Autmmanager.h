@@ -44,11 +44,15 @@ public:
     void removeFromCart(const QString &username, const QString &bookId);
     void checkout(const QString &username);
 
-    void searchBooks(const QString &query, const QString &field);
+
+
     void postReview(const QString &username, int bookId, int rating, const QString &comment);
     void getReviews(int bookId);
-    void editReview(const QString &username, int bookId, int rating, const QString &comment);
-    void deleteReview(const QString &username, int bookId);
+    void editReview(const QString &username, const QString &reviewId, int rating, const QString &comment);
+    void deleteReview(const QString &username, const QString &reviewId);
+    void searchBooks(const QString &query, const QString &field);
+
+
 
 private slots:
     void onReadyRead();
@@ -69,6 +73,11 @@ signals:
                           double finalAmount);
     void libraryReceived(const QJsonArray &books);
     void purchaseHistoryReceived(const QJsonArray &history);
+    void reviewsReceived(const QJsonArray &reviews, double averageRating, int reviewCount);
+    void reviewPosted(bool success, const QString &message);
+    void reviewEdited(bool success, const QString &message);
+    void reviewDeleted(bool success, const QString &message);
+    void searchResultReceived(const QJsonArray &books);
 
     // ---- Books ----
     void booksReceived(const QJsonArray &books);
@@ -79,11 +88,7 @@ signals:
     void itemRemovedFromCart(bool success, const QString &message);
     void checkoutFinished(bool success, const QString &message);
 
-    void searchResultReceived(const QJsonArray &books);
-    void reviewPosted(bool success, const QString &message);
-    void reviewsReceived(const QJsonArray &reviews);
-    void reviewEdited(bool success, const QString &message);
-    void reviewDeleted(bool success, const QString &message);
+
 
 private:
     QTcpSocket *m_socket;

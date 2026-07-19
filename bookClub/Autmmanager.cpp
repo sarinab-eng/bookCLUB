@@ -149,8 +149,7 @@ void AuthManager::onReadyRead() {
     }
     else if (type == "review_posted")
         emit reviewPosted(response["success"].toBool(), response["message"].toString());
-    else if (type == "reviews_list")
-        emit reviewsReceived(response["reviews"].toArray());
+
     else if (type == "review_edited")
         emit reviewEdited(response["success"].toBool(), response["message"].toString());
     else if (type == "review_deleted")
@@ -264,27 +263,28 @@ void AuthManager::postReview(const QString &username, int bookId, int rating, co
     sendJson(req);
 }
 
+
 void AuthManager::getReviews(int bookId) {
     QJsonObject req;
     req["type"] = "get_reviews";
-    req["book_id"] = bookId;
+    req["book_id"] = QString::number(bookId);
     sendJson(req);
 }
 
-void AuthManager::editReview(const QString &username, int bookId, int rating, const QString &comment) {
+void AuthManager::editReview(const QString &username, const QString &reviewId, int rating, const QString &comment) {
     QJsonObject req;
     req["type"] = "edit_review";
     req["username"] = username;
-    req["book_id"] = bookId;
+    req["review_id"] = reviewId;
     req["rating"] = rating;
     req["comment"] = comment;
     sendJson(req);
 }
 
-void AuthManager::deleteReview(const QString &username, int bookId) {
+void AuthManager::deleteReview(const QString &username, const QString &reviewId) {
     QJsonObject req;
     req["type"] = "delete_review";
     req["username"] = username;
-    req["book_id"] = bookId;
+    req["review_id"] = reviewId;
     sendJson(req);
 }
