@@ -25,6 +25,7 @@ public slots:
 
 private slots:
     void onCartReceived(const QJsonArray &items);
+    void onCartSummaryReceived(int itemCount, double total, double discountAmount, double finalAmount);
     void onCheckoutFinished(bool success, const QString &message,
                             double total, double discountAmount, double finalAmount);
     void on_removeButton_clicked();

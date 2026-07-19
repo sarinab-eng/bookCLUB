@@ -12,12 +12,13 @@ CartPage::CartPage(AuthManager *authManager, QWidget *parent)
 
     // اتصال سیگنال دریافت سبد خرید
     connect(m_authManager, &AuthManager::cartReceived, this, &CartPage::onCartReceived);
+    connect(m_authManager, &AuthManager::cartSummaryReceived, this, &CartPage::onCartSummaryReceived);
 
     // اتصال سیگنال اتمام خرید نهایی (نسخه ۵ پارامتری)
     connect(m_authManager, QOverload<bool, const QString&, double, double, double>::of(&AuthManager::checkoutFinished),
             this, &CartPage::onCheckoutFinished);
 
-    // جدید: اتصال سیگنال پاسخ حذف از سرور
+    // اتصال سیگنال پاسخ حذف از سرور
     connect(m_authManager, &AuthManager::itemRemovedFromCart, this, [this](bool success, const QString &message){
         if (success) {
             // برای اطمینان از صحت اطلاعات، سبد را مجدداً از سرور درخواست می‌کنیم
@@ -52,30 +53,33 @@ void CartPage::populateTable(const QJsonArray &items)
     ui->cartTable->clearContents();
     ui->cartTable->setRowCount(0);
 
-    double totalCartSum = 0.0;
-
     for (int i = 0; i < items.size(); ++i) {
         QJsonObject item = items[i].toObject();
         QString bookId = item["book_id"].toString();
         QString title = item["title"].toString();
         double price = item["price"].toDouble();
         int quantity = item["quantity"].toInt();
-
-        double itemTotalPrice = price * quantity;
-        totalCartSum += itemTotalPrice;
+        double rowSubtotal = price * quantity;
 
         ui->cartTable->insertRow(i);
-        ui->cartTable->setItem(i, 0, new QTableWidgetItem(bookId));
-        ui->cartTable->setItem(i, 1, new QTableWidgetItem(title));
-        ui->cartTable->setItem(i, 2, new QTableWidgetItem(QString::number(price, 'f', 2)));
-        ui->cartTable->setItem(i, 3, new QTableWidgetItem(QString::number(quantity)));
+
+        QTableWidgetItem *titleItem = new QTableWidgetItem(title);
+        titleItem->setData(Qt::UserRole, bookId); // برای پیدا کردن شناسه‌ی کتاب موقع حذف
+        ui->cartTable->setItem(i, 0, titleItem);
+        ui->cartTable->setItem(i, 1, new QTableWidgetItem(QString::number(price, 'f', 2)));
+        ui->cartTable->setItem(i, 2, new QTableWidgetItem(QString::number(quantity)));
+        ui->cartTable->setItem(i, 3, new QTableWidgetItem(QString::number(rowSubtotal, 'f', 2)));
     }
+}
 
-    // به‌روزرسانی قیمت کل در رابط کاربری
-    ui->totalLabel->setText(QString("مبلغ کل: %1 تومان").arg(totalCartSum));
-
-    // ریست کردن لیبل تخفیف در بارگذاری جدید
-    ui->discountLabel->setText("تخفیف: 0 تومان");
+void CartPage::onCartSummaryReceived(int itemCount, double total, double discountAmount, double finalAmount)
+{
+    // پیش‌نمایش تخفیف و مبلغ نهایی، پیش از نهایی‌سازی خرید
+    ui->itemCountLabel->setText(QString("تعداد اقلام سبد: %1").arg(itemCount));
+    ui->totalLabel->setText(QString("مبلغ کل: %1 تومان").arg(total, 0, 'f', 0));
+    ui->discountLabel->setText(discountAmount > 0
+        ? QString("تخفیف: %1 تومان (مبلغ قابل پرداخت: %2 تومان)").arg(discountAmount, 0, 'f', 0).arg(finalAmount, 0, 'f', 0)
+        : "تخفیف: 0 تومان");
 }
 
 void CartPage::onCheckoutFinished(bool success, const QString &message, double total, double discountAmount, double finalAmount)
@@ -88,12 +92,13 @@ void CartPage::onCheckoutFinished(bool success, const QString &message, double t
         // نمایش جزئیات فاکتور پرداخت شده
         ui->discountLabel->setText(QString("تخفیف اعمال شده: %1 تومان").arg(discountAmount));
         ui->totalLabel->setText(QString("مبلغ پرداخت شده: %1 تومان").arg(finalAmount));
+        ui->itemCountLabel->setText("تعداد اقلام سبد: 0");
 
         // پاک کردن جدول پس از خرید موفق
         ui->cartTable->clearContents();
         ui->cartTable->setRowCount(0);
 
-        // جدید: انتشار سیگنال برای اطلاع به والد (CustomerPage) جهت رفرش کتابخانه
+        // انتشار سیگنال برای اطلاع به والد (CustomerPage) جهت رفرش کتابخانه
         emit checkoutSuccessful();
 
     } else {
@@ -113,8 +118,7 @@ void CartPage::on_removeButton_clicked()
         return;
     }
 
-    // استخراج شناسه کتاب از ستون اول (ایندکس 0)
-    QString bookId = ui->cartTable->item(currentRow, 0)->text();
+    QString bookId = ui->cartTable->item(currentRow, 0)->data(Qt::UserRole).toString();
 
     if (!m_username.isEmpty()) {
         // ارسال درخواست حذف به سرور

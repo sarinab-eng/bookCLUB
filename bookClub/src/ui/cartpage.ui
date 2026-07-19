@@ -28,6 +28,13 @@
      </property>
     </widget>
    </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="itemCountLabel">
+     <property name="text">
+      <string>تعداد اقلام سبد: 0</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QTableWidget" name="cartTable">
      <property name="editTriggers">
@@ -38,12 +45,7 @@
      </property>
      <column>
       <property name="text">
-       <string>:جمع</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>:تعداد</string>
+       <string>:عنوان</string>
       </property>
      </column>
      <column>
@@ -53,7 +55,12 @@
      </column>
      <column>
       <property name="text">
-       <string>:عنوان</string>
+       <string>:تعداد</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>:جمع</string>
       </property>
      </column>
     </widget>

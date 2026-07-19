@@ -8,6 +8,7 @@
 #include <QListWidgetItem>
 #include <QTimer>
 #include <QMouseEvent>
+#include <QMessageBox>
 #include <functional>
 
 // QFrame ساده که با کلیک، callback داده‌شده رو صدا می‌زند؛ برای کلیک‌پذیر
@@ -111,15 +112,27 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     m_bookDetailPage = new BookDetailPage(m_authManager, m_stack);
     m_stack->addWidget(m_bookDetailPage);      // index 7 - Book detail
 
-    // کلیک روی نتیجه‌ی جست‌وجو، جزئیات کتاب رو باز می‌کنه
+    //کلیک روی نتیجه‌ی جست‌وجو، جزئیات کتاب رو باز میکند
     connect(m_searchResults, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
         QJsonObject b = QJsonObject::fromVariantMap(item->data(Qt::UserRole).toMap());
         openBookDetail(b);
     });
 
-    // اتصال دکمه بازگشتِ صفحه جزئیات به همون صفحه‌ای که کاربر ازش وارد شده بود
+    // اتصال دکمه بازگشتِ صفحه جزئیات به همان صفحه‌ای که کاربر وارد شده بود
     connect(m_bookDetailPage, &BookDetailPage::backRequested, this, [this](){
         m_stack->setCurrentIndex(m_previousPageIndex);
+    });
+
+    // دکمه‌ی «افزودن به سبد»  صفحه‌ی جزئیات کتاب 
+    connect(m_bookDetailPage, &BookDetailPage::addToCartRequested, this, [this](const QJsonObject &book){
+        if (m_authManager && !m_username.isEmpty())
+            m_authManager->addToCart(m_username, book["id"].toString());
+    });
+    connect(m_authManager, &AuthManager::itemAddedToCart, this, [this](bool success, const QString &message){
+        if (success)
+            QMessageBox::information(this, "سبد خرید", "کتاب به سبد خرید اضافه شد.");
+        else
+            QMessageBox::warning(this, "خطا", "افزودن به سبد خرید ناموفق بود: " + message);
     });
 
     // ۳) جایگزینی layout قدیمی contentFrame با stack

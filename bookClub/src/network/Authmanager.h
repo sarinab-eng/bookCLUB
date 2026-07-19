@@ -82,6 +82,7 @@ signals:
     // ---- Cart ----
     void itemAddedToCart(bool success, const QString &message);
     void cartReceived(const QJsonArray &items);
+    void cartSummaryReceived(int itemCount, double total, double discountAmount, double finalAmount);
     void itemRemovedFromCart(bool success, const QString &message);
     void checkoutFinished(bool success, const QString &message);
 

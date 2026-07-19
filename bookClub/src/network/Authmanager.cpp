@@ -127,6 +127,10 @@ void AuthManager::onReadyRead() {
     }
     else if (type == "cart_list" || type == "cart_response") {   // ⬅️ پشتیبانی از هر دو
         emit cartReceived(response["items"].toArray());
+        emit cartSummaryReceived(response["itemCount"].toInt(),
+                                  response["total"].toDouble(),
+                                  response["discountAmount"].toDouble(),
+                                  response["finalAmount"].toDouble());
     }
 
     else if (type == "remove_from_cart_response") {
