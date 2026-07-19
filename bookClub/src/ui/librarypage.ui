@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LibraryPage</class>
+ <widget class="QWidget" name="LibraryPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>644</width>
+    <height>536</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>کتاب های من:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="libraryTable">
+     <column>
+      <property name="text">
+       <string>تاریخ خرید</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>نویسنده</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ژانر</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>عنوان</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>تاریخچه تراکنش ها:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="historyTable">
+     <column>
+      <property name="text">
+       <string>تاریخ</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>مبلغ پرداخت شده</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>تخفیف</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>مبلغ کل</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>کد تراکنش</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="refreshButton">
+     <property name="text">
+      <string>بروزرسانی کتابخانه</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

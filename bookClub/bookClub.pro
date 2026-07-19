@@ -10,41 +10,42 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     src/model/Admin.cpp \
+    src/model/Book.cpp \
     src/model/Customer.cpp \
     src/model/Publisher.cpp \
     src/model/User.cpp \
-    src/model/book.cpp \
-    src/model/bookmanager.cpp \
-    src/model/globalreviewmanager.cpp \
-    src/model/review.cpp \
-    src/model/reviewmanager.cpp \
     src/network/Authmanager.cpp \
     src/ui/adminpage.cpp \
+    src/ui/cartpage.cpp \
     src/ui/customerpage.cpp \
+    src/ui/genreselectiondialog.cpp \
+    src/ui/librarypage.cpp \
     src/ui/loginpage.cpp \
     src/ui/registerpage.cpp
 
 HEADERS += \
     mainwindow.h \
     src/model/Admin.h \
+    src/model/Book.h \
     src/model/Customer.h \
     src/model/Publisher.h \
     src/model/User.h \
-    src/model/book.h \
-    src/model/bookmanager.h \
-    src/model/globalreviewmanager.h \
-    src/model/review.h \
-    src/model/reviewmanager.h \
     src/network/Authmanager.h \
     src/ui/adminpage.h \
+    src/ui/cartpage.h \
     src/ui/customerpage.h \
+    src/ui/genreselectiondialog.h \
+    src/ui/librarypage.h \
     src/ui/loginpage.h \
     src/ui/registerpage.h
 
 FORMS += \
     mainwindow.ui \
     src/ui/adminpage.ui \
+    src/ui/cartpage.ui \
     src/ui/customerpage.ui \
+    src/ui/genreselectiondialog.ui \
+    src/ui/librarypage.ui \
     src/ui/loginpage.ui \
     src/ui/registerpage.ui
 

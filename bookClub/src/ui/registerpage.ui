@@ -86,10 +86,10 @@ QPushButton#goToLoginButton {
   <widget class="QFrame" name="registerFrame">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>90</y>
-     <width>711</width>
-     <height>421</height>
+     <x>70</x>
+     <y>60</y>
+     <width>731</width>
+     <height>441</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -159,6 +159,13 @@ QPushButton#goToLoginButton {
         <string>Publisher</string>
        </property>
       </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="securityAnswerLineEdit">
+      <property name="placeholderText">
+       <string>Who's your favorite auther?</string>
+      </property>
      </widget>
     </item>
     <item>

@@ -137,7 +137,22 @@ void AdminPage::onUserSelected(int row, int column) {
         ui->btnBlockUser->setText("مسدود کردن");
     }
 
-    if (role == "publisher") {
+    if(role=="customer")
+    {
+        qDebug() << userObj;
+        QJsonArray genres=userObj["favoriteGenres"].toArray();
+
+        QStringList list;
+
+        for(auto g:genres)
+            list<<g.toString();
+
+        ui->lblDetailSpecific->setText(
+            "ژانرهای مورد علاقه: "+list.join(" ، ")
+            );
+    }
+
+    else if (role == "publisher") {
         ui->lblDetailSpecific->setText("نام انتشارات: " + userObj["publisher_name"].toString("---"));
     } else {
         ui->lblDetailSpecific->setText("اطلاعات اختصاصی: ندارد");

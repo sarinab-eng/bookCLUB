@@ -39,3 +39,12 @@ void LoginPage::on_loginButton_clicked() {
 void LoginPage::on_goToRegisterButton_clicked() {
     emit registerRequested();
 }
+
+void LoginPage::on_forgotPasswordButton_clicked() {
+    QString username = ui->usernameLineEdit->text().trimmed();
+    if (username.isEmpty()) {
+        QMessageBox::warning(this, "خطا", "ابتدا نام کاربری را وارد کنید");
+        return;
+    }
+    emit forgotPasswordRequested(username);
+}
