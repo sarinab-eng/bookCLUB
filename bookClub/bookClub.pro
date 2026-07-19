@@ -12,48 +12,30 @@ CONFIG += c++17
 
 # لیست تمام فایل‌های اجرایی پروژه (بدون Bookreader)
 SOURCES += \
+    Autmmanager.cpp \
+    customerpage.cpp \
     main.cpp \
     src/model/Admin.cpp \
     src/model/Book.cpp \
-    src/model/BookDetailsWidget.cpp \
-    src/model/BookManager.cpp \
-    src/model/Clientnetworkmanager.cpp \
-    src/model/GlobalReviewManager.cpp \
-    src/model/PdfReaderWidget.cpp \
-    src/model/PersonalLibrary.cpp \
-    src/model/Publisher.cpp \
-    src/model/Review.cpp \
-    src/model/Review.cpp \
-    src/model/ReviewManager.cpp \
     src/model/Server.cpp \
-    src/model/Shoppingcart.cpp \
     src/model/User.cpp \
-    src/model/UserDashboard.cpp \
-    src/model/bookdetailswidget.cpp \
-    src/model/personallibrary.cpp
+    src/model/bookdetailpage.cpp \
+    src/model/mainwindow.cpp
 
 # لیست تمام هدرها (بدون Bookreader)
 HEADERS += \
+    Autmmanager.h \
+    customerpage.h \
     src/model/Admin.h \
     src/model/Book.h \
-    src/model/BookDetailsWidget.h \
-    src/model/BookManager.h \
-    src/model/ClientNetworkManager.h \
-    src/model/GlobalReviewManager.h \
-    src/model/PdfReaderWidget.h \
-    src/model/PersonalLibrary.h \
     src/model/Publisher.h \
-    src/model/Review.h \
-    src/model/ReviewManager.h \
     src/model/Server.h \
-    src/model/Shoppingcart.h \
     src/model/User.h \
-    src/model/UserDashboard.h \
-    src/model/bookdetailswidget.h
+    src/model/bookdetailpage.h \
+    src/model/mainwindow.h
 
 # فایل‌های طراحی رابط کاربری
-FORMS += \
-    src/model/UserDashboard.ui
+FORMS +=
 
 # تنظیمات پیش‌فرض برای نصب و مسیر هدف
 target.path = $$[QT_INSTALL_EXAMPLES]/widgets/widgets/mainwindow/target
@@ -70,7 +52,6 @@ SOURCES += \
     main.cpp \
     src/model/Admin.cpp \
     src/model/Customer.cpp \
-    src/model/Publisher.cpp \
     src/model/User.cpp \
     src/network/Authmanager.cpp \
     src/ui/adminpage.cpp \
@@ -80,7 +61,6 @@ SOURCES += \
 HEADERS += \
     src/model/Admin.h \
     src/model/Customer.h \
-    src/model/Publisher.h \
     src/model/User.h \
     src/network/Authmanager.h \
     src/ui/adminpage.h \
@@ -110,25 +90,12 @@ INCLUDEPATH += $$PWD \
 SOURCES += \
     main.cpp \
     src/model/Book.cpp \
-    src/model/BookDetailsWidget.cpp \
-    src/model/BookManager.cpp \
-    src/model/PersonalLibrary.cpp \
-    src/model/Review.cpp \
-    src/model/User.cpp \
-    src/model/bookdetailswidget.cpp \
-    src/model/personallibrary.cpp
+    src/model/User.cpp
 
 # لیست تمام هدرها (بدون Bookreader)
 HEADERS += \
     src/model/Book.h \
-    src/model/BookDetailsWidget.h \
-    src/model/BookManager.h \
-    src/model/PersonalLibrary.h \
-    src/model/Review.h \
-    src/model/ReviewManager.h \
-    src/model/Shoppingcart.h \
-    src/model/User.h \
-    src/model/bookdetailswidget.h
+    src/model/User.h
 
 # فایل‌های طراحی رابط کاربری
 FORMS +=
@@ -148,7 +115,6 @@ SOURCES += \
     main.cpp \
     src/model/Admin.cpp \
     src/model/Customer.cpp \
-    src/model/Publisher.cpp \
     src/model/User.cpp \
     src/network/Authmanager.cpp \
     src/ui/adminpage.cpp \
@@ -158,7 +124,6 @@ SOURCES += \
 HEADERS += \
     src/model/Admin.h \
     src/model/Customer.h \
-    src/model/Publisher.h \
     src/model/User.h \
     src/network/Authmanager.h \
     src/ui/adminpage.h \
