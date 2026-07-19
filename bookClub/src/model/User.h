@@ -25,6 +25,10 @@ public:
     QString getEmail() const;
     QDateTime getRegistrationDate() const;
     bool getIsBlocked() const;
+    virtual QString getRole() const { return QString(); }
+
+    // Setters
+    void setBlocked(bool blocked);
 
     // بررسی پسورد
     bool checkPassword(const QString &password) const;

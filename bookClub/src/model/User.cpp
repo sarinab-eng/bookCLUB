@@ -52,6 +52,9 @@ QString User::getEmail() const { return m_email; }
 QDateTime User::getRegistrationDate() const { return m_registrationDate; }
 bool User::getIsBlocked() const { return m_isBlocked; }
 
+// متد تنظیم وضعیت مسدودیت (توسط Admin استفاده می‌شود)
+void User::setBlocked(bool blocked) { m_isBlocked = blocked; }
+
 // متد بررسی صحت پسورد در هنگام لاگین
 bool User::checkPassword(const QString &password) const {
     // پسورد وارد شده را هش کرده و با مقدار ذخیره شده در دیتابیس مقایسه می‌کنیم

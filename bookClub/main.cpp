@@ -1,23 +1,15 @@
+#include "mainwindow.h"
+
 #include <QApplication>
-#include <QQmlApplicationEngine>
-#include <QQuickView>
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+        QApplication a(argc, argv);
 
-    QQmlApplicationEngine engine;
+        QFont font("Segoe UI", 10); // نام فونت و سایز
+        a.setFont(font);
 
-    // مسیر فایل QML شما - دقت کنید که نام و مسیر درست باشد
-    const QUrl url(QStringLiteral("qrc:/src/model/Login.qml"));
-
-    // اگر از فایل مستقیم (بدون Resource) استفاده می‌کنید:
-    // const QUrl url = QUrl::fromLocalFile("src/model/Login.qml");
-
-    engine.load(url);
-
-    if (engine.rootObjects().isEmpty())
-        return -1;
-
-    return app.exec();
+    MainWindow w;
+    w.show();
+    return QApplication::exec();
 }
