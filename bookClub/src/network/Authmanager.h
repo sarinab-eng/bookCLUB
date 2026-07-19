@@ -35,6 +35,10 @@ public:
     void adminAction(const QString &type, const QString &username);
     void saveGenres(const QString &username, const QStringList &genres);
 
+    // ---- Profile ----
+    void requestProfile(const QString &username);
+    void changePassword(const QString &username, const QString &oldPassword, const QString &newPassword);
+
     // ---- Books ----
     void requestBooks();
 
@@ -59,6 +63,8 @@ signals:
     void usersListReceived(const QJsonArray &users);
     void actionFinished(bool success, const QString &message);
     void genresSaved(bool success);
+    void profileReceived(const QJsonObject &profile);
+    void passwordChanged(bool success, const QString &message);
     void securityQuestionReceived(bool success, const QString &question);
     void securityAnswerVerified(bool correct, const QString &message);
     void passwordResetFinished(bool success, const QString &message);

@@ -47,6 +47,7 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     m_stack = new QStackedWidget(ui->contentFrame);
     m_cartPage = new CartPage(m_authManager, this);
     m_libraryPage = new LibraryPage(m_authManager, this);
+    m_profilePage = new ProfilePage(m_authManager, this);
 
     connect(m_cartPage, &CartPage::checkoutSuccessful, m_libraryPage, &LibraryPage::requestLibraryRefresh);
 
@@ -77,7 +78,7 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     m_stack->addWidget(searchPage);            // index 1 - Search
     m_stack->addWidget(m_libraryPage);          // index 2 - Library
     m_stack->addWidget(m_cartPage);             // index 3 - Cart
-    m_stack->addWidget(new QWidget(m_stack));  // index 4 - Profile
+    m_stack->addWidget(m_profilePage);          // index 4 - Profile
     m_stack->addWidget(new QWidget(m_stack));  // index 5 - History
     m_stack->addWidget(new QWidget(m_stack));  // index 6 - Settings
 
@@ -123,6 +124,9 @@ void CustomerPage::setUsername(const QString &username) {
         m_libraryPage->setUsername(username);
         // todo
         // m_libraryPage->requestLibraryRefresh(); // اولین لود داده‌ها به محض ورود کاربر
+    }
+    if (m_profilePage) {
+        m_profilePage->setUsername(username);
     }
 
     if (m_authManager) m_authManager->requestBooks();
@@ -221,6 +225,10 @@ void CustomerPage::on_cartButton_clicked() {
     m_cartPage->requestCartRefresh();
 }
 
-void CustomerPage::on_profileButton_clicked()  { m_stack->setCurrentIndex(4); }
+void CustomerPage::on_profileButton_clicked()
+{
+    m_stack->setCurrentIndex(4);
+    m_profilePage->requestProfileRefresh();
+}
 void CustomerPage::on_historyButton_clicked()  { m_stack->setCurrentIndex(5); }
 void CustomerPage::on_settingsButton_clicked() { m_stack->setCurrentIndex(6); }

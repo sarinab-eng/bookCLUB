@@ -13,6 +13,7 @@
 #include "cartpage.h"
 #include "librarypage.h"
 #include "bookdetailpage.h"
+#include "profilepage.h"
 
 
 
@@ -54,6 +55,7 @@ private:
     CartPage *m_cartPage;
     LibraryPage *m_libraryPage;
     BookDetailPage *m_bookDetailPage;
+    ProfilePage *m_profilePage;
 
     QLineEdit   *m_searchInput   = nullptr;
     QComboBox   *m_searchField   = nullptr;

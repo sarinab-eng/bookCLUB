@@ -93,6 +93,7 @@ void MainWindow::handleLoginResult(bool success, const QString &message, const Q
         if (firstLogin) {
             GenreSelectionDialog dialog(this);
             if (dialog.exec() != QDialog::Accepted) return;
+            m_awaitingFirstLoginGenres = true;
             m_authManager->saveGenres(m_currentUsername, dialog.selectedGenres());
         } else {
             m_customerPage->setUsername(m_currentUsername);
@@ -114,6 +115,12 @@ void MainWindow::handleRegisterResult(bool success, const QString &message) {
 }
 
 void MainWindow::handleGenresSaved(bool success) {
+    // این اسلات هم بعد از انتخاب اولیه ژانر (اولین ورود) و هم موقع تغییر
+    // ژانرها از صفحه‌ی پروفایل صدا زده می‌شود؛ گذار به پنل کاربر و پیام
+    // خوش‌آمدگویی فقط باید مخصوص مسیر اولین ورود اجرا شود.
+    if (!m_awaitingFirstLoginGenres) return;
+    m_awaitingFirstLoginGenres = false;
+
     if (success) {
         QMessageBox::information(this, "Success", "ژانرهای مورد علاقه ذخیره شد.");
         m_customerPage->setUsername(m_currentUsername);

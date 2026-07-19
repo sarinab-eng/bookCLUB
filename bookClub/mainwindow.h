@@ -48,6 +48,7 @@ private:
     QTcpSocket *m_socket;
     AuthManager *m_authManager;
     QString m_resetUsername;
+    bool m_awaitingFirstLoginGenres = false;
 
     void setupConnections();
 };

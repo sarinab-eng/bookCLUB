@@ -22,6 +22,7 @@ SOURCES += \
     src/ui/genreselectiondialog.cpp \
     src/ui/librarypage.cpp \
     src/ui/loginpage.cpp \
+    src/ui/profilepage.cpp \
     src/ui/registerpage.cpp
 
 HEADERS += \
@@ -39,6 +40,7 @@ HEADERS += \
     src/ui/genreselectiondialog.h \
     src/ui/librarypage.h \
     src/ui/loginpage.h \
+    src/ui/profilepage.h \
     src/ui/registerpage.h
 
 FORMS += \

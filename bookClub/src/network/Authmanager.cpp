@@ -161,6 +161,10 @@ void AuthManager::onReadyRead() {
         emit reviewEdited(response["success"].toBool(), response["message"].toString());
     else if (type == "review_deleted")
         emit reviewDeleted(response["success"].toBool(), response["message"].toString());
+    else if (type == "profile_response")
+        emit profileReceived(response);
+    else if (type == "change_password_response")
+        emit passwordChanged(response["success"].toBool(), response["message"].toString());
 }
 
 // ---------------- Admin / Users ----------------
@@ -194,6 +198,24 @@ void AuthManager::saveGenres(const QString &username, const QStringList &genres)
     QJsonArray arr;
     for (const QString &g : genres) arr.append(g);
     request["genres"] = arr;
+    sendJson(request);
+}
+
+// ---------------- Profile ----------------
+
+void AuthManager::requestProfile(const QString &username) {
+    QJsonObject request;
+    request["type"] = "get_profile";
+    request["username"] = username;
+    sendJson(request);
+}
+
+void AuthManager::changePassword(const QString &username, const QString &oldPassword, const QString &newPassword) {
+    QJsonObject request;
+    request["type"] = "change_password";
+    request["username"] = username;
+    request["oldPassword"] = User::hashPassword(oldPassword);
+    request["newPassword"] = User::hashPassword(newPassword);
     sendJson(request);
 }
 
