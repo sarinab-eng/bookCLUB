@@ -10,6 +10,7 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     connect(ui->logoutButton,    &QPushButton::clicked, this, &CustomerPage::onLogout);
     connect(ui->logoutTopButton, &QPushButton::clicked, this, &CustomerPage::onLogout);
 
+
     // ---- ساخت QStackedWidget داخلی به‌صورت برنامه‌نویسی ----
 
     // ۱) انتقال محتوای فعلی contentFrame به یک صفحه‌ی مستقل (Home)
@@ -29,7 +30,33 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     // ۲) ساخت stacked widget و افزودن homePage + صفحات خالی
     m_stack = new QStackedWidget(ui->contentFrame);
     m_stack->addWidget(homePage);              // index 0 - Home
-    m_stack->addWidget(new QWidget(m_stack));  // index 1 - Search
+
+
+    // جایگزین index 1 (Search) با صفحه واقعی
+    QWidget *searchPage = new QWidget;
+    QVBoxLayout *searchLayout = new QVBoxLayout(searchPage);
+
+    QHBoxLayout *searchBar = new QHBoxLayout;
+    m_searchInput = new QLineEdit;
+    m_searchInput->setPlaceholderText("Search books...");
+    m_searchField = new QComboBox;
+    m_searchField->addItems({"title", "author", "genre"});
+    QPushButton *goBtn = new QPushButton("Search");
+    searchBar->addWidget(m_searchInput);
+    searchBar->addWidget(m_searchField);
+    searchBar->addWidget(goBtn);
+
+    connect(goBtn, &QPushButton::clicked, this, &CustomerPage::onSearchGo);
+    connect(m_authManager, &AuthManager::searchResultReceived,
+            this, &CustomerPage::onSearchResults);
+
+
+    m_searchResults = new QListWidget;
+    searchLayout->addLayout(searchBar);
+    searchLayout->addWidget(m_searchResults);
+
+    m_stack->addWidget(searchPage);  // index 1 - Search (واقعی)
+
     m_stack->addWidget(new QWidget(m_stack));  // index 2 - Library
     m_stack->addWidget(new QWidget(m_stack));  // index 3 - Cart
     m_stack->addWidget(new QWidget(m_stack));  // index 4 - Profile

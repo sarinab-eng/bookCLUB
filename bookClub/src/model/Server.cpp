@@ -135,9 +135,10 @@ void Server::readyRead() {
         handleGetPurchaseHistory(socket, json);
     } else if (type == "search_books") {
         handleSearchBooks(socket, json);
-    }
-
-
+    } else if (type == "post_review")   handlePostReview(socket, json);
+    else if (type == "edit_review")   handleEditReview(socket, json);
+    else if (type == "delete_review") handleDeleteReview(socket, json);
+    else if (type == "get_reviews")   handleGetReviews(socket, json);
 
 }
 
@@ -412,7 +413,8 @@ void Server::handleResetPassword(QTcpSocket* socket, const QJsonObject& data) {
 // ================= Book handlers =================
 
 void Server::handleGetBooks(QTcpSocket* socket) {
-    QJsonArray books = loadBooks();
+    QJsonArray books = enrichBooksWithRatings(loadBooks());
+
 
     QJsonObject response;
     response["type"] = "books_list";
@@ -747,7 +749,8 @@ void Server::handleSearchBooks(QTcpSocket* socket, const QJsonObject &json)
     for (const QJsonValue &val : allBooks) {
         QJsonObject book = val.toObject();
         if (book[field].toString().toLower().contains(query))
-            result.append(book);
+            result = enrichBooksWithRatings(result);
+
     }
 
     QJsonObject response;
@@ -757,3 +760,183 @@ void Server::handleSearchBooks(QTcpSocket* socket, const QJsonObject &json)
     socket->flush();
 }
 
+QJsonArray Server::loadReviews() {
+    QFile file("reviews.json");
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Could not open reviews.json";
+        return QJsonArray();
+    }
+    QByteArray data = file.readAll();
+    return QJsonDocument::fromJson(data).array();
+}
+
+void Server::saveReviews(const QJsonArray& reviews) {
+    QFile file("reviews.json");
+    if (!file.open(QIODevice::WriteOnly)) {
+        qDebug() << "Could not save reviews.json";
+        return;
+    }
+    file.write(QJsonDocument(reviews).toJson());
+}
+
+void Server::calculateAverageRating(const QString& bookId, double& avgOut, int& countOut) {
+    QJsonArray reviews = loadReviews();
+    double sum = 0;
+    int count = 0;
+    for (const QJsonValue& val : reviews) {
+        QJsonObject review = val.toObject();
+        if (review["book_id"].toString() == bookId) {
+            sum += review["rating"].toDouble();
+            count++;
+        }
+    }
+    countOut = count;
+    avgOut = (count > 0) ? (sum / count) : 0.0;
+}
+
+QJsonArray Server::enrichBooksWithRatings(QJsonArray books) {
+    QJsonArray result;
+    for (const QJsonValue& val : books) {
+        QJsonObject book = val.toObject();
+        double avg;
+        int count;
+        calculateAverageRating(book["id"].toString(), avg, count);
+        book["averageRating"] = avg;
+        book["reviewCount"] = count;
+        result.append(book);
+    }
+    return result;
+}
+void Server::handlePostReview(QTcpSocket* socket, const QJsonObject& data) {
+    QString bookId = data["book_id"].toString();
+    QString username = data["username"].toString();
+    int rating = data["rating"].toInt();
+    QString comment = data["comment"].toString();
+
+    QJsonObject response;
+    response["type"] = "post_review_response";
+
+    if (bookId.isEmpty() || username.isEmpty() || rating < 1 || rating > 5) {
+        response["success"] = false;
+        response["message"] = "اطلاعات نظر نامعتبر است";
+        socket->write(QJsonDocument(response).toJson());
+        socket->flush();
+        return;
+    }
+
+    QJsonArray reviews = loadReviews();
+    for (const QJsonValue& val : reviews) {
+        QJsonObject r = val.toObject();
+        if (r["book_id"].toString() == bookId && r["username"].toString() == username) {
+            response["success"] = false;
+            response["message"] = "شما قبلاً برای این کتاب نظر ثبت کرده‌اید";
+            socket->write(QJsonDocument(response).toJson());
+            socket->flush();
+            return;
+        }
+    }
+
+    QJsonObject newReview;
+    newReview["review_id"] = "r" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    newReview["book_id"] = bookId;
+    newReview["username"] = username;
+    newReview["rating"] = rating;
+    newReview["comment"] = comment;
+    newReview["timestamp"] = QDateTime::currentDateTime().toString(Qt::ISODate);
+
+    reviews.append(newReview);
+    saveReviews(reviews);
+
+    response["success"] = true;
+    response["review"] = newReview;
+    socket->write(QJsonDocument(response).toJson());
+    socket->flush();
+}
+
+void Server::handleEditReview(QTcpSocket* socket, const QJsonObject& data) {
+    QString reviewId = data["review_id"].toString();
+    QString username = data["username"].toString();
+
+    QJsonArray reviews = loadReviews();
+    QJsonObject response;
+    response["type"] = "edit_review_response";
+    bool found = false;
+
+    for (int i = 0; i < reviews.size(); i++) {
+        QJsonObject r = reviews[i].toObject();
+        if (r["review_id"].toString() == reviewId && r["username"].toString() == username) {
+            if (data.contains("rating")) r["rating"] = data["rating"].toInt();
+            if (data.contains("comment")) r["comment"] = data["comment"].toString();
+            r["timestamp"] = QDateTime::currentDateTime().toString(Qt::ISODate);
+            reviews[i] = r;
+            found = true;
+            break;
+        }
+    }
+
+    if (found) {
+        saveReviews(reviews);
+        response["success"] = true;
+    } else {
+        response["success"] = false;
+        response["message"] = "نظر یافت نشد یا مجاز به ویرایش نیستید";
+    }
+    socket->write(QJsonDocument(response).toJson());
+    socket->flush();
+}
+
+void Server::handleDeleteReview(QTcpSocket* socket, const QJsonObject& data) {
+    QString reviewId = data["review_id"].toString();
+    QString username = data["username"].toString();
+
+    QJsonArray reviews = loadReviews();
+    QJsonArray updated;
+    bool found = false;
+
+    for (const QJsonValue& val : reviews) {
+        QJsonObject r = val.toObject();
+        if (r["review_id"].toString() == reviewId && r["username"].toString() == username) {
+            found = true;
+            continue;
+        }
+        updated.append(r);
+    }
+
+    QJsonObject response;
+    response["type"] = "delete_review_response";
+    if (found) {
+        saveReviews(updated);
+        response["success"] = true;
+    } else {
+        response["success"] = false;
+        response["message"] = "نظر یافت نشد یا مجاز به حذف نیستید";
+    }
+    socket->write(QJsonDocument(response).toJson());
+    socket->flush();
+}
+
+void Server::handleGetReviews(QTcpSocket* socket, const QJsonObject& data) {
+    QString bookId = data["book_id"].toString();
+    QJsonArray reviews = loadReviews();
+    QJsonArray bookReviews;
+
+    for (const QJsonValue& val : reviews) {
+        QJsonObject r = val.toObject();
+        if (r["book_id"].toString() == bookId)
+            bookReviews.append(r);
+    }
+
+    double avg;
+    int count;
+    calculateAverageRating(bookId, avg, count);
+
+    QJsonObject response;
+    response["type"] = "reviews_list";
+    response["book_id"] = bookId;
+    response["reviews"] = bookReviews;
+    response["averageRating"] = avg;
+    response["reviewCount"] = count;
+
+    socket->write(QJsonDocument(response).toJson());
+    socket->flush();
+}

@@ -26,6 +26,7 @@ private slots:
 
 
 
+
 private:
     // --- Auth / User management ---
     void handleLogin(QTcpSocket* socket, const QJsonObject& data);
@@ -63,6 +64,18 @@ private:
     void savePurchaseHistory(const QJsonArray &history);
     void addBooksToLibrary(const QString &username, const QJsonArray &purchasedItems);
     double calculateDiscount(double total, int itemCount);
+
+
+    // ----Rating --
+
+    QJsonArray loadReviews();
+    void saveReviews(const QJsonArray& reviews);
+    void calculateAverageRating(const QString& bookId, double& avgOut, int& countOut);
+    QJsonArray enrichBooksWithRatings(QJsonArray books);
+    void handlePostReview(QTcpSocket* socket, const QJsonObject& data);
+    void handleEditReview(QTcpSocket* socket, const QJsonObject& data);
+    void handleDeleteReview(QTcpSocket* socket, const QJsonObject& data);
+    void handleGetReviews(QTcpSocket* socket, const QJsonObject& data);
 
 };
 
