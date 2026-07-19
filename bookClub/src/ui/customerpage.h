@@ -4,11 +4,15 @@
 #include <QWidget>
 #include <QStackedWidget>
 #include <QHBoxLayout>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QListWidget>
 #include <QJsonArray>
 #include <QJsonObject>
 #include "Authmanager.h"
 #include "cartpage.h"
 #include "librarypage.h"
+#include "bookdetailpage.h"
 
 
 
@@ -30,6 +34,8 @@ signals:
 private slots:
     void onLogout();
     void onBooksReceived(const QJsonArray &books);
+    void onSearchGo();
+    void onSearchResults(const QJsonArray &books);
 
     // این اسلات‌ها طبق قرارداد نام‌گذاری Qt، خودکار به دکمه‌های سایدبار وصل می‌شوند
     void on_homeButton_clicked();
@@ -47,6 +53,11 @@ private:
     QStackedWidget *m_stack;
     CartPage *m_cartPage;
     LibraryPage *m_libraryPage;
+    BookDetailPage *m_bookDetailPage;
+
+    QLineEdit   *m_searchInput   = nullptr;
+    QComboBox   *m_searchField   = nullptr;
+    QListWidget *m_searchResults = nullptr;
 
     QHBoxLayout *m_recommendedLayout;
     QHBoxLayout *m_newBooksLayout;

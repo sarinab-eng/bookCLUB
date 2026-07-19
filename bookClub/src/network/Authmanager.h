@@ -43,6 +43,12 @@ public:
     void requestCart(const QString &username);
     void removeFromCart(const QString &username, const QString &bookId);
     void checkout(const QString &username);
+    
+    void searchBooks(const QString &query, const QString &field);
+    void postReview(const QString &username, const QString &bookId, int rating, const QString &comment);
+    void getReviews(const QString &bookId);
+    void editReview(const QString &username, const QString &bookId, int rating, const QString &comment);
+    void deleteReview(const QString &username, const QString &bookId);
 
 private slots:
     void onReadyRead();
@@ -72,6 +78,12 @@ signals:
     void cartReceived(const QJsonArray &items);
     void itemRemovedFromCart(bool success, const QString &message);
     void checkoutFinished(bool success, const QString &message);
+
+    void searchResultReceived(const QJsonArray &books);
+    void reviewPosted(bool success, const QString &message);
+    void reviewsReceived(const QJsonArray &reviews);
+    void reviewEdited(bool success, const QString &message);
+    void reviewDeleted(bool success, const QString &message);
 
 private:
     QTcpSocket *m_socket;

@@ -17,6 +17,7 @@ SOURCES += \
     src/network/Authmanager.cpp \
     src/ui/adminpage.cpp \
     src/ui/cartpage.cpp \
+    src/ui/bookdetailpage.cpp \
     src/ui/customerpage.cpp \
     src/ui/genreselectiondialog.cpp \
     src/ui/librarypage.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     src/network/Authmanager.h \
     src/ui/adminpage.h \
     src/ui/cartpage.h \
+    src/ui/bookdetailpage.h \
     src/ui/customerpage.h \
     src/ui/genreselectiondialog.h \
     src/ui/librarypage.h \
