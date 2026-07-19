@@ -7,6 +7,7 @@ struct Book {
     QString id;
     QString title;
     QString author;
+    QString publisher;
     QString genre;
     double price = 0.0;
     QString coverImage;   // مسیر یا URL تصویر جلد

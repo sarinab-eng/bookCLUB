@@ -112,6 +112,10 @@ void AuthManager::onReadyRead() {
     else if (type == "books_list") {
         emit booksReceived(response["books"].toArray());
     }
+    else if (type == "search_result") {
+        emit searchResultReceived(response["books"].toArray());
+    }
+
     else if (type == "add_to_cart_response") {
         emit itemAddedToCart(response["success"].toBool(), response["message"].toString());
     }
@@ -149,6 +153,14 @@ void AuthManager::onReadyRead() {
     else if (type == "purchase_history_response") {
         emit purchaseHistoryReceived(response["items"].toArray());
     }
+      else if (type == "review_posted")
+        emit reviewPosted(response["success"].toBool(), response["message"].toString());
+    else if (type == "reviews_list")
+        emit reviewsReceived(response["reviews"].toArray());
+    else if (type == "review_edited")
+        emit reviewEdited(response["success"].toBool(), response["message"].toString());
+    else if (type == "review_deleted")
+        emit reviewDeleted(response["success"].toBool(), response["message"].toString());
 }
 
 // ---------------- Admin / Users ----------------
@@ -240,4 +252,45 @@ void AuthManager::requestPurchaseHistory(const QString &username)
     request["type"] = "get_purchase_history";
     request["username"] = username;
     sendJson(request);
+}
+void AuthManager::searchBooks(const QString &query, const QString &field) {
+    QJsonObject request;
+    request["type"] = "search_books";
+    request["query"] = query;
+    request["field"] = field;
+    sendJson(request);
+}
+void AuthManager::postReview(const QString &username, const QString &bookId, int rating, const QString &comment) {
+    QJsonObject req;
+    req["type"] = "post_review";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    req["rating"] = rating;
+    req["comment"] = comment;
+    sendJson(req);
+}
+
+void AuthManager::getReviews(const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "get_reviews";
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::editReview(const QString &username, const QString &bookId, int rating, const QString &comment) {
+    QJsonObject req;
+    req["type"] = "edit_review";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    req["rating"] = rating;
+    req["comment"] = comment;
+    sendJson(req);
+}
+
+void AuthManager::deleteReview(const QString &username, const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "delete_review";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    sendJson(req);
 }

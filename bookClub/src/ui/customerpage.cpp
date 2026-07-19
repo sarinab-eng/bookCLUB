@@ -4,6 +4,8 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QFrame>
+#include <QPushButton>
+#include <QListWidgetItem>
 
 CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), ui(new Ui::CustomerPage), m_authManager(authManager)
@@ -49,12 +51,51 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     connect(m_cartPage, &CartPage::checkoutSuccessful, m_libraryPage, &LibraryPage::requestLibraryRefresh);
 
     m_stack->addWidget(homePage);              // index 0 - Home
-    m_stack->addWidget(new QWidget(m_stack));  // index 1 - Search
-    m_stack->addWidget(m_libraryPage);
-    m_stack->addWidget(m_cartPage);
+
+    // ساخت صفحه واقعی جست‌وجو (index 1)
+    QWidget *searchPage = new QWidget;
+    QVBoxLayout *searchLayout = new QVBoxLayout(searchPage);
+
+    QHBoxLayout *searchBar = new QHBoxLayout;
+    m_searchInput = new QLineEdit;
+    m_searchInput->setPlaceholderText("Search books...");
+    m_searchField = new QComboBox;
+    m_searchField->addItems({"title", "author", "genre"});
+    QPushButton *goBtn = new QPushButton("Search");
+    searchBar->addWidget(m_searchInput);
+    searchBar->addWidget(m_searchField);
+    searchBar->addWidget(goBtn);
+
+    connect(goBtn, &QPushButton::clicked, this, &CustomerPage::onSearchGo);
+    connect(m_authManager, &AuthManager::searchResultReceived,
+            this, &CustomerPage::onSearchResults);
+
+    m_searchResults = new QListWidget;
+    searchLayout->addLayout(searchBar);
+    searchLayout->addWidget(m_searchResults);
+
+    m_stack->addWidget(searchPage);            // index 1 - Search
+    m_stack->addWidget(m_libraryPage);          // index 2 - Library
+    m_stack->addWidget(m_cartPage);             // index 3 - Cart
     m_stack->addWidget(new QWidget(m_stack));  // index 4 - Profile
     m_stack->addWidget(new QWidget(m_stack));  // index 5 - History
     m_stack->addWidget(new QWidget(m_stack));  // index 6 - Settings
+
+    m_bookDetailPage = new BookDetailPage(m_authManager, m_stack);
+    m_stack->addWidget(m_bookDetailPage);      // index 7 - Book detail
+
+    // کلیک روی نتیجه‌ی جست‌وجو، جزئیات کتاب رو باز می‌کنه
+    connect(m_searchResults, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
+        QJsonObject b = QJsonObject::fromVariantMap(item->data(Qt::UserRole).toMap());
+        m_bookDetailPage->setCurrentUsername(m_username);
+        m_bookDetailPage->setBookData(b);
+        m_stack->setCurrentWidget(m_bookDetailPage);
+    });
+
+    // اتصال دکمه بازگشتِ صفحه جزئیات به صفحه جست‌وجو
+    connect(m_bookDetailPage, &BookDetailPage::backRequested, this, [this](){
+        m_stack->setCurrentIndex(1);
+    });
 
     // ۳) جایگزینی layout قدیمی contentFrame با stack
     QLayout *oldLayout = ui->contentFrame->layout();
@@ -144,6 +185,27 @@ void CustomerPage::onBooksReceived(const QJsonArray &books) {
 
 void CustomerPage::onLogout() {
     emit logoutRequested();
+}
+
+void CustomerPage::onSearchGo()
+{
+    QString q = m_searchInput->text().trimmed();
+    if (q.isEmpty()) return;
+
+    if (m_authManager) {
+        m_authManager->searchBooks(q, m_searchField->currentText());
+    }
+}
+
+void CustomerPage::onSearchResults(const QJsonArray &books)
+{
+    m_searchResults->clear();
+    for (const QJsonValue &v : books) {
+        QJsonObject b = v.toObject();
+        QListWidgetItem *item = new QListWidgetItem(b["title"].toString() + " — " + b["author"].toString());
+        item->setData(Qt::UserRole, b.toVariantMap());
+        m_searchResults->addItem(item);
+    }
 }
 
 void CustomerPage::on_homeButton_clicked()     { m_stack->setCurrentIndex(0); }
