@@ -8,8 +8,8 @@
 #include <QJsonArray>
 
 static const QStringList kGenres = {
-    "Fantasy", "Science Fiction", "Romance", "Mystery", "History",
-    "Programming", "Psychology", "Philosophy", "Horror", "Adventure", "Biography"
+    "رمان", "علمی", "تاریخ", "کودک و نوجوان", "شعر",
+    "زندگی‌نامه", "فلسفه", "روان‌شناسی", "ماجراجویی", "علمی-تخیلی", "عاشقانه"
 };
 
 ProfilePage::ProfilePage(AuthManager *authManager, QWidget *parent)

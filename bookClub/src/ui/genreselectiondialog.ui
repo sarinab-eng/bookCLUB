@@ -40,57 +40,57 @@
    </property>
    <item>
     <property name="text">
-     <string>Fantasy</string>
+     <string>رمان</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Science Fiction</string>
+     <string>علمی</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Romance</string>
+     <string>تاریخ</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Mystery</string>
+     <string>کودک و نوجوان</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>History</string>
+     <string>شعر</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Programming</string>
+     <string>زندگی‌نامه</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Psychology</string>
+     <string>فلسفه</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Philosophy</string>
+     <string>روان‌شناسی</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Horror</string>
+     <string>ماجراجویی</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Adventure</string>
+     <string>علمی-تخیلی</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Biography</string>
+     <string>عاشقانه</string>
     </property>
    </item>
   </widget>

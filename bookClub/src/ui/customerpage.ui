@@ -170,6 +170,57 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="genreFilterLabel">
+        <property name="text">
+         <string>Browse by Genre</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="genreFilterComboBox"/>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="genreFilterScrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="genreFilterContainer">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>943</width>
+           <height>84</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="popularLabel">
+        <property name="text">
+         <string>Popular Books</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="popularScrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="popularContainer">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>943</width>
+           <height>84</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="newBooksLabel">
         <property name="text">
          <string>New Books</string>

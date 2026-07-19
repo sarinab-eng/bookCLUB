@@ -35,6 +35,8 @@ signals:
 private slots:
     void onLogout();
     void onBooksReceived(const QJsonArray &books);
+    void onProfileReceived(const QJsonObject &profile);
+    void onGenreFilterChanged(int index);
     void onSearchGo();
     void onSearchResults(const QJsonArray &books);
 
@@ -62,12 +64,19 @@ private:
     QListWidget *m_searchResults = nullptr;
 
     QHBoxLayout *m_recommendedLayout;
+    QHBoxLayout *m_genreFilterLayout;
+    QHBoxLayout *m_popularLayout;
     QHBoxLayout *m_newBooksLayout;
     QHBoxLayout *m_bestSellerLayout;
     QHBoxLayout *m_freeBooksLayout;
 
+    QJsonArray m_allBooks;
+    QStringList m_favoriteGenres;
+
     QWidget *createBookCard(const QJsonObject &book);
     void populateSection(QHBoxLayout *layout, const QJsonArray &books);
+    void updateRecommendedSection();
+    void populateGenreFilterCombo(const QJsonArray &books);
 };
 
 #endif

@@ -45,13 +45,12 @@ void AuthManager::sendJson(const QJsonObject &json)
         qDebug() << "Socket is NULL";
         return;
     }
-    QByteArray data = QJsonDocument(json).toJson(QJsonDocument::Compact);
-    qDebug() << "[CLIENT] sending:" << json.value("type").toString()
-             << "| socket state:" << m_socket->state()
-             << "| bytes:" << data.size();
-    qint64 written = m_socket->write(data);
-    bool flushed = m_socket->flush();
-    qDebug() << "[CLIENT] write() returned:" << written << "| flush() returned:" << flushed;
+    // پیام‌ها با '\n' جدا می‌شوند چون چند پیام JSON پشت‌سرهم می‌توانند در یک
+    // بسته‌ی TCP به هم بچسبند؛ بدون این جداکننده، سمت کلاینت نمی‌تواند
+    // مرز بین پیام‌ها را تشخیص بدهد و parse همه‌شان با هم شکست می‌خورد.
+    QByteArray data = QJsonDocument(json).toJson(QJsonDocument::Compact) + "\n";
+    m_socket->write(data);
+    m_socket->flush();
 }
 
 void AuthManager::getSecurityQuestion(const QString &username) {
@@ -78,12 +77,19 @@ void AuthManager::resetPassword(const QString &username, const QString &newPassw
 }
 
 void AuthManager::onReadyRead() {
-    QByteArray data = m_socket->readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(data);
-    if (doc.isNull()) return;
+    m_buffer.append(m_socket->readAll());
 
-    QJsonObject response = doc.object();
-    QString type = response["type"].toString();
+    int newlineIndex;
+    while ((newlineIndex = m_buffer.indexOf('\n')) != -1) {
+        QByteArray line = m_buffer.left(newlineIndex);
+        m_buffer.remove(0, newlineIndex + 1);
+        if (line.trimmed().isEmpty()) continue;
+
+        QJsonDocument doc = QJsonDocument::fromJson(line);
+        if (doc.isNull()) continue;
+
+        QJsonObject response = doc.object();
+        QString type = response["type"].toString();
 
     if (type == "login_response") {
         QString status = response["status"].toString();
@@ -165,6 +171,7 @@ void AuthManager::onReadyRead() {
         emit profileReceived(response);
     else if (type == "change_password_response")
         emit passwordChanged(response["success"].toBool(), response["message"].toString());
+    }
 }
 
 // ---------------- Admin / Users ----------------
@@ -172,11 +179,7 @@ void AuthManager::onReadyRead() {
 void AuthManager::requestUsersList() {
     QJsonObject request;
     request["type"] = "get_users";
-    if (m_socket && m_socket->state() == QAbstractSocket::ConnectedState) {
-        QJsonDocument doc(request);
-        m_socket->write(doc.toJson());
-    }
-    //sendJson(request);
+    sendJson(request);
 }
 
 void AuthManager::adminAction(const QString &type, const QString &username) {

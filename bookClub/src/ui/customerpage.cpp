@@ -6,6 +6,7 @@
 #include <QFrame>
 #include <QPushButton>
 #include <QListWidgetItem>
+#include <QTimer>
 
 CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), ui(new Ui::CustomerPage), m_authManager(authManager)
@@ -24,6 +25,11 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
 
     homeLayout->addWidget(ui->recommendedLabel);
     homeLayout->addWidget(ui->recommendedScrollArea);
+    homeLayout->addWidget(ui->genreFilterLabel);
+    homeLayout->addWidget(ui->genreFilterComboBox);
+    homeLayout->addWidget(ui->genreFilterScrollArea);
+    homeLayout->addWidget(ui->popularLabel);
+    homeLayout->addWidget(ui->popularScrollArea);
     homeLayout->addWidget(ui->newBooksLabel);
     homeLayout->addWidget(ui->newBooksScrollArea);
     homeLayout->addWidget(ui->bestSellerLabel);
@@ -33,15 +39,21 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
 
     // ساخت layout افقی برای هر کانتینر تا کارت‌های کتاب کنارهم چیده شوند
     m_recommendedLayout = new QHBoxLayout(ui->recommendedContainer);
+    m_genreFilterLayout = new QHBoxLayout(ui->genreFilterContainer);
+    m_popularLayout     = new QHBoxLayout(ui->popularContainer);
     m_newBooksLayout    = new QHBoxLayout(ui->newBooksContainer);
     m_bestSellerLayout  = new QHBoxLayout(ui->bestSellerContainer);
     m_freeBooksLayout   = new QHBoxLayout(ui->freeBooksContainer);
-    for (QHBoxLayout *l : {m_recommendedLayout, m_newBooksLayout, m_bestSellerLayout, m_freeBooksLayout}) {
+    for (QHBoxLayout *l : {m_recommendedLayout, m_genreFilterLayout, m_popularLayout, m_newBooksLayout, m_bestSellerLayout, m_freeBooksLayout}) {
         l->setContentsMargins(4, 4, 4, 4);
         l->addStretch();
     }
 
+    connect(ui->genreFilterComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &CustomerPage::onGenreFilterChanged);
+
     connect(m_authManager, &AuthManager::booksReceived, this, &CustomerPage::onBooksReceived);
+    connect(m_authManager, &AuthManager::profileReceived, this, &CustomerPage::onProfileReceived);
 
     // ۲) ساخت stacked widget و افزودن homePage + صفحات خالی
     m_stack = new QStackedWidget(ui->contentFrame);
@@ -129,7 +141,11 @@ void CustomerPage::setUsername(const QString &username) {
         m_profilePage->setUsername(username);
     }
 
-    if (m_authManager) m_authManager->requestBooks();
+    if (m_authManager) {
+        m_authManager->requestBooks();
+
+        m_authManager->requestProfile(username);
+    }
 }
 
 QWidget *CustomerPage::createBookCard(const QJsonObject &book) {
@@ -170,21 +186,82 @@ void CustomerPage::populateSection(QHBoxLayout *layout, const QJsonArray &books)
 }
 
 void CustomerPage::onBooksReceived(const QJsonArray &books) {
-    QJsonArray newBooks, bestSellers, freeBooks;
+    m_allBooks = books;
+
+    QJsonArray newBooks, bestSellers, freeBooks, popularBooks;
 
     for (const QJsonValue &v : books) {
         QJsonObject book = v.toObject();
         if (book["isNew"].toBool()) newBooks.append(book);
         if (book["isBestseller"].toBool()) bestSellers.append(book);
         if (book["isFree"].toBool()) freeBooks.append(book);
+        if (book["isPopular"].toBool()) popularBooks.append(book);
     }
 
-    // todo منطق پیشنهاد بر اساس ژانر مورد علاقه هنوز سمت کلاینت پیاده نشده،
-    // فعلاً کل لیست کتاب‌ها به عنوان پیشنهادی نمایش داده می‌شود
-    populateSection(m_recommendedLayout, books);
     populateSection(m_newBooksLayout, newBooks);
     populateSection(m_bestSellerLayout, bestSellers);
     populateSection(m_freeBooksLayout, freeBooks);
+    populateSection(m_popularLayout, popularBooks);
+
+    populateGenreFilterCombo(books);
+    updateRecommendedSection();
+}
+
+void CustomerPage::onProfileReceived(const QJsonObject &profile) {
+    if (profile.value("username").toString() != m_username) return;
+
+    m_favoriteGenres.clear();
+    for (const QJsonValue &v : profile.value("favoriteGenres").toArray())
+        m_favoriteGenres.append(v.toString());
+
+    updateRecommendedSection();
+}
+
+void CustomerPage::updateRecommendedSection() {
+    if (m_favoriteGenres.isEmpty()) {
+        // تا وقتی ژانرهای مورد علاقه از سرور نرسیده یا کاربر هیچ ژانری انتخاب نکرده،
+        // کل لیست کتاب‌ها به عنوان پیشنهادی نمایش داده می‌شود
+        populateSection(m_recommendedLayout, m_allBooks);
+        return;
+    }
+
+    QJsonArray recommended;
+    for (const QJsonValue &v : m_allBooks) {
+        QJsonObject book = v.toObject();
+        if (m_favoriteGenres.contains(book["genre"].toString()))
+            recommended.append(book);
+    }
+    populateSection(m_recommendedLayout, recommended);
+}
+
+void CustomerPage::populateGenreFilterCombo(const QJsonArray &books) {
+    QStringList genres;
+    for (const QJsonValue &v : books) {
+        QString genre = v.toObject()["genre"].toString();
+        if (!genre.isEmpty() && !genres.contains(genre))
+            genres.append(genre);
+    }
+    genres.sort();
+
+    ui->genreFilterComboBox->blockSignals(true);
+    ui->genreFilterComboBox->clear();
+    ui->genreFilterComboBox->addItems(genres);
+    ui->genreFilterComboBox->blockSignals(false);
+
+    onGenreFilterChanged(ui->genreFilterComboBox->currentIndex());
+}
+
+void CustomerPage::onGenreFilterChanged(int index) {
+    Q_UNUSED(index);
+    QString genre = ui->genreFilterComboBox->currentText();
+
+    QJsonArray filtered;
+    for (const QJsonValue &v : m_allBooks) {
+        QJsonObject book = v.toObject();
+        if (book["genre"].toString() == genre)
+            filtered.append(book);
+    }
+    populateSection(m_genreFilterLayout, filtered);
 }
 
 void CustomerPage::onLogout() {
