@@ -19,6 +19,7 @@ SOURCES += \
     src/model/Book.cpp \
     src/model/Server.cpp \
     src/model/User.cpp \
+    src/model/bookdetailpage.cpp \
     src/model/mainwindow.cpp
 
 # لیست تمام هدرها (بدون Bookreader)
@@ -30,6 +31,7 @@ HEADERS += \
     src/model/Publisher.h \
     src/model/Server.h \
     src/model/User.h \
+    src/model/bookdetailpage.h \
     src/model/mainwindow.h
 
 # فایل‌های طراحی رابط کاربری

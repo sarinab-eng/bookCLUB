@@ -154,3 +154,4 @@ void MainWindow::showLoginPage()    { m_stackedWidget->setCurrentWidget(m_loginP
 void MainWindow::showRegisterPage() { m_stackedWidget->setCurrentWidget(m_registerPage); }
 
 MainWindow::~MainWindow() { delete ui; }
+
