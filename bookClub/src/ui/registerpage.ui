@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RegisterPage</class>
+ <widget class="QWidget" name="RegisterPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>923</width>
+    <height>558</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#RegisterPage { 
+    background-color: #FFF0F5; /* صورتی بسیار روشن (LavenderBlush) */
+}
+
+QLabel#label {
+   font-size: 32px;
+    font-weight: bold;
+    color: #DB7093; /* صورتی تیره */
+    margin-bottom: 20px;
+    font-family: &quot;Segoe UI&quot;, &quot;Tahoma&quot;;
+}
+/* استایل کادر اصلی وسط صفحه */
+QFrame#registerFrame {
+    background-color: white;
+    border-radius: 20px;
+    border: 2px solid #FFB6C1;
+}
+
+/* استایل فیلدهای ورود متن و کمبوباکس */
+QLineEdit, QComboBox {
+    border: 2px solid #FFC0CB;
+    border-radius: 10px;
+    padding: 8px;
+    background: #FFFFFF;
+    selection-background-color: #FFB6C1;
+    font-size: 14px;
+}
+
+QLineEdit:focus, QComboBox:focus {
+    border: 2px solid #DB7093; /* تغییر رنگ مرز به صورتی هنگام فوکوس */
+    background-color: #ffffff;
+}
+
+/* استایل کمبوباکس */
+QComboBox {
+    padding-right: 20px;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 0px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* استایل دکمه اصلی ثبت نام */
+QPushButton#registerButton {
+    background-color: #FF69B4; /* صورتی سرخابی روشن هماهنگ با لاگین */
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    height: 40px;
+}
+
+QPushButton#registerButton:hover {
+    background-color: #FF1493; /* پررنگ‌تر شدن هنگام قرارگیری ماوس */
+}
+
+/* استایل دکمه بازگشت به لاگین (که شبیه به لینک است) */
+QPushButton#goToLoginButton {
+    background: transparent;
+    color: #DB7093;
+    text-decoration: underline;
+    border: none;
+}</string>
+  </property>
+  <widget class="QFrame" name="registerFrame">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>60</y>
+     <width>731</width>
+     <height>441</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>                               SIGN UP</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="usernameLineEdit">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Username</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="passwordLineEdit">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Password</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="confirmPasswordLineEdit">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Confirm_Pass</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="userTypeComboBox">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <item>
+       <property name="text">
+        <string>Customer</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Admin</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Publisher</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="securityAnswerLineEdit">
+      <property name="placeholderText">
+       <string>Who's your favorite auther?</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="registerButton">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="text">
+       <string>Sign Up</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="goToLoginButton">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="text">
+       <string>go to login page</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
