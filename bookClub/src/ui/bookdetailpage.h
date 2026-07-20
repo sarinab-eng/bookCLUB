@@ -25,6 +25,7 @@ public:
 signals:
     void backRequested();
     void addToCartRequested(const QJsonObject &book);
+    void saveForLaterRequested(const QJsonObject &book);
 
 private slots:
     void onPostReviewClicked();
@@ -50,6 +51,7 @@ private:
     QLabel *m_priceLabel;
     QLabel *m_descriptionLabel;
     QPushButton *m_addToCartButton;
+    QPushButton *m_saveForLaterButton;
     QPushButton *m_backButton;
 
     // کنترل‌های سیستم نقد و امتیازدهی (تم صورتی QSS)

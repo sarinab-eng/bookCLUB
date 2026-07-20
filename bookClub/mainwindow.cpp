@@ -115,9 +115,6 @@ void MainWindow::handleRegisterResult(bool success, const QString &message) {
 }
 
 void MainWindow::handleGenresSaved(bool success) {
-    // این اسلات هم بعد از انتخاب اولیه ژانر (اولین ورود) و هم موقع تغییر
-    // ژانرها از صفحه‌ی پروفایل صدا زده می‌شود؛ گذار به پنل کاربر و پیام
-    // خوش‌آمدگویی فقط باید مخصوص مسیر اولین ورود اجرا شود.
     if (!m_awaitingFirstLoginGenres) return;
     m_awaitingFirstLoginGenres = false;
 

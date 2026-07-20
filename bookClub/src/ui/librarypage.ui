@@ -32,12 +32,7 @@
     <widget class="QTableWidget" name="libraryTable">
      <column>
       <property name="text">
-       <string>تاریخ خرید</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>نویسنده</string>
+       <string>عنوان</string>
       </property>
      </column>
      <column>
@@ -47,7 +42,12 @@
      </column>
      <column>
       <property name="text">
-       <string>عنوان</string>
+       <string>نویسنده</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>تاریخ خرید</string>
       </property>
      </column>
     </widget>
@@ -63,17 +63,7 @@
     <widget class="QTableWidget" name="historyTable">
      <column>
       <property name="text">
-       <string>تاریخ</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>مبلغ پرداخت شده</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>تخفیف</string>
+       <string>کد تراکنش</string>
       </property>
      </column>
      <column>
@@ -83,7 +73,17 @@
      </column>
      <column>
       <property name="text">
-       <string>کد تراکنش</string>
+       <string>تخفیف</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>مبلغ پرداخت شده</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>تاریخ</string>
       </property>
      </column>
     </widget>

@@ -117,25 +117,31 @@ void BookDetailPage::setupUi()
     formLayout->addWidget(m_deleteReviewBtn);
     mainLayout->addLayout(formLayout);
 
-    // ۵. دکمه‌های بازگشت و خرید
+    // ۵. دکمه‌های بازگشت، خرید و ذخیره برای بعد
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     m_backButton = new QPushButton("Back", this);
     m_addToCartButton = new QPushButton("Add to Cart", this);
+    m_saveForLaterButton = new QPushButton("ذخیره برای بعد", this);
 
     // استایل صورتی برای دکمه‌ها
     QString btnStyle = "QPushButton { background-color: #FF8DA1; color: white; border-radius: 5px; padding: 8px; font-weight: bold; } "
                        "QPushButton:hover { background-color: #FF6F88; }";
     m_backButton->setStyleSheet(btnStyle);
     m_addToCartButton->setStyleSheet(btnStyle);
+    m_saveForLaterButton->setStyleSheet(btnStyle);
 
     buttonLayout->addWidget(m_backButton);
     buttonLayout->addWidget(m_addToCartButton);
+    buttonLayout->addWidget(m_saveForLaterButton);
     mainLayout->addLayout(buttonLayout);
 
     // سیگنال‌های کلیک
     connect(m_backButton, &QPushButton::clicked, this, &BookDetailPage::backRequested);
     connect(m_addToCartButton, &QPushButton::clicked, [this]() {
         emit addToCartRequested(m_currentBook);
+    });
+    connect(m_saveForLaterButton, &QPushButton::clicked, [this]() {
+        emit saveForLaterRequested(m_currentBook);
     });
     connect(m_submitReviewBtn, &QPushButton::clicked, this, &BookDetailPage::onPostReviewClicked);
     connect(m_deleteReviewBtn, &QPushButton::clicked, this, &BookDetailPage::onDeleteReviewClicked);

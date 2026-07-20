@@ -175,6 +175,12 @@ void AuthManager::onReadyRead() {
         emit profileReceived(response);
     else if (type == "change_password_response")
         emit passwordChanged(response["success"].toBool(), response["message"].toString());
+    else if (type == "save_book_response" || type == "unsave_book_response")
+        emit savedBookChanged(response["success"].toBool(), response["message"].toString());
+    else if (type == "saved_books_response")
+        emit savedBooksReceived(response["items"].toArray());
+    else if (type == "shelves_response")
+        emit shelvesReceived(response["success"].toBool(), response["message"].toString(), response["shelves"].toArray());
     }
 }
 
@@ -321,5 +327,73 @@ void AuthManager::deleteReview(const QString &username, const QString &reviewId)
     req["type"] = "delete_review";
     req["username"] = username;
     req["review_id"] = reviewId;
+    sendJson(req);
+}
+
+// ---------------- کتاب‌های ذخیره‌شده ----------------
+
+void AuthManager::saveBookForLater(const QString &username, const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "save_book";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::unsaveBook(const QString &username, const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "unsave_book";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::requestSavedBooks(const QString &username) {
+    QJsonObject req;
+    req["type"] = "get_saved_books";
+    req["username"] = username;
+    sendJson(req);
+}
+
+// ---------------- قفسه‌ها ----------------
+
+void AuthManager::createShelf(const QString &username, const QString &name) {
+    QJsonObject req;
+    req["type"] = "create_shelf";
+    req["username"] = username;
+    req["name"] = name;
+    sendJson(req);
+}
+
+void AuthManager::deleteShelf(const QString &username, const QString &shelfId) {
+    QJsonObject req;
+    req["type"] = "delete_shelf";
+    req["username"] = username;
+    req["shelf_id"] = shelfId;
+    sendJson(req);
+}
+
+void AuthManager::addBookToShelf(const QString &username, const QString &shelfId, const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "add_book_to_shelf";
+    req["username"] = username;
+    req["shelf_id"] = shelfId;
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::removeBookFromShelf(const QString &username, const QString &shelfId, const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "remove_book_from_shelf";
+    req["username"] = username;
+    req["shelf_id"] = shelfId;
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::requestShelves(const QString &username) {
+    QJsonObject req;
+    req["type"] = "get_shelves";
+    req["username"] = username;
     sendJson(req);
 }

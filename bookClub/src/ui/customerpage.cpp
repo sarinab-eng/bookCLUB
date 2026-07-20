@@ -135,6 +135,21 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
             QMessageBox::warning(this, "خطا", "افزودن به سبد خرید ناموفق بود: " + message);
     });
 
+    // دکمه‌ی «ذخیره برای بعد» صفحه‌ی جزئیات کتاب
+    connect(m_bookDetailPage, &BookDetailPage::saveForLaterRequested, this, [this](const QJsonObject &book){
+        if (m_authManager && !m_username.isEmpty())
+            m_authManager->saveBookForLater(m_username, book["id"].toString());
+    });
+    connect(m_authManager, &AuthManager::savedBookChanged, this, [this](bool success, const QString &message){
+        if (success)
+            QMessageBox::information(this, "کتابخانه شخصی", message);
+        else
+            QMessageBox::warning(this, "خطا", message);
+    });
+
+    // کلیک روی «مشاهده جزئیات» تو کتابخانه شخصی هم همون صفحه‌ی جزئیات رو باز می‌کنه
+    connect(m_libraryPage, &LibraryPage::bookDetailRequested, this, &CustomerPage::openBookDetail);
+
     // ۳) جایگزینی layout قدیمی contentFrame با stack
     QLayout *oldLayout = ui->contentFrame->layout();
     if (oldLayout) {

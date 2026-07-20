@@ -54,6 +54,18 @@ public:
     void editReview(const QString &username, const QString &reviewId, int rating, const QString &comment);
     void deleteReview(const QString &username, const QString &reviewId);
 
+    // ---- کتاب‌های ذخیره‌شده (Saved / Wishlist) ----
+    void saveBookForLater(const QString &username, const QString &bookId);
+    void unsaveBook(const QString &username, const QString &bookId);
+    void requestSavedBooks(const QString &username);
+
+    // ---- قفسه‌ها و دسته‌بندی‌های شخصی ----
+    void createShelf(const QString &username, const QString &name);
+    void deleteShelf(const QString &username, const QString &shelfId);
+    void addBookToShelf(const QString &username, const QString &shelfId, const QString &bookId);
+    void removeBookFromShelf(const QString &username, const QString &shelfId, const QString &bookId);
+    void requestShelves(const QString &username);
+
 private slots:
     void onReadyRead();
 
@@ -91,6 +103,13 @@ signals:
     void reviewsReceived(const QString &bookId, const QJsonArray &reviews);
     void reviewEdited(bool success, const QString &message);
     void reviewDeleted(bool success, const QString &message);
+
+    // ---- کتاب‌های ذخیره‌شده ----
+    void savedBookChanged(bool success, const QString &message);
+    void savedBooksReceived(const QJsonArray &items);
+
+    // ---- قفسه‌ها ----
+    void shelvesReceived(bool success, const QString &message, const QJsonArray &shelves);
 
 private:
     QTcpSocket *m_socket;
