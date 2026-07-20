@@ -1,4 +1,4 @@
-QT += core gui widgets network pdf pdfwidgets
+QT += core gui widgets network
 
 CONFIG += c++17
 
@@ -23,7 +23,6 @@ SOURCES += \
     src/ui/genreselectiondialog.cpp \
     src/ui/librarypage.cpp \
     src/ui/loginpage.cpp \
-    src/ui/pdfreaderpage.cpp \
     src/ui/profilepage.cpp \
     src/ui/publisherpage.cpp \
     src/ui/registerpage.cpp
@@ -44,10 +43,23 @@ HEADERS += \
     src/ui/genreselectiondialog.h \
     src/ui/librarypage.h \
     src/ui/loginpage.h \
-    src/ui/pdfreaderpage.h \
     src/ui/profilepage.h \
     src/ui/publisherpage.h \
     src/ui/registerpage.h
+
+# ماژول مطالعه‌ی داخلی PDF روی ویندوز فقط با کیت MSVC در دسترس است، نه
+# MinGW (چون QtPdf بر پایه‌ی PDFium ساخته شده و برای MinGW بیلد نمیشود). اگر این
+# ماژول موجود نباشد PdfReaderPage اصلاً کامپایل نمی‌شود و «مطالعه کتاب»
+# فایل رو با نرم‌افزار پیش‌فرض سیستم باز می‌کنه ( کد src/ui/customerpage.cpp
+# داخل بلاک #ifdef HAVE_QT_PDF ).
+qtHaveModule(pdf):qtHaveModule(pdfwidgets) {
+    QT += pdf pdfwidgets
+    DEFINES += HAVE_QT_PDF
+    SOURCES += src/ui/pdfreaderpage.cpp
+    HEADERS += src/ui/pdfreaderpage.h
+} else {
+    warning("Qt PDF module not found - in-app PDF reader disabled, falling back to external file open.")
+}
 
 FORMS += \
     mainwindow.ui \

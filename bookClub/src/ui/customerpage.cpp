@@ -9,6 +9,8 @@
 #include <QTimer>
 #include <QMouseEvent>
 #include <QMessageBox>
+#include <QDesktopServices>
+#include <QUrl>
 #include <functional>
 
 // QFrame ساده که با کلیک، callback داده‌شده رو صدا می‌زند؛ برای کلیک‌پذیر
@@ -112,8 +114,10 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     m_bookDetailPage = new BookDetailPage(m_authManager, m_stack);
     m_stack->addWidget(m_bookDetailPage);      // index 7 - Book detail
 
+#ifdef HAVE_QT_PDF
     m_pdfReaderPage = new PdfReaderPage(m_authManager, m_stack);
     m_stack->addWidget(m_pdfReaderPage);       // index 8 - PDF Reader
+#endif
 
     //کلیک روی نتیجه‌ی جست‌وجو، جزئیات کتاب رو باز میکند
     connect(m_searchResults, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
@@ -152,15 +156,29 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
 
     connect(m_libraryPage, &LibraryPage::bookDetailRequested, this, &CustomerPage::openBookDetail);
 
-    // دکمه‌ی «مطالعه کتاب» در کتابخانه شخصی، ماژول PDF Reader داخل برنامه را باز میکند
+    // دکمه‌ی «مطالعه کتاب» در کتابخانه شخصی: اگه ماژول PDF Reader در دسترس باشد
+    // (HAVE_QT_PDF)، داخل برنامه باز میشود وگرنه (مثلاً کیت MinGW روی ویندوز که
+    // Qt PDF را پشتیبانی نیمکند) با نرم‌افزار پیش‌فرض سیستم باز میشود
     connect(m_libraryPage, &LibraryPage::readBookRequested, this, [this](const QJsonObject &book){
+#ifdef HAVE_QT_PDF
         m_previousPageIndex = m_stack->currentIndex();
         m_pdfReaderPage->openBook(book);
         m_stack->setCurrentWidget(m_pdfReaderPage);
+#else
+        QString fileUrl = book.value("fileURL").toString();
+        if (fileUrl.isEmpty()) {
+            QMessageBox::information(this, "کتاب", "فایل PDF برای این کتاب تعریف نشده است.");
+            return;
+        }
+        if (!QDesktopServices::openUrl(QUrl::fromLocalFile(fileUrl)))
+            QMessageBox::warning(this, "خطا", "باز کردن فایل ممکن نشد: " + fileUrl);
+#endif
     });
+#ifdef HAVE_QT_PDF
     connect(m_pdfReaderPage, &PdfReaderPage::backRequested, this, [this](){
         m_stack->setCurrentIndex(m_previousPageIndex);
     });
+#endif
 
     // ۳) جایگزینی layout قدیمی contentFrame با stack
     QLayout *oldLayout = ui->contentFrame->layout();
@@ -191,9 +209,11 @@ void CustomerPage::setUsername(const QString &username) {
     if (m_profilePage) {
         m_profilePage->setUsername(username);
     }
+#ifdef HAVE_QT_PDF
     if (m_pdfReaderPage) {
         m_pdfReaderPage->setCurrentUsername(username);
     }
+#endif
 
     if (m_authManager) {
         m_authManager->requestBooks();

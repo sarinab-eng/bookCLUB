@@ -62,6 +62,10 @@ void MainWindow::setupConnections() {
         m_currentUsername.clear();
         m_stackedWidget->setCurrentWidget(m_loginPage);
     });
+    connect(m_adminPage, &AdminPage::logoutRequested, this, [this]() {
+        m_currentUsername.clear();
+        m_stackedWidget->setCurrentWidget(m_loginPage);
+    });
 
     connect(m_loginPage, &LoginPage::forgotPasswordRequested,  this, &MainWindow::onForgotPasswordRequested);
     connect(m_authManager, &AuthManager::securityQuestionReceived, this, &MainWindow::handleSecurityQuestion);

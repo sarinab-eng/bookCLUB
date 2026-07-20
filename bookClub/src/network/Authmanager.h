@@ -78,6 +78,13 @@ public:
     void requestPublisherBooks(const QString &username);
     void requestPublisherStats(const QString &username);
 
+    // ---- پنل مدیر: نظارت بر کتاب‌ها و نظرات ----
+    void requestAllBooksForAdmin();
+    void adminUpdateBook(const QString &bookId, const QJsonObject &fields);
+    void adminDeleteBook(const QString &bookId);
+    void requestAllReviewsForAdmin();
+    void adminDeleteReview(const QString &reviewId);
+
 private slots:
     void onReadyRead();
 
@@ -132,6 +139,13 @@ signals:
     void bookActiveStatusChanged(bool success, const QString &message);
     void publisherBooksReceived(const QJsonArray &books);
     void publisherStatsReceived(const QJsonObject &stats);
+
+    // ---- پنل مدیر: نظارت بر کتاب‌ها و نظرات ----
+    void adminBooksReceived(const QJsonArray &books);
+    void adminBookUpdated(bool success, const QString &message);
+    void adminBookDeleted(bool success, const QString &message);
+    void adminReviewsReceived(const QJsonArray &reviews);
+    void adminReviewDeleted(bool success, const QString &message);
 
 private:
     QTcpSocket *m_socket;

@@ -193,6 +193,16 @@ void AuthManager::onReadyRead() {
         emit publisherBooksReceived(response["books"].toArray());
     else if (type == "publisher_stats_response")
         emit publisherStatsReceived(response);
+    else if (type == "admin_books_response")
+        emit adminBooksReceived(response["books"].toArray());
+    else if (type == "admin_update_book_response")
+        emit adminBookUpdated(response["success"].toBool(), response["message"].toString());
+    else if (type == "admin_delete_book_response")
+        emit adminBookDeleted(response["success"].toBool(), response["message"].toString());
+    else if (type == "admin_reviews_response")
+        emit adminReviewsReceived(response["reviews"].toArray());
+    else if (type == "admin_delete_review_response")
+        emit adminReviewDeleted(response["success"].toBool(), response["message"].toString());
     }
 }
 
@@ -473,5 +483,40 @@ void AuthManager::requestPublisherStats(const QString &username) {
     QJsonObject req;
     req["type"] = "get_publisher_stats";
     req["username"] = username;
+    sendJson(req);
+}
+
+// ---------------- پنل مدیر: نظارت بر کتاب‌ها و نظرات ----------------
+
+void AuthManager::requestAllBooksForAdmin() {
+    QJsonObject req;
+    req["type"] = "admin_get_books";
+    sendJson(req);
+}
+
+void AuthManager::adminUpdateBook(const QString &bookId, const QJsonObject &fields) {
+    QJsonObject req = fields;
+    req["type"] = "admin_update_book";
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::adminDeleteBook(const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "admin_delete_book";
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::requestAllReviewsForAdmin() {
+    QJsonObject req;
+    req["type"] = "admin_get_reviews";
+    sendJson(req);
+}
+
+void AuthManager::adminDeleteReview(const QString &reviewId) {
+    QJsonObject req;
+    req["type"] = "admin_delete_review";
+    req["review_id"] = reviewId;
     sendJson(req);
 }
