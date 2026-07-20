@@ -66,6 +66,10 @@ public:
     void removeBookFromShelf(const QString &username, const QString &shelfId, const QString &bookId);
     void requestShelves(const QString &username);
 
+    // ---- پیشرفت مطالعه ----
+    void requestReadingProgress(const QString &username, const QString &bookId);
+    void saveReadingProgress(const QString &username, const QString &bookId, int page);
+
 private slots:
     void onReadyRead();
 
@@ -110,6 +114,9 @@ signals:
 
     // ---- قفسه‌ها ----
     void shelvesReceived(bool success, const QString &message, const QJsonArray &shelves);
+
+    // ---- پیشرفت مطالعه ----
+    void readingProgressReceived(const QString &bookId, int page);
 
 private:
     QTcpSocket *m_socket;

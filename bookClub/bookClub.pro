@@ -1,4 +1,4 @@
-QT += core gui widgets network
+QT += core gui widgets network pdf pdfwidgets
 
 CONFIG += c++17
 
@@ -22,6 +22,7 @@ SOURCES += \
     src/ui/genreselectiondialog.cpp \
     src/ui/librarypage.cpp \
     src/ui/loginpage.cpp \
+    src/ui/pdfreaderpage.cpp \
     src/ui/profilepage.cpp \
     src/ui/registerpage.cpp
 
@@ -40,6 +41,7 @@ HEADERS += \
     src/ui/genreselectiondialog.h \
     src/ui/librarypage.h \
     src/ui/loginpage.h \
+    src/ui/pdfreaderpage.h \
     src/ui/profilepage.h \
     src/ui/registerpage.h
 

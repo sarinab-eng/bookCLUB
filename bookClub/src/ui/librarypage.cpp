@@ -6,8 +6,6 @@
 #include <QJsonValue>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QDesktopServices>
-#include <QUrl>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidgetItem>
@@ -81,14 +79,14 @@ void LibraryPage::buildExtraTabs()
 
     QHBoxLayout *myBooksButtons = new QHBoxLayout;
     QPushButton *viewDetailsBtn = new QPushButton("مشاهده جزئیات");
-    QPushButton *openFileBtn = new QPushButton("باز کردن فایل");
+    QPushButton *readBookBtn = new QPushButton("مطالعه کتاب");
     myBooksButtons->addWidget(viewDetailsBtn);
-    myBooksButtons->addWidget(openFileBtn);
+    myBooksButtons->addWidget(readBookBtn);
     myBooksLayout->addLayout(myBooksButtons);
     myBooksLayout->addWidget(ui->refreshButton);
 
     connect(viewDetailsBtn, &QPushButton::clicked, this, &LibraryPage::onViewDetailsClicked);
-    connect(openFileBtn, &QPushButton::clicked, this, &LibraryPage::onOpenFileClicked);
+    connect(readBookBtn, &QPushButton::clicked, this, &LibraryPage::onReadBookClicked);
 
     tabs->addTab(myBooksTab, "کتاب‌های من");
 
@@ -239,7 +237,7 @@ void LibraryPage::onViewDetailsClicked()
     }
 }
 
-void LibraryPage::onOpenFileClicked()
+void LibraryPage::onReadBookClicked()
 {
     int row = ui->libraryTable->currentRow();
     if (row < 0) {
@@ -248,18 +246,10 @@ void LibraryPage::onOpenFileClicked()
     }
     QString bookId = ui->libraryTable->item(row, 0)->data(Qt::UserRole).toString();
     for (const QJsonValue &v : m_libraryBooks) {
-        QJsonObject book = v.toObject();
-        if (book["id"].toString() != bookId) continue;
-
-        QString fileUrl = book.value("fileURL").toString();
-        if (fileUrl.isEmpty()) {
-            QMessageBox::information(this, "فایل کتاب", "فایل PDF برای این کتاب تعریف نشده است.");
+        if (v.toObject()["id"].toString() == bookId) {
+            emit readBookRequested(v.toObject());
             return;
         }
-        if (!QDesktopServices::openUrl(QUrl::fromLocalFile(fileUrl))) {
-            QMessageBox::warning(this, "خطا", "باز کردن فایل ممکن نشد: " + fileUrl);
-        }
-        return;
     }
 }
 

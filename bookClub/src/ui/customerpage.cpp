@@ -112,6 +112,9 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     m_bookDetailPage = new BookDetailPage(m_authManager, m_stack);
     m_stack->addWidget(m_bookDetailPage);      // index 7 - Book detail
 
+    m_pdfReaderPage = new PdfReaderPage(m_authManager, m_stack);
+    m_stack->addWidget(m_pdfReaderPage);       // index 8 - PDF Reader
+
     //کلیک روی نتیجه‌ی جست‌وجو، جزئیات کتاب رو باز میکند
     connect(m_searchResults, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
         QJsonObject b = QJsonObject::fromVariantMap(item->data(Qt::UserRole).toMap());
@@ -147,8 +150,17 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
             QMessageBox::warning(this, "خطا", message);
     });
 
-    // کلیک روی «مشاهده جزئیات» تو کتابخانه شخصی هم همون صفحه‌ی جزئیات رو باز می‌کنه
     connect(m_libraryPage, &LibraryPage::bookDetailRequested, this, &CustomerPage::openBookDetail);
+
+    // دکمه‌ی «مطالعه کتاب» در کتابخانه شخصی، ماژول PDF Reader داخل برنامه را باز میکند
+    connect(m_libraryPage, &LibraryPage::readBookRequested, this, [this](const QJsonObject &book){
+        m_previousPageIndex = m_stack->currentIndex();
+        m_pdfReaderPage->openBook(book);
+        m_stack->setCurrentWidget(m_pdfReaderPage);
+    });
+    connect(m_pdfReaderPage, &PdfReaderPage::backRequested, this, [this](){
+        m_stack->setCurrentIndex(m_previousPageIndex);
+    });
 
     // ۳) جایگزینی layout قدیمی contentFrame با stack
     QLayout *oldLayout = ui->contentFrame->layout();
@@ -178,6 +190,9 @@ void CustomerPage::setUsername(const QString &username) {
     }
     if (m_profilePage) {
         m_profilePage->setUsername(username);
+    }
+    if (m_pdfReaderPage) {
+        m_pdfReaderPage->setCurrentUsername(username);
     }
 
     if (m_authManager) {

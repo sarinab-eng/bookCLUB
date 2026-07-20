@@ -14,6 +14,7 @@
 #include "librarypage.h"
 #include "bookdetailpage.h"
 #include "profilepage.h"
+#include "pdfreaderpage.h"
 
 
 
@@ -58,6 +59,7 @@ private:
     LibraryPage *m_libraryPage;
     BookDetailPage *m_bookDetailPage;
     ProfilePage *m_profilePage;
+    PdfReaderPage *m_pdfReaderPage;
 
     QLineEdit   *m_searchInput   = nullptr;
     QComboBox   *m_searchField   = nullptr;

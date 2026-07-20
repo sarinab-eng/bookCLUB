@@ -26,6 +26,7 @@ public:
 
 signals:
     void bookDetailRequested(const QJsonObject &book);
+    void readBookRequested(const QJsonObject &book);
 
 private slots:
     void onLibraryReceived(const QJsonArray &books);
@@ -34,7 +35,7 @@ private slots:
     void onSavedBookChanged(bool success, const QString &message);
     void onShelvesReceived(bool success, const QString &message, const QJsonArray &shelves);
 
-    void onOpenFileClicked();
+    void onReadBookClicked();
     void onViewDetailsClicked();
     void onRemoveSavedClicked();
     void onShelfSelectionChanged();

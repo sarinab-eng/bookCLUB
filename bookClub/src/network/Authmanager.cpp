@@ -181,6 +181,8 @@ void AuthManager::onReadyRead() {
         emit savedBooksReceived(response["items"].toArray());
     else if (type == "shelves_response")
         emit shelvesReceived(response["success"].toBool(), response["message"].toString(), response["shelves"].toArray());
+    else if (type == "reading_progress_response")
+        emit readingProgressReceived(response["book_id"].toString(), response["page"].toInt());
     }
 }
 
@@ -395,5 +397,24 @@ void AuthManager::requestShelves(const QString &username) {
     QJsonObject req;
     req["type"] = "get_shelves";
     req["username"] = username;
+    sendJson(req);
+}
+
+// ---------------- پیشرفت مطالعه ----------------
+
+void AuthManager::requestReadingProgress(const QString &username, const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "get_reading_progress";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::saveReadingProgress(const QString &username, const QString &bookId, int page) {
+    QJsonObject req;
+    req["type"] = "save_reading_progress";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    req["page"] = page;
     sendJson(req);
 }
