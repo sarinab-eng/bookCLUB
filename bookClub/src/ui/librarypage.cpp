@@ -55,6 +55,12 @@ void LibraryPage::requestLibraryRefresh()
     m_authManager->requestShelves(m_username);
 }
 
+void LibraryPage::showHistoryTab()
+{
+    if (m_tabs && m_historyTabIndex >= 0)
+        m_tabs->setCurrentIndex(m_historyTabIndex);
+}
+
 void LibraryPage::setupTables()
 {
     ui->libraryTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -67,7 +73,8 @@ void LibraryPage::setupTables()
 
 void LibraryPage::buildExtraTabs()
 {
-    QTabWidget *tabs = new QTabWidget(this);
+    m_tabs = new QTabWidget(this);
+    QTabWidget *tabs = m_tabs;
 
     // ---- تب ۱: کتاب‌های من ----
     QWidget *myBooksTab = new QWidget;
@@ -159,7 +166,7 @@ void LibraryPage::buildExtraTabs()
     historyLayout->addWidget(ui->label_2);
     historyLayout->addWidget(ui->historyTable);
 
-    tabs->addTab(historyTab, "تاریخچه خرید");
+    m_historyTabIndex = tabs->addTab(historyTab, "تاریخچه خرید");
 
     QLayout *oldLayout = layout();
     if (oldLayout) {

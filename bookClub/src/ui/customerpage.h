@@ -50,7 +50,6 @@ private slots:
     void on_cartButton_clicked();
     void on_profileButton_clicked();
     void on_historyButton_clicked();
-    void on_settingsButton_clicked();
 
 private:
     Ui::CustomerPage *ui;

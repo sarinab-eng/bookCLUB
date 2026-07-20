@@ -138,15 +138,19 @@ void ProfilePage::onSaveGenresClicked()
 
 void ProfilePage::onGenresSaved(bool success)
 {
-    // اولین ورود (انتخاب ژانر تو GenreSelectionDialog) هم از همین سیگنال استفاده می‌کنه؛
-    // این صفحه فقط وقتی باید واکنش نشون بده که خودش درخواست ذخیره رو زده باشه
+    // اولین ورود (انتخاب ژانر تو GenreSelectionDialog) هم از همین سیگنال استفاده میکند
+    // این صفحه فقط وقتی باید واکنش نشون دهد که خودش درخواست ذخیره رو زده باشد
     if (!m_savingGenres) return;
     m_savingGenres = false;
 
-    if (success)
+    if (success) {
         QMessageBox::information(this, "موفق", "ژانرهای مورد علاقه ذخیره شد.");
-    else
+        // پروفایل رو دوباره می‌گیریم تا سیگنال profileReceived دوباره فرستاده شود
+        // CustomerPage هم به همین سیگنال گوش می دهد و لیست پیشنهادی رو آپدیت میکند
+        requestProfileRefresh();
+    } else {
         QMessageBox::warning(this, "خطا", "ذخیره ژانرها با خطا مواجه شد.");
+    }
 }
 
 void ProfilePage::onChangePasswordClicked()

@@ -7,6 +7,7 @@
 #include <QListWidget>
 #include <QComboBox>
 #include <QPushButton>
+#include <QTabWidget>
 #include "Authmanager.h"
 
 namespace Ui {
@@ -23,6 +24,7 @@ public:
 
     void setUsername(const QString &username);
     void requestLibraryRefresh();
+    void showHistoryTab();
 
 signals:
     void bookDetailRequested(const QJsonObject &book);
@@ -56,6 +58,9 @@ private:
     void setupTables();
     void buildExtraTabs();
     QJsonObject currentShelf() const;
+
+    QTabWidget *m_tabs = nullptr;
+    int m_historyTabIndex = -1;
 
     // ---- تب کتاب‌های ذخیره‌شده ----
     QWidget *m_savedTab;

@@ -39,12 +39,34 @@ void PublisherPage::refresh()
 
 void PublisherPage::setupUi()
 {
+    // هم‌رنگ با تم صورتی پنل مدیر سیستم (adminpage.ui)
+    setObjectName("PublisherPage");
+    setStyleSheet(
+        "#PublisherPage { background-color: #FFF0F5; font-family: \"Segoe UI\", \"Tahoma\"; }"
+        "QLabel { color: #DB7093; font-family: \"Segoe UI\", \"Tahoma\"; }"
+        "QLineEdit { border: 2px solid #FFC0CB; border-radius: 10px; padding: 6px; background: #FFFFFF; color: #333333; }"
+        "QLineEdit:focus { border: 2px solid #DB7093; }"
+        "QPushButton { background-color: #FF69B4; color: #FFFFFF; border-radius: 10px; padding: 8px 15px; font-weight: bold; }"
+        "QPushButton:hover { background-color: #FF1493; }"
+        "QTableWidget, QTableView { background-color: #FFFFFF; border: 2px solid #FFC0CB; border-radius: 15px;"
+        "  gridline-color: #FFF0F5; selection-background-color: #FFB6C1; selection-color: #FFFFFF; }"
+        "QHeaderView::section { background-color: #FF69B4; color: #FFFFFF; padding: 6px; border: none; font-weight: bold; }"
+        "QTabWidget::pane { border: 2px solid #FFC0CB; border-radius: 10px; }"
+        "QTabBar::tab { background: #FFFFFF; color: #DB7093; border: 2px solid #FFC0CB; border-bottom: none;"
+        "  border-top-left-radius: 10px; border-top-right-radius: 10px; padding: 8px 16px; font-weight: bold; }"
+        "QTabBar::tab:selected { background: #FF69B4; color: #FFFFFF; }"
+        "#logoutBtn { background-color: #E25858; }"
+        "#logoutBtn:hover { background-color: #C0392B; }"
+        "#panelTitle { color: #DB7093; font-size: 16px; font-weight: bold; }"
+        );
+
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
     QLabel *panelTitleLabel = new QLabel("پنل ناشر");
-    panelTitleLabel->setStyleSheet("font-weight: bold; font-size: 16px;");
+    panelTitleLabel->setObjectName("panelTitle");
     QPushButton *logoutButton = new QPushButton("خروج");
+    logoutButton->setObjectName("logoutBtn");
     headerLayout->addWidget(panelTitleLabel);
     headerLayout->addStretch();
     headerLayout->addWidget(logoutButton);

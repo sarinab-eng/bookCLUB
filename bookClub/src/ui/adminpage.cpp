@@ -116,6 +116,10 @@ void AdminPage::buildContentTabs() {
     QLabel *panelTitleLabel = new QLabel("پنل مدیر سیستم");
     panelTitleLabel->setStyleSheet("font-weight: bold; font-size: 16px;");
     QPushButton *logoutButton = new QPushButton("خروج");
+    logoutButton->setStyleSheet(
+        "QPushButton { background-color: #E25858; color: white; border-radius: 10px;"
+        " padding: 8px 15px; font-weight: bold; }"
+        "QPushButton:hover { background-color: #C0392B; }");
     headerLayout->addWidget(panelTitleLabel);
     headerLayout->addStretch();
     headerLayout->addWidget(logoutButton);

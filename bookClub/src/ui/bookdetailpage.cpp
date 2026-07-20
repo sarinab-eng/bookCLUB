@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QJsonArray>
 #include <QMessageBox>
+#include <QPixmap>
 
 BookDetailPage::BookDetailPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), m_authManager(authManager)
@@ -32,6 +33,18 @@ void BookDetailPage::setBookData(const QJsonObject &book)
     m_currentBook = book;
     resetReviewForm();
 
+    QString coverPath = book.value("coverImage").toString();
+    QPixmap pixmap(coverPath);
+    if (!coverPath.isEmpty() && !pixmap.isNull()) {
+        m_coverLabel->setPixmap(pixmap.scaled(m_coverLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        m_coverLabel->setText(QString());
+        m_coverLabel->setStyleSheet("border: none;");
+    } else {
+        m_coverLabel->setPixmap(QPixmap());
+        m_coverLabel->setText("📖");
+        m_coverLabel->setStyleSheet("border: none; background-color: #FFF0F5; border-radius: 8px; font-size: 60px;");
+    }
+
     m_titleLabel->setText("Title: " + book.value("title").toString());
     m_authorLabel->setText("Author: " + book.value("author").toString());
     m_genreLabel->setText("Genre: " + book.value("genre").toString());
@@ -59,6 +72,12 @@ void BookDetailPage::resetReviewForm()
 void BookDetailPage::setupUi()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+    // ۰. عکس روی جلد
+    m_coverLabel = new QLabel(this);
+    m_coverLabel->setFixedSize(180, 220);
+    m_coverLabel->setAlignment(Qt::AlignCenter);
+    mainLayout->addWidget(m_coverLabel, 0, Qt::AlignHCenter);
 
     // ۱. بخش اطلاعات کتاب
     m_titleLabel = new QLabel(this);

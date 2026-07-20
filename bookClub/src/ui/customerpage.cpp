@@ -11,6 +11,8 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QPixmap>
+#include <QScrollArea>
 #include <functional>
 
 // QFrame ساده که با کلیک، callback داده‌شده رو صدا می‌زند؛ برای کلیک‌پذیر
@@ -43,7 +45,9 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     homeLayout->addWidget(ui->recommendedLabel);
     homeLayout->addWidget(ui->recommendedScrollArea);
     homeLayout->addWidget(ui->genreFilterLabel);
-    homeLayout->addWidget(ui->genreFilterComboBox);
+    ui->genreFilterComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    ui->genreFilterComboBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    homeLayout->addWidget(ui->genreFilterComboBox, 0, Qt::AlignLeft);
     homeLayout->addWidget(ui->genreFilterScrollArea);
     homeLayout->addWidget(ui->popularLabel);
     homeLayout->addWidget(ui->popularScrollArea);
@@ -53,6 +57,16 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     homeLayout->addWidget(ui->bestSellerScrollArea);
     homeLayout->addWidget(ui->freeBooksLabel);
     homeLayout->addWidget(ui->freeBooksScrollArea);
+
+    // هر بخش فقط به‌صورت افقی اسکرول می‌شود؛ ارتفاعش ثابت و برابر با ارتفاع کامل کارت است
+    // تا کارت هیچ‌وقت از بالا/پایین بریده نشود
+    for (QScrollArea *sectionArea : {ui->recommendedScrollArea, ui->genreFilterScrollArea,
+                                      ui->popularScrollArea, ui->newBooksScrollArea,
+                                      ui->bestSellerScrollArea, ui->freeBooksScrollArea}) {
+        sectionArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        sectionArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        sectionArea->setFixedHeight(210);
+    }
 
     // ساخت layout افقی برای هر کانتینر تا کارت‌های کتاب کنارهم چیده شوند
     m_recommendedLayout = new QHBoxLayout(ui->recommendedContainer);
@@ -80,7 +94,16 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
 
     connect(m_cartPage, &CartPage::checkoutSuccessful, m_libraryPage, &LibraryPage::requestLibraryRefresh);
 
-    m_stack->addWidget(homePage);              // index 0 - Home
+    // کل صفحه‌ی Home داخل یک اسکرول‌ایریای بیرونی قرار می‌گیرد تا اگر مجموع بخش‌ها
+    // از ارتفاع پنجره بیشتر شد، کل صفحه اسکرول شود، نه بخش‌های کوچک داخلش
+    QScrollArea *homeScrollArea = new QScrollArea;
+    homeScrollArea->setWidgetResizable(true);
+    homeScrollArea->setFrameShape(QFrame::NoFrame);
+    homeScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    homeScrollArea->setStyleSheet("QScrollArea { border: none; background: transparent; }");
+    homeScrollArea->setWidget(homePage);
+
+    m_stack->addWidget(homeScrollArea);        // index 0 - Home
 
     // ساخت صفحه واقعی جست‌وجو (index 1)
     QWidget *searchPage = new QWidget;
@@ -109,14 +132,13 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     m_stack->addWidget(m_cartPage);             // index 3 - Cart
     m_stack->addWidget(m_profilePage);          // index 4 - Profile
     m_stack->addWidget(new QWidget(m_stack));  // index 5 - History
-    m_stack->addWidget(new QWidget(m_stack));  // index 6 - Settings
 
     m_bookDetailPage = new BookDetailPage(m_authManager, m_stack);
-    m_stack->addWidget(m_bookDetailPage);      // index 7 - Book detail
+    m_stack->addWidget(m_bookDetailPage);      // index 6 - Book detail
 
 #ifdef HAVE_QT_PDF
     m_pdfReaderPage = new PdfReaderPage(m_authManager, m_stack);
-    m_stack->addWidget(m_pdfReaderPage);       // index 8 - PDF Reader
+    m_stack->addWidget(m_pdfReaderPage);       // index 7 - PDF Reader
 #endif
 
     //کلیک روی نتیجه‌ی جست‌وجو، جزئیات کتاب رو باز میکند
@@ -225,26 +247,46 @@ void CustomerPage::setUsername(const QString &username) {
 QWidget *CustomerPage::createBookCard(const QJsonObject &book) {
     ClickableFrame *card = new ClickableFrame;
     card->setFrameShape(QFrame::StyledPanel);
-    card->setFixedSize(150, 90);
+    card->setFixedSize(150, 190);
     card->setCursor(Qt::PointingHandCursor);
+    card->setStyleSheet(
+        "QFrame { background-color: #FFFFFF; border: 2px solid #FFC0CB; border-radius: 12px; }"
+        "QFrame:hover { border-color: #FF69B4; }");
 
     QVBoxLayout *layout = new QVBoxLayout(card);
     layout->setContentsMargins(6, 6, 6, 6);
 
+    QLabel *coverLabel = new QLabel;
+    coverLabel->setFixedSize(136, 95);
+    coverLabel->setAlignment(Qt::AlignCenter);
+    coverLabel->setScaledContents(false);
+    QString coverPath = book["coverImage"].toString();
+    QPixmap pixmap(coverPath);
+    if (!coverPath.isEmpty() && !pixmap.isNull()) {
+        coverLabel->setPixmap(pixmap.scaled(coverLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        coverLabel->setStyleSheet("border: none; background-color: transparent;");
+    } else {
+        coverLabel->setText("📖");
+        coverLabel->setStyleSheet("border: none; background-color: #FFF0F5; border-radius: 8px; font-size: 40px;");
+    }
+
     QLabel *titleLabel = new QLabel(book["title"].toString());
-    titleLabel->setStyleSheet("font-weight: bold;");
+    titleLabel->setStyleSheet("font-weight: bold; color: #DB7093; border: none;");
     titleLabel->setWordWrap(true);
 
     QLabel *authorLabel = new QLabel(book["author"].toString());
     authorLabel->setWordWrap(true);
+    authorLabel->setStyleSheet("border: none;");
 
     double price = book["price"].toDouble();
     QLabel *priceLabel = new QLabel(price > 0 ? QString("%1 تومان").arg(price) : "رایگان");
+    priceLabel->setStyleSheet("border: none;");
 
     // بدون این، کلیک روی خودِ لیبل‌ها می‌گیره و به کارتِ زیرشون (ClickableFrame) نمی‌رسه
-    for (QLabel *label : {titleLabel, authorLabel, priceLabel})
+    for (QLabel *label : {coverLabel, titleLabel, authorLabel, priceLabel})
         label->setAttribute(Qt::WA_TransparentForMouseEvents);
 
+    layout->addWidget(coverLabel);
     layout->addWidget(titleLabel);
     layout->addWidget(authorLabel);
     layout->addWidget(priceLabel);
@@ -395,5 +437,11 @@ void CustomerPage::on_profileButton_clicked()
     m_stack->setCurrentIndex(4);
     m_profilePage->requestProfileRefresh();
 }
-void CustomerPage::on_historyButton_clicked()  { m_stack->setCurrentIndex(5); }
-void CustomerPage::on_settingsButton_clicked() { m_stack->setCurrentIndex(6); }
+void CustomerPage::on_historyButton_clicked()
+{
+    // دکمه‌ی «Purchase History» تو سایدبار، به‌جای صفحه‌ی جدا، مستقیم وارد
+    //  تب «تاریخچه خرید» که از قبل در کتابخانه‌ی شخصی پیاده‌سازی شده
+    m_stack->setCurrentWidget(m_libraryPage);
+    m_libraryPage->requestLibraryRefresh();
+    m_libraryPage->showHistoryTab();
+}

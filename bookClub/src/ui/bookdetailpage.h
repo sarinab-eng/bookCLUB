@@ -45,6 +45,7 @@ private:
     QString m_myReviewId; // خالی یعنی کاربر فعلی هنوز نظری برای این کتاب ثبت نکرده
 
     // کنترل‌های اطلاعات کتاب
+    QLabel *m_coverLabel;
     QLabel *m_titleLabel;
     QLabel *m_authorLabel;
     QLabel *m_genreLabel;
