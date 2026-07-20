@@ -70,6 +70,14 @@ public:
     void requestReadingProgress(const QString &username, const QString &bookId);
     void saveReadingProgress(const QString &username, const QString &bookId, int page);
 
+    // ---- پنل ناشر ----
+    void publishBook(const QString &username, const QJsonObject &bookData);
+    void updateBook(const QString &username, const QString &bookId, const QJsonObject &fields);
+    void deactivateBook(const QString &username, const QString &bookId);
+    void activateBook(const QString &username, const QString &bookId);
+    void requestPublisherBooks(const QString &username);
+    void requestPublisherStats(const QString &username);
+
 private slots:
     void onReadyRead();
 
@@ -117,6 +125,13 @@ signals:
 
     // ---- پیشرفت مطالعه ----
     void readingProgressReceived(const QString &bookId, int page);
+
+    // ---- پنل ناشر ----
+    void bookPublished(bool success, const QString &message, const QJsonObject &book);
+    void bookUpdated(bool success, const QString &message);
+    void bookActiveStatusChanged(bool success, const QString &message);
+    void publisherBooksReceived(const QJsonArray &books);
+    void publisherStatsReceived(const QJsonObject &stats);
 
 private:
     QTcpSocket *m_socket;

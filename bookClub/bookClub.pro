@@ -15,6 +15,7 @@ SOURCES += \
     src/model/Publisher.cpp \
     src/model/User.cpp \
     src/network/Authmanager.cpp \
+    src/ui/addeditbookdialog.cpp \
     src/ui/adminpage.cpp \
     src/ui/bookdetailpage.cpp \
     src/ui/cartpage.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
     src/ui/loginpage.cpp \
     src/ui/pdfreaderpage.cpp \
     src/ui/profilepage.cpp \
+    src/ui/publisherpage.cpp \
     src/ui/registerpage.cpp
 
 HEADERS += \
@@ -34,6 +36,7 @@ HEADERS += \
     src/model/Publisher.h \
     src/model/User.h \
     src/network/Authmanager.h \
+    src/ui/addeditbookdialog.h \
     src/ui/adminpage.h \
     src/ui/bookdetailpage.h \
     src/ui/cartpage.h \
@@ -43,6 +46,7 @@ HEADERS += \
     src/ui/loginpage.h \
     src/ui/pdfreaderpage.h \
     src/ui/profilepage.h \
+    src/ui/publisherpage.h \
     src/ui/registerpage.h
 
 FORMS += \

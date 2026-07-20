@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_loginPage    = new LoginPage(this);
     m_registerPage = new RegisterPage(this);
     m_adminPage    = new AdminPage(m_authManager, this);
-    m_publisherPage = new QWidget(this);
+    m_publisherPage = new PublisherPage(m_authManager, this);
     m_customerPage = new CustomerPage(m_authManager, this);
 
     m_stackedWidget->addWidget(m_loginPage);      // 0
@@ -55,6 +55,10 @@ void MainWindow::setupConnections() {
 
     // logout — فقط یک‌بار اینجا
     connect(m_customerPage, &CustomerPage::logoutRequested, this, [this]() {
+        m_currentUsername.clear();
+        m_stackedWidget->setCurrentWidget(m_loginPage);
+    });
+    connect(m_publisherPage, &PublisherPage::logoutRequested, this, [this]() {
         m_currentUsername.clear();
         m_stackedWidget->setCurrentWidget(m_loginPage);
     });
@@ -88,6 +92,7 @@ void MainWindow::handleLoginResult(bool success, const QString &message, const Q
         m_stackedWidget->setCurrentWidget(m_adminPage);
         m_adminPage->loadData();
     } else if (userRole == "publisher") {
+        m_publisherPage->setUsername(m_currentUsername);
         m_stackedWidget->setCurrentWidget(m_publisherPage);
     } else if (userRole == "customer") {
         if (firstLogin) {

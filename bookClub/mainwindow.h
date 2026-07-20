@@ -9,6 +9,7 @@
 #include "network/Authmanager.h"
 #include "ui/adminpage.h"
 #include "ui/customerpage.h"
+#include "ui/publisherpage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,7 +44,7 @@ private:
     RegisterPage *m_registerPage;
     AdminPage *m_adminPage;
     CustomerPage *m_customerPage;
-    QWidget *m_publisherPage;
+    PublisherPage *m_publisherPage;
     QString m_currentUsername;
     QTcpSocket *m_socket;
     AuthManager *m_authManager;

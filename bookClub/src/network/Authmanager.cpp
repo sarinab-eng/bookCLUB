@@ -183,6 +183,16 @@ void AuthManager::onReadyRead() {
         emit shelvesReceived(response["success"].toBool(), response["message"].toString(), response["shelves"].toArray());
     else if (type == "reading_progress_response")
         emit readingProgressReceived(response["book_id"].toString(), response["page"].toInt());
+    else if (type == "publish_book_response")
+        emit bookPublished(response["success"].toBool(), response["message"].toString(), response["book"].toObject());
+    else if (type == "update_book_response")
+        emit bookUpdated(response["success"].toBool(), response["message"].toString());
+    else if (type == "activate_book_response" || type == "deactivate_book_response")
+        emit bookActiveStatusChanged(response["success"].toBool(), response["message"].toString());
+    else if (type == "publisher_books_response")
+        emit publisherBooksReceived(response["books"].toArray());
+    else if (type == "publisher_stats_response")
+        emit publisherStatsReceived(response);
     }
 }
 
@@ -416,5 +426,52 @@ void AuthManager::saveReadingProgress(const QString &username, const QString &bo
     req["username"] = username;
     req["book_id"] = bookId;
     req["page"] = page;
+    sendJson(req);
+}
+
+// ---------------- پنل ناشر ----------------
+
+void AuthManager::publishBook(const QString &username, const QJsonObject &bookData) {
+    QJsonObject req = bookData;
+    req["type"] = "publish_book";
+    req["username"] = username;
+    sendJson(req);
+}
+
+void AuthManager::updateBook(const QString &username, const QString &bookId, const QJsonObject &fields) {
+    QJsonObject req = fields;
+    req["type"] = "update_book";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::deactivateBook(const QString &username, const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "deactivate_book";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::activateBook(const QString &username, const QString &bookId) {
+    QJsonObject req;
+    req["type"] = "activate_book";
+    req["username"] = username;
+    req["book_id"] = bookId;
+    sendJson(req);
+}
+
+void AuthManager::requestPublisherBooks(const QString &username) {
+    QJsonObject req;
+    req["type"] = "get_publisher_books";
+    req["username"] = username;
+    sendJson(req);
+}
+
+void AuthManager::requestPublisherStats(const QString &username) {
+    QJsonObject req;
+    req["type"] = "get_publisher_stats";
+    req["username"] = username;
     sendJson(req);
 }
