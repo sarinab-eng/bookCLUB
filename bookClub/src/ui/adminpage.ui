@@ -247,7 +247,7 @@ QHeaderView::section:last {
         </rect>
        </property>
        <property name="text">
-        <string>مسدود/رفع مسدودیت</string>
+        <string>مسدود کردن</string>
        </property>
       </widget>
       <widget class="QPushButton" name="btnDeleteUser">
