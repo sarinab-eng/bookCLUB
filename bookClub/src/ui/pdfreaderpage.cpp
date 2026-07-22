@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include <QtPdf/QPdfPageNavigator>
 
 PdfReaderPage::PdfReaderPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), m_authManager(authManager)
@@ -9,7 +10,8 @@ PdfReaderPage::PdfReaderPage(AuthManager *authManager, QWidget *parent)
     m_document = new QPdfDocument(this);
     setupUi();
 
-    connect(m_pdfView->pageNavigation(), &QPdfPageNavigation::currentPageChanged,
+    // اتصال سیگنال تغییر صفحه در Qt 6 از طریق pageNavigator
+    connect(m_pdfView->pageNavigator(), &QPdfPageNavigator::currentPageChanged,
             this, &PdfReaderPage::onCurrentPageChanged);
 
     if (m_authManager)
@@ -33,7 +35,7 @@ void PdfReaderPage::setupUi()
     m_pdfView = new QPdfView(this);
     m_pdfView->setDocument(m_document);
     m_pdfView->setPageMode(QPdfView::PageMode::SinglePage);
-    m_pdfView->setZoomMode(QPdfView::ZoomMode::CustomZoom);
+    m_pdfView->setZoomMode(QPdfView::ZoomMode::Custom);
     m_pdfView->setZoomFactor(m_zoomFactor);
     mainLayout->addWidget(m_pdfView, 1);
 
@@ -77,8 +79,9 @@ void PdfReaderPage::openBook(const QJsonObject &book)
         return;
     }
 
-    QPdfDocument::DocumentError err = m_document->load(fileUrl);
-    if (err != QPdfDocument::DocumentError::NoError) {
+    // بارگذاری فایل و بررسی خطا در Qt 6
+    QPdfDocument::Error err = m_document->load(fileUrl);
+    if (err != QPdfDocument::Error::None) {
         QMessageBox::warning(this, "خطا", "باز کردن فایل کتاب ممکن نشد: " + fileUrl);
         return;
     }
@@ -94,8 +97,8 @@ void PdfReaderPage::openBook(const QJsonObject &book)
 void PdfReaderPage::onReadingProgressReceived(const QString &bookId, int page)
 {
     if (bookId != m_currentBookId) return;
-    if (page > 0 && page < m_document->pageCount())
-        m_pdfView->pageNavigation()->setCurrentPage(page);
+    if (page >= 0 && page < m_document->pageCount())
+        m_pdfView->pageNavigator()->jump(page, QPointF());
 }
 
 void PdfReaderPage::onCurrentPageChanged(int page)
@@ -109,7 +112,7 @@ void PdfReaderPage::onCurrentPageChanged(int page)
 
 void PdfReaderPage::updatePageLabel()
 {
-    int current = m_pdfView->pageNavigation()->currentPage() + 1;
+    int current = m_pdfView->pageNavigator()->currentPage() + 1;
     int total = m_document->pageCount();
     m_pageLabel->setText(QString("صفحه %1 از %2").arg(current).arg(total));
     m_pageSpinBox->blockSignals(true);
@@ -119,19 +122,19 @@ void PdfReaderPage::updatePageLabel()
 
 void PdfReaderPage::onPreviousPageClicked()
 {
-    m_pdfView->pageNavigation()->goToPreviousPage();
+    m_pdfView->pageNavigator()->back();
 }
 
 void PdfReaderPage::onNextPageClicked()
 {
-    m_pdfView->pageNavigation()->goToNextPage();
+    m_pdfView->pageNavigator()->forward();
 }
 
 void PdfReaderPage::onGoToPageClicked()
 {
     int target = m_pageSpinBox->value() - 1;
     if (target < 0 || target >= m_document->pageCount()) return;
-    m_pdfView->pageNavigation()->setCurrentPage(target);
+    m_pdfView->pageNavigator()->jump(target, QPointF());
 }
 
 void PdfReaderPage::onZoomInClicked()

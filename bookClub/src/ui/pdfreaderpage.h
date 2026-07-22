@@ -6,9 +6,9 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QSpinBox>
-#include <QPdfDocument>
-#include <QPdfView>
-#include <QPdfPageNavigation>
+#include <QtPdf/QPdfDocument>
+#include <QtPdfWidgets/QPdfView>
+#include <QtPdf/QPdfPageNavigator>
 #include "Authmanager.h"
 
 // ماژول مطالعه‌ی داخلی کتاب (PDF Reader) 
