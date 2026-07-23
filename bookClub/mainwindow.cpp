@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(m_stackedWidget);
 
     m_socket = new QTcpSocket(this);
+    m_socket->connectToHost("192.168.1.103", 1234);
+
 
     connect(m_socket, &QTcpSocket::connected, this, [this]() {
         qDebug() << "Connected to server";
@@ -172,3 +174,4 @@ void MainWindow::showLoginPage()    { m_stackedWidget->setCurrentWidget(m_loginP
 void MainWindow::showRegisterPage() { m_stackedWidget->setCurrentWidget(m_registerPage); }
 
 MainWindow::~MainWindow() { delete ui; }
+
