@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
                 qDebug() << "Socket error:" << m_socket->errorString();
             });
 
-    m_socket->connectToHost("127.0.0.1", 1234);
+
     m_socket->waitForConnected(3000);
 
     m_authManager = new AuthManager(m_socket, this);
