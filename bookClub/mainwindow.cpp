@@ -14,21 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(m_stackedWidget);
 
     m_socket = new QTcpSocket(this);
-    m_socket->connectToHost("192.168.1.103", 1234);
-
-
-    connect(m_socket, &QTcpSocket::connected, this, [this]() {
-        qDebug() << "Connected to server";
-    });
-
-    connect(m_socket, &QTcpSocket::errorOccurred, this, [this]() {
-                qDebug() << "Socket error:" << m_socket->errorString();
-            });
-
-
-    m_socket->waitForConnected(3000);
-
-    m_authManager = new AuthManager(m_socket, this);
 
     m_loginPage    = new LoginPage(this);
     m_registerPage = new RegisterPage(this);
