@@ -1,4 +1,4 @@
-QT += core gui widgets network
+QT += core gui widgets network pdf pdfwidgets
 
 CONFIG += c++17
 
@@ -12,7 +12,6 @@ SOURCES += \
     src/model/Admin.cpp \
     src/model/Book.cpp \
     src/model/Customer.cpp \
-    src/model/Publisher.cpp \
     src/model/User.cpp \
     src/network/Authmanager.cpp \
     src/ui/addeditbookdialog.cpp \
@@ -32,7 +31,6 @@ HEADERS += \
     src/model/Admin.h \
     src/model/Book.h \
     src/model/Customer.h \
-    src/model/Publisher.h \
     src/model/User.h \
     src/network/Authmanager.h \
     src/ui/addeditbookdialog.h \
@@ -81,3 +79,7 @@ INCLUDEPATH += $$PWD \
                $$PWD/src/ui \
                $$PWD/src/network \
                $$PWD/src/model
+
+msvc {
+    QMAKE_CXXFLAGS += /permissive- /Zc:twoPhase-
+}

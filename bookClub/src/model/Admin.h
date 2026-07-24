@@ -11,7 +11,6 @@ public:
 
     QString getRole() const override { return "Admin"; }
 
-    // متدهای نظارتی
     void setBlockStatus(User* targetUser, bool status);
     void validatePublisher(const QString &brandName);
 };

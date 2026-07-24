@@ -7,7 +7,7 @@
 #include <QComboBox>
 #include <QTextEdit>
 #include <QListWidget>
-#include "../network/Authmanager.h" // مسیر نسبی هدر AuthManager
+#include "../network/Authmanager.h"
 
 class BookDetailPage : public QWidget
 {

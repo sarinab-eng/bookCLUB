@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1172</width>
-    <height>580</height>
+    <height>845</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -26,39 +26,50 @@
    <string>Customer Panel</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/* هم‌رنگ با تم صورتی پنل مدیر سیستم (adminpage.ui) */
+   <string notr="true">/* تم سرخابی هماهنگ - تمامی دکمه‌های منوی سمت چپ (از جمله خروج) با پس‌زمینه سفید */
 #CustomerPage {
     background-color: #FFF0F5;
-    font-family: "Segoe UI", "Tahoma";
+    font-family: &quot;Segoe UI&quot;, &quot;Tahoma&quot;;
 }
 
 #sideMenuFrame {
-    background-color: #FF69B4;
+    background-color: #FF1493;
     border: none;
 }
 
+/* --- استایل هدر و لیبل‌ها --- */
 #headerFrame {
     background-color: #FFFFFF;
-    border-bottom: 2px solid #FFB6C1;
+    border-bottom: 2px solid #FFC0CB;
 }
+
+/* عنوان BookClub */
 #titleLabel {
-    color: #DB7093;
+    color: #C71585;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
+    font-family: &quot;Segoe UI&quot;, &quot;Tahoma&quot;;
 }
+
+/* پیام خوش‌آمدگویی (هم‌اندازه با titleLabel) */
 #welcomeLabel {
-    color: #DB7093;
+    color: #FF1493;
     font-weight: bold;
+    font-size: 18px;
+    font-family: &quot;Segoe UI&quot;, &quot;Tahoma&quot;;
 }
+
+
 #notificationButton, #logoutTopButton {
-    background-color: #FF69B4;
+    background-color: #FF1493;
     color: #FFFFFF;
     border-radius: 10px;
     padding: 8px 15px;
     font-weight: bold;
 }
+
 #notificationButton:hover, #logoutTopButton:hover {
-    background-color: #FF1493;
+    background-color: #C71585;
 }
 
 #contentFrame {
@@ -68,7 +79,7 @@
 
 QLabel#recommendedLabel, QLabel#genreFilterLabel, QLabel#popularLabel,
 QLabel#newBooksLabel, QLabel#bestSellerLabel, QLabel#freeBooksLabel {
-    color: #DB7093;
+    color: #FF1493;
     font-weight: bold;
     font-size: 14px;
     padding-top: 6px;
@@ -84,12 +95,14 @@ QComboBox {
     border: 2px solid #FFC0CB;
     border-radius: 10px;
     padding: 6px 12px;
-    background: #FFFFFF;
+    background-color: #FFFFFF;
     color: #333333;
 }
+
 QComboBox:hover {
-    border-color: #DB7093;
+    border-color: #FF1493;
 }
+
 QComboBox QAbstractItemView {
     background-color: #FFFFFF;
     border: 2px solid #FFC0CB;
@@ -97,10 +110,12 @@ QComboBox QAbstractItemView {
     selection-background-color: #FF69B4;
     selection-color: #FFFFFF;
 }
+
 QComboBox QAbstractItemView::item {
     color: #333333;
     padding: 6px 10px;
 }
+
 QComboBox QAbstractItemView::item:hover {
     background-color: #FF69B4;
     color: #FFFFFF;
@@ -109,11 +124,13 @@ QComboBox QAbstractItemView::item:hover {
 QLineEdit {
     border: 2px solid #FFC0CB;
     border-radius: 10px;
-    padding: 6px;
-    background: #FFFFFF;
+    padding: 6px 12px;
+    background-color: #FFFFFF;
+    color: #333333;
 }
+
 QLineEdit:focus {
-    border: 2px solid #DB7093;
+    border: 2px solid #FF1493;
 }
 
 QTableWidget, QTableView, QListWidget {
@@ -121,11 +138,12 @@ QTableWidget, QTableView, QListWidget {
     border: 2px solid #FFC0CB;
     border-radius: 15px;
     gridline-color: #FFF0F5;
-    selection-background-color: #FFB6C1;
+    selection-background-color: #FF69B4;
     selection-color: #FFFFFF;
 }
+
 QHeaderView::section {
-    background-color: #FF69B4;
+    background-color: #FF1493;
     color: #FFFFFF;
     padding: 6px;
     border: none;
@@ -136,9 +154,10 @@ QTabWidget::pane {
     border: 2px solid #FFC0CB;
     border-radius: 10px;
 }
+
 QTabBar::tab {
     background: #FFFFFF;
-    color: #DB7093;
+    color: #FF1493;
     border: 2px solid #FFC0CB;
     border-bottom: none;
     border-top-left-radius: 10px;
@@ -146,25 +165,28 @@ QTabBar::tab {
     padding: 8px 16px;
     font-weight: bold;
 }
+
 QTabBar::tab:selected {
-    background: #FF69B4;
+    background: #FF1493;
     color: #FFFFFF;
 }
 
 QPushButton {
-    background-color: #FF69B4;
+    background-color: #FF1493;
     color: #FFFFFF;
     border-radius: 10px;
     padding: 8px 15px;
     font-weight: bold;
 }
+
 QPushButton:hover {
-    background-color: #FF1493;
+    background-color: #C71585;
 }
 
+/* --- تنظیمات عمومی دکمه‌های منوی سمت چپ --- */
 QFrame#sideMenuFrame QPushButton {
-    background-color: #FF1493;
-    color: #FFFFFF;
+    background-color: #FFFFFF;
+    color: #FF1493;
     border: none;
     border-radius: 10px;
     padding: 12px 15px;
@@ -172,16 +194,24 @@ QFrame#sideMenuFrame QPushButton {
     font-weight: bold;
     text-align: right;
 }
+
 QFrame#sideMenuFrame QPushButton:hover {
-    background-color: #C71585;
+    background-color: #FFF0F5;
+    color: #C71585;
 }
+
+/* --- دکمه خروج پایین سمت چپ با پس‌زمینه سفید --- */
 QFrame#sideMenuFrame QPushButton#logoutButton {
-    background-color: #E25858;
+    background-color: #FFFFFF;
+    color: #E25858;
     margin-top: 10px;
 }
+
 QFrame#sideMenuFrame QPushButton#logoutButton:hover {
-    background-color: #C0392B;
-}</string>
+    background-color: #FFE6E6;
+    color: #C0392B;
+}
+</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
@@ -271,8 +301,8 @@ QFrame#sideMenuFrame QPushButton#logoutButton:hover {
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>943</width>
-           <height>84</height>
+           <width>929</width>
+           <height>73</height>
           </rect>
          </property>
         </widget>
@@ -298,8 +328,8 @@ QFrame#sideMenuFrame QPushButton#logoutButton:hover {
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>943</width>
-           <height>84</height>
+           <width>929</width>
+           <height>73</height>
           </rect>
          </property>
         </widget>
@@ -322,8 +352,8 @@ QFrame#sideMenuFrame QPushButton#logoutButton:hover {
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>943</width>
-           <height>84</height>
+           <width>929</width>
+           <height>73</height>
           </rect>
          </property>
         </widget>
@@ -346,8 +376,8 @@ QFrame#sideMenuFrame QPushButton#logoutButton:hover {
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>943</width>
-           <height>85</height>
+           <width>929</width>
+           <height>73</height>
           </rect>
          </property>
         </widget>
@@ -370,8 +400,8 @@ QFrame#sideMenuFrame QPushButton#logoutButton:hover {
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>943</width>
-           <height>84</height>
+           <width>929</width>
+           <height>73</height>
           </rect>
          </property>
         </widget>
@@ -394,8 +424,8 @@ QFrame#sideMenuFrame QPushButton#logoutButton:hover {
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>943</width>
-           <height>84</height>
+           <width>929</width>
+           <height>73</height>
           </rect>
          </property>
         </widget>
@@ -416,14 +446,14 @@ QFrame#sideMenuFrame QPushButton#logoutButton:hover {
       <item>
        <widget class="QLabel" name="titleLabel">
         <property name="text">
-         <string>                          Book club</string>
+         <string>    Book club</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="welcomeLabel">
         <property name="text">
-         <string>                           Welcome</string>
+         <string> Welcome</string>
         </property>
        </widget>
       </item>
@@ -431,13 +461,6 @@ QFrame#sideMenuFrame QPushButton#logoutButton:hover {
        <widget class="QPushButton" name="notificationButton">
         <property name="text">
          <string>🔔Notification</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="logoutTopButton">
-        <property name="text">
-         <string>Logout</string>
         </property>
        </widget>
       </item>

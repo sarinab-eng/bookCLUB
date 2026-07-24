@@ -1,9 +1,9 @@
 #ifndef CUSTOMER_H
 #define CUSTOMER_H
 
-#include "User.h" // در صورت لزوم به کوچک یا بزرگ بودن U دقت کنید
+#include "User.h"
 #include <QString>
-#include <QVector> // اضافه کردن این هدر برای QVector
+#include <QVector>
 
 class Customer : public User {
     Q_OBJECT
@@ -20,4 +20,4 @@ public:
     void addToLibrary(int bookId);
 };
 
-#endif // CUSTOMER_HA
+#endif

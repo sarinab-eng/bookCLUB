@@ -10,18 +10,18 @@ struct Book {
     QString publisher;
     QString genre;
     double price = 0.0;
-    QString coverImage;   // مسیر یا URL تصویر جلد
+    QString coverImage;
     QString description;
     int stock = 0;
 };
 
 struct CartItem {
     QString bookId;
-    QString title;      // برای نمایش سریع بدون join دوباره
+    QString title;
     double price = 0.0;
     int quantity = 1;
 
     double totalPrice() const { return price * quantity; }
 };
 
-#endif // BOOK_H
+#endif

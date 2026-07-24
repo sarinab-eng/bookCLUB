@@ -37,4 +37,4 @@ private:
     QLineEdit *m_pdfPathEdit;
 };
 
-#endif // ADDEDITBOOKDIALOG_H
+#endif

@@ -7,7 +7,6 @@
 #include <QDialogButtonBox>
 #include <QFileDialog>
 
-// همان لیست ژانرهای فارسی  
 static const QStringList kGenres = {
     "رمان", "علمی", "تاریخ", "کودک و نوجوان", "شعر",
     "زندگی‌نامه", "فلسفه", "روان‌شناسی", "ماجراجویی", "علمی-تخیلی", "عاشقانه"

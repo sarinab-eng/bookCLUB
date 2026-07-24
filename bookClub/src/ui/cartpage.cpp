@@ -108,8 +108,6 @@ void CartPage::onCheckoutFinished(bool success, const QString &message, double t
     }
 }
 
-
-
 void CartPage::on_removeButton_clicked()
 {
     int currentRow = ui->cartTable->currentRow();

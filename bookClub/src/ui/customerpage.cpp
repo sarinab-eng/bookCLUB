@@ -33,7 +33,6 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     ui->setupUi(this); // اینجا connectSlotsByName هم اجرا می‌شود
 
     connect(ui->logoutButton,    &QPushButton::clicked, this, &CustomerPage::onLogout);
-    connect(ui->logoutTopButton, &QPushButton::clicked, this, &CustomerPage::onLogout);
 
     // ---- ساخت QStackedWidget داخلی به‌صورت برنامه‌نویسی ----
 
@@ -222,7 +221,7 @@ CustomerPage::~CustomerPage() { delete ui; }
 
 void CustomerPage::setUsername(const QString &username) {
     m_username = username;
-    ui->welcomeLabel->setText("خوش آمدید، " + username);
+    ui->welcomeLabel->setText(" welcome " + username);
     m_cartPage->setUsername(username);
     if (m_libraryPage) {
         m_libraryPage->setUsername(username);

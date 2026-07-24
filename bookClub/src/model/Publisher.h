@@ -24,4 +24,4 @@ private:
     QString m_email;
 };
 
-#endif // PUBLISHER_H
+#endif

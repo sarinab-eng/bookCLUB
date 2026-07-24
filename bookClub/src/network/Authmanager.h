@@ -54,23 +54,23 @@ public:
     void editReview(const QString &username, const QString &reviewId, int rating, const QString &comment);
     void deleteReview(const QString &username, const QString &reviewId);
 
-    // ---- کتاب‌های ذخیره‌شده (Saved / Wishlist) ----
+    // ---- saved books ----
     void saveBookForLater(const QString &username, const QString &bookId);
     void unsaveBook(const QString &username, const QString &bookId);
     void requestSavedBooks(const QString &username);
 
-    // ---- قفسه‌ها و دسته‌بندی‌های شخصی ----
+    // ---- shelves ----
     void createShelf(const QString &username, const QString &name);
     void deleteShelf(const QString &username, const QString &shelfId);
     void addBookToShelf(const QString &username, const QString &shelfId, const QString &bookId);
     void removeBookFromShelf(const QString &username, const QString &shelfId, const QString &bookId);
     void requestShelves(const QString &username);
 
-    // ---- پیشرفت مطالعه ----
+    // ---- reading progress ----
     void requestReadingProgress(const QString &username, const QString &bookId);
     void saveReadingProgress(const QString &username, const QString &bookId, int page);
 
-    // ---- پنل ناشر ----
+    // ---- publisher ----
     void publishBook(const QString &username, const QJsonObject &bookData);
     void updateBook(const QString &username, const QString &bookId, const QJsonObject &fields);
     void deactivateBook(const QString &username, const QString &bookId);
@@ -78,7 +78,7 @@ public:
     void requestPublisherBooks(const QString &username);
     void requestPublisherStats(const QString &username);
 
-    // ---- پنل مدیر: نظارت بر کتاب‌ها و نظرات ----
+    // ---- admin(books & rates) ----
     void requestAllBooksForAdmin();
     void adminUpdateBook(const QString &bookId, const QJsonObject &fields);
     void adminDeleteBook(const QString &bookId);
@@ -123,24 +123,24 @@ signals:
     void reviewEdited(bool success, const QString &message);
     void reviewDeleted(bool success, const QString &message);
 
-    // ---- کتاب‌های ذخیره‌شده ----
+    // ---- saved books ----
     void savedBookChanged(bool success, const QString &message);
     void savedBooksReceived(const QJsonArray &items);
 
-    // ---- قفسه‌ها ----
+    // ---- shelves ----
     void shelvesReceived(bool success, const QString &message, const QJsonArray &shelves);
 
-    // ---- پیشرفت مطالعه ----
+    // ---- reading progress ----
     void readingProgressReceived(const QString &bookId, int page);
 
-    // ---- پنل ناشر ----
+    // ---- publisher ----
     void bookPublished(bool success, const QString &message, const QJsonObject &book);
     void bookUpdated(bool success, const QString &message);
     void bookActiveStatusChanged(bool success, const QString &message);
     void publisherBooksReceived(const QJsonArray &books);
     void publisherStatsReceived(const QJsonObject &stats);
 
-    // ---- پنل مدیر: نظارت بر کتاب‌ها و نظرات ----
+    // ---- admin(books & rates) ----
     void adminBooksReceived(const QJsonArray &books);
     void adminBookUpdated(bool success, const QString &message);
     void adminBookDeleted(bool success, const QString &message);

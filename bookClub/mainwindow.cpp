@@ -15,6 +15,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_socket = new QTcpSocket(this);
 
+    connect(m_socket, &QTcpSocket::connected, this, [this]() {
+        qDebug() << "Connected to server";
+    });
+
+    connect(m_socket, &QTcpSocket::errorOccurred, this, [this]() {
+        qDebug() << "Socket error:" << m_socket->errorString();
+    });
+
+    m_socket->connectToHost("127.0.0.1", 1234);
+    m_socket->waitForConnected(3000);
+
+    m_authManager = new AuthManager(m_socket, this);
+
     m_loginPage    = new LoginPage(this);
     m_registerPage = new RegisterPage(this);
     m_adminPage    = new AdminPage(m_authManager, this);
@@ -95,7 +108,7 @@ void MainWindow::handleLoginResult(bool success, const QString &message, const Q
             m_customerPage->setUsername(m_currentUsername);
             m_stackedWidget->setCurrentWidget(m_customerPage);
             QTimer::singleShot(0, this, [this]() {
-              QMessageBox::information(this, "Login", "Welcome!");
+                QMessageBox::information(this, "Login", "Welcome!");
             });
         }
     }
@@ -159,4 +172,3 @@ void MainWindow::showLoginPage()    { m_stackedWidget->setCurrentWidget(m_loginP
 void MainWindow::showRegisterPage() { m_stackedWidget->setCurrentWidget(m_registerPage); }
 
 MainWindow::~MainWindow() { delete ui; }
-

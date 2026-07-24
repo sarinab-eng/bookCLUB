@@ -39,43 +39,42 @@ void PublisherPage::refresh()
 
 void PublisherPage::setupUi()
 {
-      setObjectName("PublisherPage");
-        setStyleSheet(
-            /* پس‌زمینه کلی صفحه همچنان یاسی/صورتی خیلی روشن بماند تا متن سرخابی خودش را نشان دهد */
-            "#PublisherPage { background-color: #FFF0F5; font-family: \"Segoe UI\", \"Tahoma\"; }"
+    setObjectName("PublisherPage");
+    setStyleSheet(
+        "#PublisherPage { background-color: #FFF0F5; font-family: \"Segoe UI\", \"Tahoma\"; }"
 
-            /* تمام لیبل‌ها (نوشته‌های ثابت مثل نام کاربری، نقش و غیره) */
-            "QLabel { color: #FF1493; font-family: \"Segoe UI\", \"Tahoma\"; font-weight: 500; }"
+        /* استایل عمومی لیبل‌ها (رنگ متن مشکی برای خوانایی اطلاعات حساب) */
+        "QLabel { color: #333333; font-family: \"Segoe UI\", \"Tahoma\"; font-weight: 500; font-size: 13px; }"
 
-            /* استایل فیلدهای ورودی */
-            "QLineEdit { border: 2px solid #FFC0CB; border-radius: 10px; padding: 6px; background: #FFFFFF; color: #333333; }"
-            "QLineEdit:focus { border: 2px solid #FF1493; }" /* موقع کلیک لبه‌ها سرخابی شود */
+        /* استایل اختصاصی برای عناوین و تیترها جهت حفظ تم سرخابی */
+        "QLabel#panelTitle, QLabel#headerTitle { color: #C71585; font-size: 18px; font-weight: bold; }"
+        "QLabel#fieldLabel { color: #FF1493; font-weight: bold; }"
 
-            /* دکمه‌های اصلی مثل دکمه تغییر رمز */
-            "QPushButton { background-color: #FF1493; color: #FFFFFF; border-radius: 10px; padding: 8px 15px; font-weight: bold; }"
-            "QPushButton:hover { background-color: #C71585; }" /* موقع هاور تیره‌تر شود */
+        /* فیلدهای متنی با متن مشکی */
+        "QLineEdit { border: 2px solid #FFC0CB; border-radius: 10px; padding: 6px; background: #FFFFFF; color: #333333; }"
+        "QLineEdit:focus { border: 2px solid #FF1493; }"
 
-            /* استایل جداول */
-            "QTableWidget, QTableView { background-color: #FFFFFF; border: 2px solid #FFC0CB; border-radius: 15px;"
-            "  gridline-color: #FFF0F5; selection-background-color: #FF69B4; selection-color: #FFFFFF; }"
-            "QHeaderView::section { background-color: #FF1493; color: #FFFFFF; padding: 6px; border: none; font-weight: bold; }"
+        /* دکمه‌های اصلی */
+        "QPushButton { background-color: #FF1493; color: #FFFFFF; border-radius: 10px; padding: 8px 15px; font-weight: bold; }"
+        "QPushButton:hover { background-color: #C71585; }"
 
-            /* استایل تب‌ها (حساب کاربری، کتاب‌های من و ...) */
-            "QTabWidget::pane { border: 2px solid #FFC0CB; border-radius: 10px; }"
-            "QTabBar::tab { background: #FFFFFF; color: #FF1493; border: 2px solid #FFC0CB; border-bottom: none;"
-            "  border-top-left-radius: 10px; border-top-right-radius: 10px; padding: 8px 16px; font-weight: bold; }"
-            "QTabBar::tab:selected { background: #FF1493; color: #FFFFFF; }"
+        /* جداول */
+        "QTableWidget, QTableView { background-color: #FFFFFF; border: 2px solid #FFC0CB; border-radius: 15px; "
+        "  gridline-color: #FFF0F5; selection-background-color: #FF69B4; selection-color: #FFFFFF; color: #333333; }"
+        "QHeaderView::section { background-color: #FF1493; color: #FFFFFF; padding: 6px; border: none; font-weight: bold; }"
 
-            /* دکمه خروج */
-            "#logoutBtn { background-color: #E25858; color: #FFFFFF; }"
-            "#logoutBtn:hover { background-color: #C0392B; }"
+        /* تب‌ها */
+        "QTabWidget::pane { border: 2px solid #FFC0CB; border-radius: 10px; background-color: #FFFFFF; }"
+        "QTabBar::tab { background: #FFFFFF; color: #FF1493; border: 2px solid #FFC0CB; border-bottom: none; "
+        "  border-top-left-radius: 10px; border-top-right-radius: 10px; padding: 8px 16px; font-weight: bold; }"
+        "QTabBar::tab:selected { background: #FF1493; color: #FFFFFF; }"
 
-            /* تیتر پنل (پنل ناشر) */
-            "#panelTitle { color: #C71585; font-size: 18px; font-weight: bold; }"
-            );
+        /* دکمه خروج */
+        "#logoutBtn { background-color: #FF1493; color: #FFFFFF; }"
+        "#logoutBtn:hover { background-color: #C71585; }"
+        );
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-
     QHBoxLayout *headerLayout = new QHBoxLayout;
     QLabel *panelTitleLabel = new QLabel("پنل ناشر");
     panelTitleLabel->setObjectName("panelTitle");

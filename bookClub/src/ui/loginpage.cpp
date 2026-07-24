@@ -15,9 +15,6 @@ LoginPage::LoginPage(QWidget *parent) :
     shadow->setYOffset(8);
     shadow->setColor(QColor(0, 0, 0, 40));
     ui->mainFrame->setGraphicsEffect(shadow);
-
-    /*ui->usernameLineEdit->addAction(QIcon(":/icons/user.png"), QLineEdit::LeadingPosition);
-    ui->passwordLineEdit->addAction(QIcon(":/icons/lock.png"), QLineEdit::LeadingPosition);*/
 }
 
 LoginPage::~LoginPage() {
