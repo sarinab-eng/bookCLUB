@@ -4,6 +4,31 @@
 #include <QJsonArray>
 #include <QMessageBox>
 #include <QPixmap>
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QDir>
+
+static QString resolveResourcePath(const QString &rawPath) {
+    if (rawPath.isEmpty()) return QString();
+
+    QFileInfo checkFile(rawPath);
+    if (checkFile.isAbsolute() && checkFile.exists()) {
+        return rawPath;
+    }
+
+    QString appDir = QCoreApplication::applicationDirPath();
+
+    QString resolved = QDir(appDir).filePath(rawPath);
+    if (QFile::exists(resolved)) return resolved;
+
+    resolved = QDir(appDir + "/..").filePath(rawPath);
+    if (QFile::exists(resolved)) return resolved;
+
+    resolved = QDir(appDir + "/../..").filePath(rawPath);
+    if (QFile::exists(resolved)) return resolved;
+
+    return rawPath;
+}
 
 BookDetailPage::BookDetailPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), m_authManager(authManager)
@@ -33,9 +58,13 @@ void BookDetailPage::setBookData(const QJsonObject &book)
     m_currentBook = book;
     resetReviewForm();
 
-    QString coverPath = book.value("coverImage").toString();
-    QPixmap pixmap(coverPath);
-    if (!coverPath.isEmpty() && !pixmap.isNull()) {
+    // ۱. دریافت مسیر خام از JSON و تبدیل آن به مسیر قابل استفاده روی سیستم
+    QString rawCoverPath = book.value("coverImage").toString();
+    QString fullCoverPath = resolveResourcePath(rawCoverPath);
+
+    // ۲. بارگذاری تصویر از مسیر درست‌شده
+    QPixmap pixmap(fullCoverPath);
+    if (!fullCoverPath.isEmpty() && !pixmap.isNull()) {
         m_coverLabel->setPixmap(pixmap.scaled(m_coverLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         m_coverLabel->setText(QString());
         m_coverLabel->setStyleSheet("border: none;");
@@ -58,6 +87,7 @@ void BookDetailPage::setBookData(const QJsonObject &book)
         m_authManager->getReviews(bookId);
     }
 }
+
 
 void BookDetailPage::resetReviewForm()
 {

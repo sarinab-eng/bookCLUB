@@ -3,6 +3,34 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QtPdf/QPdfPageNavigator>
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QDir>
+
+static QString resolveResourcePath(const QString &rawPath) {
+    if (rawPath.isEmpty()) return QString();
+
+    QFileInfo checkFile(rawPath);
+    if (checkFile.isAbsolute() && checkFile.exists()) {
+        return rawPath;
+    }
+
+    QString appDir = QCoreApplication::applicationDirPath();
+
+    // ۱. بررسی در کنار فایل .exe
+    QString resolved = QDir(appDir).filePath(rawPath);
+    if (QFile::exists(resolved)) return resolved;
+
+    // ۲. بررسی یک پوشه بالاتر (پوشه سورس)
+    resolved = QDir(appDir + "/..").filePath(rawPath);
+    if (QFile::exists(resolved)) return resolved;
+
+    // ۳. بررسی دو پوشه بالاتر (ساختار build کیوت)
+    resolved = QDir(appDir + "/../..").filePath(rawPath);
+    if (QFile::exists(resolved)) return resolved;
+
+    return rawPath;
+}
 
 PdfReaderPage::PdfReaderPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), m_authManager(authManager)
@@ -73,16 +101,16 @@ void PdfReaderPage::openBook(const QJsonObject &book)
     m_currentBookId = book.value("id").toString();
     m_titleLabel->setText(book.value("title").toString());
 
-    QString fileUrl = book.value("fileURL").toString();
-    if (fileUrl.isEmpty()) {
+    QString rawPath = book.value("fileURL").toString();
+    if (rawPath.isEmpty()) {
         QMessageBox::information(this, "کتاب", "فایل PDF برای این کتاب تعریف نشده است.");
         return;
     }
-
+    QString resolvedPath = resolveResourcePath(rawPath);
     // بارگذاری فایل و بررسی خطا در Qt 6
-    QPdfDocument::Error err = m_document->load(fileUrl);
+    QPdfDocument::Error err = m_document->load(resolvedPath);
     if (err != QPdfDocument::Error::None) {
-        QMessageBox::warning(this, "خطا", "باز کردن فایل کتاب ممکن نشد: " + fileUrl);
+        QMessageBox::warning(this, "خطا", "باز کردن فایل کتاب ممکن نشد: " + resolvedPath);
         return;
     }
 
@@ -122,12 +150,18 @@ void PdfReaderPage::updatePageLabel()
 
 void PdfReaderPage::onPreviousPageClicked()
 {
-    m_pdfView->pageNavigator()->back();
+    int current = m_pdfView->pageNavigator()->currentPage();
+    if (current > 0) {
+        m_pdfView->pageNavigator()->jump(current - 1, QPointF());
+    }
 }
 
 void PdfReaderPage::onNextPageClicked()
 {
-    m_pdfView->pageNavigator()->forward();
+    int current = m_pdfView->pageNavigator()->currentPage();
+    if (current + 1 < m_document->pageCount()) {
+        m_pdfView->pageNavigator()->jump(current + 1, QPointF());
+    }
 }
 
 void PdfReaderPage::onGoToPageClicked()

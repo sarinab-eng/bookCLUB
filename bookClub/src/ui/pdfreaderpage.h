@@ -11,7 +11,6 @@
 #include <QtPdf/QPdfPageNavigator>
 #include "Authmanager.h"
 
-// ماژول مطالعه‌ی داخلی کتاب (PDF Reader) 
 class PdfReaderPage : public QWidget
 {
     Q_OBJECT
@@ -56,4 +55,4 @@ private:
     QPushButton *m_backButton;
 };
 
-#endif // PDFREADERPAGE_H
+#endif

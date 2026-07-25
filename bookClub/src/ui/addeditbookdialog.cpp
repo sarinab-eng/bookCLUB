@@ -6,11 +6,23 @@
 #include <QLabel>
 #include <QDialogButtonBox>
 #include <QFileDialog>
+#include <QDir>
+#include <QCoreApplication>
 
 static const QStringList kGenres = {
     "رمان", "علمی", "تاریخ", "کودک و نوجوان", "شعر",
     "زندگی‌نامه", "فلسفه", "روان‌شناسی", "ماجراجویی", "علمی-تخیلی", "عاشقانه"
 };
+
+static QString makePathRelative(const QString &absolutePath) {
+    if (absolutePath.isEmpty()) return QString();
+
+    QDir appDir(QCoreApplication::applicationDirPath());
+    // تبدیل مسیر مطلق به مسیر نسبی نسبت به محل اجرای برنامه
+    QString relPath = appDir.relativeFilePath(absolutePath);
+
+    return relPath;
+}
 
 AddEditBookDialog::AddEditBookDialog(const QJsonObject &existingBook, QWidget *parent)
     : QDialog(parent)
@@ -82,13 +94,13 @@ void AddEditBookDialog::setupUi(const QJsonObject &existingBook)
 void AddEditBookDialog::onChooseCoverClicked()
 {
     QString path = QFileDialog::getOpenFileName(this, "انتخاب تصویر جلد", QString(), "Images (*.png *.jpg *.jpeg)");
-    if (!path.isEmpty()) m_coverPathEdit->setText(path);
+    if (!path.isEmpty()) m_coverPathEdit->setText(makePathRelative(path));
 }
 
 void AddEditBookDialog::onChoosePdfClicked()
 {
     QString path = QFileDialog::getOpenFileName(this, "انتخاب فایل PDF", QString(), "PDF Files (*.pdf)");
-    if (!path.isEmpty()) m_pdfPathEdit->setText(path);
+    if (!path.isEmpty())  m_pdfPathEdit->setText(makePathRelative(path));
 }
 
 QJsonObject AddEditBookDialog::bookData() const
