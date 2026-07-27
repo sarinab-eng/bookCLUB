@@ -26,6 +26,7 @@ signals:
     void backRequested();
     void addToCartRequested(const QJsonObject &book);
     void saveForLaterRequested(const QJsonObject &book);
+    void toggleFavoriteRequested(const QString &bookId);
 
 private slots:
     void onPostReviewClicked();

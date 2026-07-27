@@ -170,7 +170,33 @@ void BookDetailPage::setupUi()
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     m_backButton = new QPushButton("Back", this);
     m_addToCartButton = new QPushButton("Add to Cart", this);
-    m_saveForLaterButton = new QPushButton("ذخیره برای بعد", this);
+    m_saveForLaterButton = new QPushButton("Save for later", this);
+    // ۱. ساخت دکمه ستاره
+    QPushButton *starFavButton = new QPushButton("⭐", this);
+    starFavButton->setCursor(Qt::PointingHandCursor);
+    starFavButton->setToolTip("افزودن / حذف از علاقه‌مندی‌ها");
+
+    // ۲. تنظیم اندازه ثابت و کافی تا ستاره اصلاً نصفه نیفتد
+    starFavButton->setFixedSize(50, 50);
+
+    // ۳. استایل شفاف بدون مستطیل و با فونت بزرگ
+    starFavButton->setStyleSheet(
+        "QPushButton {"
+        "   font-size: 32px;"             // سایز بزرگ و خوانا
+        "   background: transparent;"     // پس‌زمینه کاملاً شفاف
+        "   border: none;"                // بدون هیچ کادري
+        "   padding: 0px;"
+        "   margin: 0px;"
+        "}"
+        "QPushButton:hover {"
+        "   font-size: 36px;"             // بزرگ‌تر شدن ملایم با رفتن ماوس روی آن
+        "}"
+        );
+
+    // ۴. اتصال سیگنال
+    connect(starFavButton, &QPushButton::clicked, this, [this]() {
+        emit toggleFavoriteRequested(m_currentBook["id"].toString());
+    });
 
     // استایل صورتی برای دکمه‌ها
     QString btnStyle = "QPushButton { background-color: #FF8DA1; color: white; border-radius: 5px; padding: 8px; font-weight: bold; } "

@@ -18,8 +18,6 @@
 #include "pdfreaderpage.h"
 #endif
 
-
-
 namespace Ui { class CustomerPage; }
 
 class CustomerPage : public QWidget
@@ -29,8 +27,8 @@ class CustomerPage : public QWidget
 public:
     explicit CustomerPage(AuthManager *authManager, QWidget *parent = nullptr);
     ~CustomerPage();
-
     void setUsername(const QString &username);
+    void addNotification(const QString &title, const QString &message);
 
 signals:
     void logoutRequested();
@@ -50,6 +48,9 @@ private slots:
     void on_cartButton_clicked();
     void on_profileButton_clicked();
     void on_historyButton_clicked();
+    void on_notificationButton_clicked();
+    void handleNotification(const QString &title, const QString &message);
+
 
 private:
     Ui::CustomerPage *ui;
@@ -74,6 +75,7 @@ private:
     QHBoxLayout *m_newBooksLayout;
     QHBoxLayout *m_bestSellerLayout;
     QHBoxLayout *m_freeBooksLayout;
+    QList<QPair<QString, QString>> m_notifications;
 
     QJsonArray m_allBooks;
     QStringList m_favoriteGenres;
@@ -84,6 +86,11 @@ private:
     void populateSection(QHBoxLayout *layout, const QJsonArray &books);
     void updateRecommendedSection();
     void populateGenreFilterCombo(const QJsonArray &books);
+    void updateNotificationButtonUI();
+
+    QString m_currentUsername;
+    QStringList m_userFavoriteIds;
+    void loadFavoritesTab();
 };
 
 #endif

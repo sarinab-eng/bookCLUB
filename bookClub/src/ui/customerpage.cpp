@@ -15,8 +15,6 @@
 #include <QScrollArea>
 #include <functional>
 
-// QFrame ساده که با کلیک، callback داده‌شده رو صدا می‌زند؛ برای کلیک‌پذیر
-// کردن کارت‌های کتاب تو صفحه‌ی Home
 class ClickableFrame : public QFrame {
 public:
     std::function<void()> onClick;
@@ -30,13 +28,10 @@ protected:
 CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), ui(new Ui::CustomerPage), m_authManager(authManager)
 {
-    ui->setupUi(this); // اینجا connectSlotsByName هم اجرا می‌شود
+    ui->setupUi(this);
 
     connect(ui->logoutButton,    &QPushButton::clicked, this, &CustomerPage::onLogout);
 
-    // ---- ساخت QStackedWidget داخلی به‌صورت برنامه‌نویسی ----
-
-    // ۱) انتقال محتوای فعلی contentFrame به یک صفحه‌ی مستقل (Home)
     QWidget *homePage = new QWidget(this);
     QVBoxLayout *homeLayout = new QVBoxLayout(homePage);
     homeLayout->setContentsMargins(0, 0, 0, 0);
@@ -57,8 +52,6 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     homeLayout->addWidget(ui->freeBooksLabel);
     homeLayout->addWidget(ui->freeBooksScrollArea);
 
-    // هر بخش فقط به‌صورت افقی اسکرول می‌شود؛ ارتفاعش ثابت و برابر با ارتفاع کامل کارت است
-    // تا کارت هیچ‌وقت از بالا/پایین بریده نشود
     for (QScrollArea *sectionArea : {ui->recommendedScrollArea, ui->genreFilterScrollArea,
                                       ui->popularScrollArea, ui->newBooksScrollArea,
                                       ui->bestSellerScrollArea, ui->freeBooksScrollArea}) {
@@ -67,7 +60,6 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
         sectionArea->setFixedHeight(210);
     }
 
-    // ساخت layout افقی برای هر کانتینر تا کارت‌های کتاب کنارهم چیده شوند
     m_recommendedLayout = new QHBoxLayout(ui->recommendedContainer);
     m_genreFilterLayout = new QHBoxLayout(ui->genreFilterContainer);
     m_popularLayout     = new QHBoxLayout(ui->popularContainer);
@@ -84,8 +76,16 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
 
     connect(m_authManager, &AuthManager::booksReceived, this, &CustomerPage::onBooksReceived);
     connect(m_authManager, &AuthManager::profileReceived, this, &CustomerPage::onProfileReceived);
+    connect(m_authManager, &AuthManager::favoriteToggled, this,
+            [this](bool success, const QString &message, const QString &bookId, const QString &action) {
+                if (success) {
+                    QMessageBox::information(this, "علاقه‌مندی‌ها", message);
+                } else {
+                    QMessageBox::warning(this, "خطا", message);
+                }
+            });
 
-    // ۲) ساخت stacked widget و افزودن homePage + صفحات خالی
+
     m_stack = new QStackedWidget(ui->contentFrame);
     m_cartPage = new CartPage(m_authManager, this);
     m_libraryPage = new LibraryPage(m_authManager, this);
@@ -93,8 +93,6 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
 
     connect(m_cartPage, &CartPage::checkoutSuccessful, m_libraryPage, &LibraryPage::requestLibraryRefresh);
 
-    // کل صفحه‌ی Home داخل یک اسکرول‌ایریای بیرونی قرار می‌گیرد تا اگر مجموع بخش‌ها
-    // از ارتفاع پنجره بیشتر شد، کل صفحه اسکرول شود، نه بخش‌های کوچک داخلش
     QScrollArea *homeScrollArea = new QScrollArea;
     homeScrollArea->setWidgetResizable(true);
     homeScrollArea->setFrameShape(QFrame::NoFrame);
@@ -102,9 +100,8 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     homeScrollArea->setStyleSheet("QScrollArea { border: none; background: transparent; }");
     homeScrollArea->setWidget(homePage);
 
-    m_stack->addWidget(homeScrollArea);        // index 0 - Home
+    m_stack->addWidget(homeScrollArea);
 
-    // ساخت صفحه واقعی جست‌وجو (index 1)
     QWidget *searchPage = new QWidget;
     QVBoxLayout *searchLayout = new QVBoxLayout(searchPage);
 
@@ -126,32 +123,33 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     searchLayout->addLayout(searchBar);
     searchLayout->addWidget(m_searchResults);
 
-    m_stack->addWidget(searchPage);            // index 1 - Search
-    m_stack->addWidget(m_libraryPage);          // index 2 - Library
-    m_stack->addWidget(m_cartPage);             // index 3 - Cart
-    m_stack->addWidget(m_profilePage);          // index 4 - Profile
-    m_stack->addWidget(new QWidget(m_stack));  // index 5 - History
+    m_stack->addWidget(searchPage);
+    m_stack->addWidget(m_libraryPage);
+    m_stack->addWidget(m_cartPage);
+    m_stack->addWidget(m_profilePage);
+    m_stack->addWidget(new QWidget(m_stack));
 
     m_bookDetailPage = new BookDetailPage(m_authManager, m_stack);
-    m_stack->addWidget(m_bookDetailPage);      // index 6 - Book detail
+    m_stack->addWidget(m_bookDetailPage);
+    connect(m_bookDetailPage, &BookDetailPage::toggleFavoriteRequested, this, [this](const QString &bookId) {
+        m_authManager->toggleFavorite(m_username, bookId);
+    });
+
 
 #ifdef HAVE_QT_PDF
     m_pdfReaderPage = new PdfReaderPage(m_authManager, m_stack);
-    m_stack->addWidget(m_pdfReaderPage);       // index 7 - PDF Reader
+    m_stack->addWidget(m_pdfReaderPage);
 #endif
 
-    //کلیک روی نتیجه‌ی جست‌وجو، جزئیات کتاب رو باز میکند
     connect(m_searchResults, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
         QJsonObject b = QJsonObject::fromVariantMap(item->data(Qt::UserRole).toMap());
         openBookDetail(b);
     });
 
-    // اتصال دکمه بازگشتِ صفحه جزئیات به همان صفحه‌ای که کاربر وارد شده بود
     connect(m_bookDetailPage, &BookDetailPage::backRequested, this, [this](){
         m_stack->setCurrentIndex(m_previousPageIndex);
     });
 
-    // دکمه‌ی «افزودن به سبد»  صفحه‌ی جزئیات کتاب 
     connect(m_bookDetailPage, &BookDetailPage::addToCartRequested, this, [this](const QJsonObject &book){
         if (m_authManager && !m_username.isEmpty())
             m_authManager->addToCart(m_username, book["id"].toString());
@@ -163,7 +161,6 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
             QMessageBox::warning(this, "خطا", "افزودن به سبد خرید ناموفق بود: " + message);
     });
 
-    // دکمه‌ی «ذخیره برای بعد» صفحه‌ی جزئیات کتاب
     connect(m_bookDetailPage, &BookDetailPage::saveForLaterRequested, this, [this](const QJsonObject &book){
         if (m_authManager && !m_username.isEmpty())
             m_authManager->saveBookForLater(m_username, book["id"].toString());
@@ -176,10 +173,9 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     });
 
     connect(m_libraryPage, &LibraryPage::bookDetailRequested, this, &CustomerPage::openBookDetail);
+    connect(authManager, &AuthManager::notificationReceived, this, &CustomerPage::handleNotification);
+    connect(ui->notificationButton, &QPushButton::clicked, this, &CustomerPage::on_notificationButton_clicked);
 
-    // دکمه‌ی «مطالعه کتاب» در کتابخانه شخصی: اگه ماژول PDF Reader در دسترس باشد
-    // (HAVE_QT_PDF)، داخل برنامه باز میشود وگرنه (مثلاً کیت MinGW روی ویندوز که
-    // Qt PDF را پشتیبانی نیمکند) با نرم‌افزار پیش‌فرض سیستم باز میشود
     connect(m_libraryPage, &LibraryPage::readBookRequested, this, [this](const QJsonObject &book){
 #ifdef HAVE_QT_PDF
         m_previousPageIndex = m_stack->currentIndex();
@@ -201,20 +197,17 @@ CustomerPage::CustomerPage(AuthManager *authManager, QWidget *parent)
     });
 #endif
 
-    // ۳) جایگزینی layout قدیمی contentFrame با stack
     QLayout *oldLayout = ui->contentFrame->layout();
     if (oldLayout) {
         QLayoutItem *item;
         while ((item = oldLayout->takeAt(0)) != nullptr)
-            delete item; // ویجت‌ها قبلاً به homeLayout منتقل شده‌اند، حذف امن است
+            delete item;
         delete oldLayout;
     }
 
     QVBoxLayout *contentLayout = new QVBoxLayout(ui->contentFrame);
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->addWidget(m_stack);
-
-    // نکته: دکمه‌های سایدبار نیازی به connect دستی ندارند (auto-connect فعال است)
 }
 
 CustomerPage::~CustomerPage() { delete ui; }
@@ -225,7 +218,7 @@ void CustomerPage::setUsername(const QString &username) {
     m_cartPage->setUsername(username);
     if (m_libraryPage) {
         m_libraryPage->setUsername(username);
-        m_libraryPage->requestLibraryRefresh(); // اولین لود داده‌ها به محض ورود کاربر
+        m_libraryPage->requestLibraryRefresh();
     }
     if (m_profilePage) {
         m_profilePage->setUsername(username);
@@ -281,7 +274,6 @@ QWidget *CustomerPage::createBookCard(const QJsonObject &book) {
     QLabel *priceLabel = new QLabel(price > 0 ? QString("%1 تومان").arg(price) : "رایگان");
     priceLabel->setStyleSheet("border: none;");
 
-    // بدون این، کلیک روی خودِ لیبل‌ها می‌گیره و به کارتِ زیرشون (ClickableFrame) نمی‌رسه
     for (QLabel *label : {coverLabel, titleLabel, authorLabel, priceLabel})
         label->setAttribute(Qt::WA_TransparentForMouseEvents);
 
@@ -299,7 +291,7 @@ void CustomerPage::openBookDetail(const QJsonObject &book) {
     m_previousPageIndex = m_stack->currentIndex();
     m_bookDetailPage->setCurrentUsername(m_username);
     m_bookDetailPage->setBookData(book);
-    m_stack->setCurrentWidget(m_bookDetailPage);
+    m_stack->setCurrentWidget(m_bookDetailPage); 
 }
 
 void CustomerPage::populateSection(QHBoxLayout *layout, const QJsonArray &books) {
@@ -348,8 +340,6 @@ void CustomerPage::onProfileReceived(const QJsonObject &profile) {
 
 void CustomerPage::updateRecommendedSection() {
     if (m_favoriteGenres.isEmpty()) {
-        // تا وقتی ژانرهای مورد علاقه از سرور نرسیده یا کاربر هیچ ژانری انتخاب نکرده،
-        // کل لیست کتاب‌ها به عنوان پیشنهادی نمایش داده می‌شود
         populateSection(m_recommendedLayout, m_allBooks);
         return;
     }
@@ -423,7 +413,7 @@ void CustomerPage::on_searchButton_clicked()   { m_stack->setCurrentIndex(1); }
 void CustomerPage::on_libraryButton_clicked()
 {
     m_stack->setCurrentIndex(2);
-    m_libraryPage->requestLibraryRefresh(); // فراخوانی رفرش از سرور
+    m_libraryPage->requestLibraryRefresh();
 }
 
 void CustomerPage::on_cartButton_clicked() {
@@ -438,9 +428,42 @@ void CustomerPage::on_profileButton_clicked()
 }
 void CustomerPage::on_historyButton_clicked()
 {
-    // دکمه‌ی «Purchase History» تو سایدبار، به‌جای صفحه‌ی جدا، مستقیم وارد
-    //  تب «تاریخچه خرید» که از قبل در کتابخانه‌ی شخصی پیاده‌سازی شده
     m_stack->setCurrentWidget(m_libraryPage);
     m_libraryPage->requestLibraryRefresh();
     m_libraryPage->showHistoryTab();
+}
+
+void CustomerPage::handleNotification(const QString &title, const QString &message) {
+    m_notifications.append(qMakePair(title, message));
+    updateNotificationButtonUI();
+
+    // پاپ‌آپ لحظه‌ای
+    QMessageBox::information(this, "🔔 " + title, message);
+}
+
+// کلیک روی دکمه اعلانات جهت مشاهده تمام اعلانات
+void CustomerPage::on_notificationButton_clicked() {
+    if (m_notifications.isEmpty()) {
+        QMessageBox::information(this, "Notifications", "هیچ اعلان جدیدی ندارید");
+        return;
+    }
+
+    QString text = "📋 لیست اعلانات شما:\n\n";
+    for (int i = 0; i < m_notifications.size(); ++i) {
+        text += QString("%1. %2\n   %3\n--------------------------------\n")
+        .arg(i + 1)
+            .arg(m_notifications[i].first)
+            .arg(m_notifications[i].second);
+    }
+
+    QMessageBox::information(this, "Notofications", text);
+
+    // پاکسازی لیست پس از مشاهده
+    m_notifications.clear();
+    updateNotificationButtonUI();
+}
+
+// به‌روزرسانی UI دکمه
+void CustomerPage::updateNotificationButtonUI() {
+    ui->notificationButton->setText(QString("🔔 Notifications (%1)").arg(m_notifications.size()));
 }

@@ -54,10 +54,12 @@ public:
     void editReview(const QString &username, const QString &reviewId, int rating, const QString &comment);
     void deleteReview(const QString &username, const QString &reviewId);
 
-    // ---- saved books ----
+    // ---- saved & favorite books ----
     void saveBookForLater(const QString &username, const QString &bookId);
     void unsaveBook(const QString &username, const QString &bookId);
     void requestSavedBooks(const QString &username);
+    void toggleFavorite(const QString &username, const QString &bookId);
+
 
     // ---- shelves ----
     void createShelf(const QString &username, const QString &name);
@@ -104,7 +106,7 @@ signals:
                           double total,
                           double discountAmount,
                           double finalAmount);
-    void libraryReceived(const QJsonArray &books);
+    void libraryReceived(const QJsonObject &response);
     void purchaseHistoryReceived(const QJsonArray &history);
 
     // ---- Books ----
@@ -147,7 +149,11 @@ signals:
     void adminReviewsReceived(const QJsonArray &reviews);
     void adminReviewDeleted(bool success, const QString &message);
 
+    void notificationReceived(const QString &title, const QString &message);
+    void favoriteToggled(bool success, const QString &message, const QString &bookId, const QString &action);
+
 private:
+    QString m_currentUserRole;
     QTcpSocket *m_socket;
     QByteArray m_buffer;
     void sendJson(const QJsonObject &json);

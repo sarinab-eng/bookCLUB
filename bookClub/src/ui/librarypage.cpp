@@ -29,6 +29,12 @@ LibraryPage::LibraryPage(AuthManager *authManager, QWidget *parent) :
     connect(m_authManager, &AuthManager::savedBooksReceived, this, &LibraryPage::onSavedBooksReceived);
     connect(m_authManager, &AuthManager::savedBookChanged, this, &LibraryPage::onSavedBookChanged);
     connect(m_authManager, &AuthManager::shelvesReceived, this, &LibraryPage::onShelvesReceived);
+    connect(m_authManager, &AuthManager::favoriteToggled, this, [this](bool success, const QString &msg) {
+        Q_UNUSED(msg);
+        if (success) {
+            m_authManager->requestLibrary(m_username);
+        }
+    });
 
     // اتصال دکمه رفرش طراحی شده در UI به متد بروزرسانی
     connect(ui->refreshButton, &QPushButton::clicked, this, &LibraryPage::requestLibraryRefresh);
@@ -76,7 +82,7 @@ void LibraryPage::buildExtraTabs()
     m_tabs = new QTabWidget(this);
     QTabWidget *tabs = m_tabs;
 
-    // ---- تب ۱: کتاب‌های من ----
+    // ---- تب 1: کتاب‌های من ----
     QWidget *myBooksTab = new QWidget;
     QVBoxLayout *myBooksLayout = new QVBoxLayout(myBooksTab);
     myBooksLayout->setContentsMargins(0, 0, 0, 0);
@@ -97,7 +103,7 @@ void LibraryPage::buildExtraTabs()
 
     tabs->addTab(myBooksTab, "کتاب‌های من");
 
-    // ---- تب ۲: کتاب‌های ذخیره‌شده ----
+    // ---- تب 2: کتاب‌های ذخیره‌شده ----
     m_savedTab = new QWidget;
     QVBoxLayout *savedLayout = new QVBoxLayout(m_savedTab);
 
@@ -116,7 +122,26 @@ void LibraryPage::buildExtraTabs()
 
     tabs->addTab(m_savedTab, "ذخیره‌شده");
 
-    // ---- تب ۳: قفسه‌ها ----
+    // ---- تب 3: علاقه‌مندی‌ها ----
+    m_favoritesTab = new QWidget;
+    QVBoxLayout *favoritesLayout = new QVBoxLayout(m_favoritesTab);
+
+    m_favoritesTable = new QTableWidget(0, 3, m_favoritesTab);
+    m_favoritesTable->setHorizontalHeaderLabels({"عنوان", "نویسنده", "قیمت"});
+    m_favoritesTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    m_favoritesTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_favoritesTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    m_removeFavoriteButton = new QPushButton("حذف از علاقه‌مندی‌ها");
+    connect(m_removeFavoriteButton, &QPushButton::clicked, this, &LibraryPage::onRemoveFavoriteClicked);
+
+    favoritesLayout->addWidget(new QLabel("کتاب‌های مورد علاقه شما:"));
+    favoritesLayout->addWidget(m_favoritesTable);
+    favoritesLayout->addWidget(m_removeFavoriteButton);
+
+    tabs->addTab(m_favoritesTab, "علاقه‌مندی‌ها ⭐");
+
+    // ---- تب 4: قفسه‌ها ----
     m_shelvesTab = new QWidget;
     QHBoxLayout *shelvesLayout = new QHBoxLayout(m_shelvesTab);
 
@@ -159,7 +184,7 @@ void LibraryPage::buildExtraTabs()
 
     tabs->addTab(m_shelvesTab, "قفسه‌ها");
 
-    // ---- تب ۴: تاریخچه خرید ----
+    // ---- تب 5: تاریخچه خرید ----
     QWidget *historyTab = new QWidget;
     QVBoxLayout *historyLayout = new QVBoxLayout(historyTab);
     historyLayout->setContentsMargins(0, 0, 0, 0);
@@ -180,8 +205,10 @@ void LibraryPage::buildExtraTabs()
     mainLayout->addWidget(tabs);
 }
 
-void LibraryPage::onLibraryReceived(const QJsonArray &books)
+void LibraryPage::onLibraryReceived(const QJsonObject &response)
 {
+    // ۱. استخراج و پردازش کتاب‌های خریداری‌شده (items)
+    QJsonArray books = response.value("items").toArray();
     m_libraryBooks = books;
 
     ui->libraryTable->setRowCount(0); // پاک کردن داده‌های قبلی جدول کتاب‌ها
@@ -204,6 +231,12 @@ void LibraryPage::onLibraryReceived(const QJsonArray &books)
 
     // به‌روزرسانی لیست کتاب‌های قابل افزودن به قفسه‌ی انتخاب‌شده
     onShelfSelectionChanged();
+
+    // ۲. استخراج و به‌روزرسانی جدول علاقه‌مندی‌ها (favorites)
+    if (response.contains("favorites")) {
+        QJsonArray favBooks = response.value("favorites").toArray();
+        updateFavoritesTable(favBooks);
+    }
 }
 
 void LibraryPage::onPurchaseHistoryReceived(const QJsonArray &history)
@@ -407,4 +440,51 @@ void LibraryPage::onRemoveBookFromShelfClicked()
     }
     QString bookId = m_shelfContentsTable->item(row, 0)->data(Qt::UserRole).toString();
     m_authManager->removeBookFromShelf(m_username, m_selectedShelfId, bookId);
+}
+
+void LibraryPage::updateFavoritesTable(const QJsonArray &favoriteBooks) {
+    if (!m_favoritesTable) return;
+
+    m_favoritesTable->setRowCount(0); // پاک کردن سطر‌های قبلی
+
+    for (int i = 0; i < favoriteBooks.size(); ++i) {
+        QJsonObject book = favoriteBooks[i].toObject();
+
+        m_favoritesTable->insertRow(i);
+
+        // ۱. عنوان کتاب
+        QString title = book.value("title").toString();
+        if (title.isEmpty()) title = "بدون عنوان";
+
+        QTableWidgetItem *titleItem = new QTableWidgetItem(title);
+        titleItem->setData(Qt::UserRole, book.value("id").toString()); // ذخیره ID برای حذف
+        titleItem->setTextAlignment(Qt::AlignCenter);
+
+        // ۲. نویسنده
+        QString author = book.value("author").toString("-");
+        QTableWidgetItem *authorItem = new QTableWidgetItem(author);
+        authorItem->setTextAlignment(Qt::AlignCenter);
+
+        // ۳. قیمت
+        double price = book.value("price").toDouble(0.0);
+        QString priceStr = (price > 0) ? QString::number(price, 'f', 0) + " تومان" : "رایگان";
+        QTableWidgetItem *priceItem = new QTableWidgetItem(priceStr);
+        priceItem->setTextAlignment(Qt::AlignCenter);
+
+        m_favoritesTable->setItem(i, 0, titleItem);
+        m_favoritesTable->setItem(i, 1, authorItem);
+        m_favoritesTable->setItem(i, 2, priceItem);
+    }
+}
+
+void LibraryPage::onRemoveFavoriteClicked() {
+    int row = m_favoritesTable->currentRow();
+    if (row < 0) {
+        QMessageBox::warning(this, "خطا", "لطفاً کتابی را از جدول انتخاب کنید.");
+        return;
+    }
+
+    QString bookId = m_favoritesTable->item(row, 0)->data(Qt::UserRole).toString();
+
+    m_authManager->toggleFavorite(m_username, bookId);
 }

@@ -25,13 +25,14 @@ public:
     void setUsername(const QString &username);
     void requestLibraryRefresh();
     void showHistoryTab();
+    void updateFavoritesTable(const QJsonArray &favoriteBooks);
 
 signals:
     void bookDetailRequested(const QJsonObject &book);
     void readBookRequested(const QJsonObject &book);
 
 private slots:
-    void onLibraryReceived(const QJsonArray &books);
+    void onLibraryReceived(const QJsonObject &response);
     void onPurchaseHistoryReceived(const QJsonArray &history);
     void onSavedBooksReceived(const QJsonArray &items);
     void onSavedBookChanged(bool success, const QString &message);
@@ -45,6 +46,7 @@ private slots:
     void onDeleteShelfClicked();
     void onAddBookToShelfClicked();
     void onRemoveBookFromShelfClicked();
+    void onRemoveFavoriteClicked();
 
 private:
     Ui::LibraryPage *ui;
@@ -62,10 +64,14 @@ private:
     QTabWidget *m_tabs = nullptr;
     int m_historyTabIndex = -1;
 
-    // ---- تب کتاب‌های ذخیره‌شده ----
+    // ---- تب کتاب‌های ذخیره‌شده و علاقمندی ها ----
     QWidget *m_savedTab;
     QTableWidget *m_savedTable;
     QPushButton *m_removeSavedButton;
+    QWidget *m_favoritesTab;
+    QTableWidget *m_favoritesTable;
+    QPushButton *m_removeFavoriteButton;
+
 
     // ---- تب قفسه‌ها ----
     QWidget *m_shelvesTab;

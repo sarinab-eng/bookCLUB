@@ -32,6 +32,7 @@ void AuthManager::loginUser(const QString &username, const QString &password) {
             emit loginFinished(false, "عدم اتصال به سرور", {}, false);
             return;
         }
+
     QJsonObject request;
     request["type"] = "login";
     request["username"] = username;
@@ -96,6 +97,9 @@ void AuthManager::onReadyRead() {
         QString message = response["message"].toString();
         QString role = response["role"].toString();
         bool firstLogin = response["firstLogin"].toBool();
+        if (status == "success") {
+            m_currentUserRole = role;
+        }
         emit loginFinished(status == "success", message, role, firstLogin);
     }
     else if (type == "register_response") {
@@ -136,9 +140,6 @@ void AuthManager::onReadyRead() {
     else if (type == "remove_from_cart_response") {
         emit itemRemovedFromCart(response["success"].toBool(), response["message"].toString());
     }
-    /*else if (type == "checkout_response") {
-        emit checkoutFinished(response["success"].toBool(), response["message"].toString());
-    }*/
     else if (type == "get_security_question_response") {
         emit securityQuestionReceived(response["success"].toBool(), response["question"].toString());
     }
@@ -158,7 +159,7 @@ void AuthManager::onReadyRead() {
         emit checkoutFinished(success, message, total, discount, finalAmount);
     }
     else if (type == "library_response") {
-        emit libraryReceived(response["items"].toArray());
+        emit libraryReceived(response);
     }
     else if (type == "purchase_history_response") {
         emit purchaseHistoryReceived(response["items"].toArray());
@@ -203,7 +204,17 @@ void AuthManager::onReadyRead() {
         emit adminReviewsReceived(response["reviews"].toArray());
     else if (type == "admin_delete_review_response")
         emit adminReviewDeleted(response["success"].toBool(), response["message"].toString());
-    }
+    else if (type == "notification") {
+            QString title = response["title"].toString();
+            QString message = response["message"].toString();
+            emit notificationReceived(title, message);}
+    else if (type == "toggle_favorite_response") {
+        emit favoriteToggled(
+            response["success"].toBool(),
+            response["message"].toString(),
+            response["book_id"].toString(),
+            response["action"].toString());}
+  }
 }
 
 // ---------------- Admin / Users ----------------
@@ -520,3 +531,13 @@ void AuthManager::adminDeleteReview(const QString &reviewId) {
     req["review_id"] = reviewId;
     sendJson(req);
 }
+
+void AuthManager::toggleFavorite(const QString &username, const QString &bookId)
+{
+    QJsonObject request;
+    request["type"] = "toggle_favorite";
+    request["username"] = username; // استفاده از همان ورودی تابع
+    request["book_id"] = bookId;
+    sendJson(request);
+}
+
