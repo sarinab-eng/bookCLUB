@@ -28,10 +28,13 @@ void AuthManager::registerUser(const QString &username, const QString &password,
 }
 
 void AuthManager::loginUser(const QString &username, const QString &password) {
-        if (!m_socket || m_socket->state() != QAbstractSocket::ConnectedState) {
-            emit loginFinished(false, "عدم اتصال به سرور", {}, false);
-            return;
-        }
+    if (!m_socket || m_socket->state() != QAbstractSocket::ConnectedState) {
+        emit loginFinished(false, "عدم اتصال به سرور", {}, false);
+        return;
+    }
+
+    // ذخیره نام کاربری جاری برای استفاده در سایر متدها (مثل fetchNotifications)
+    m_currentUsername = username;
 
     QJsonObject request;
     request["type"] = "login";
@@ -39,6 +42,8 @@ void AuthManager::loginUser(const QString &username, const QString &password) {
     request["password"] = User::hashPassword(password);
     sendJson(request);
 }
+
+
 
 void AuthManager::sendJson(const QJsonObject &json)
 {
@@ -92,129 +97,142 @@ void AuthManager::onReadyRead() {
         QJsonObject response = doc.object();
         QString type = response["type"].toString();
 
-    if (type == "login_response") {
-        QString status = response["status"].toString();
-        QString message = response["message"].toString();
-        QString role = response["role"].toString();
-        bool firstLogin = response["firstLogin"].toBool();
-        if (status == "success") {
-            m_currentUserRole = role;
+
+        if (type == "login_response") {
+            QString status = response["status"].toString();
+            QString message = response["message"].toString();
+            QString role = response["role"].toString();
+            bool firstLogin = response["firstLogin"].toBool();
+            if (status == "success") {
+                m_currentUserRole = role;
+            }
+            emit loginFinished(status == "success", message, role, firstLogin);
         }
-        emit loginFinished(status == "success", message, role, firstLogin);
-    }
-    else if (type == "register_response") {
-        QString status = response["status"].toString();
-        QString message = response["message"].toString();
-        emit registerFinished(status == "success", message);
-    }
-    else if (type == "users_list") {
-         QJsonArray users = response["users"].toArray();
-        emit usersListReceived(users);/*response["users"].toArray()*/
-    }
-    else if (type == "admin_action_response") {
-        bool success = response["success"].toBool();
-        QString message = response["message"].toString();
-        emit actionFinished(success, message);//(response["success"].toBool(), response["message"].toString());
-    }
-    else if (type == "save_genres_response") {
-        emit genresSaved(response["success"].toBool());
-    }
-    else if (type == "books_list") {
-        emit booksReceived(response["books"].toArray());
-    }
-    else if (type == "search_result") {
-        emit searchResultReceived(response["books"].toArray());
-    }
+        else if (type == "register_response") {
+            QString status = response["status"].toString();
+            QString message = response["message"].toString();
+            emit registerFinished(status == "success", message);
+        }
+        else if (type == "users_list") {
+            QJsonArray users = response["users"].toArray();
+            emit usersListReceived(users);/*response["users"].toArray()*/
+        }
+        else if (type == "admin_action_response") {
+            bool success = response["success"].toBool();
+            QString message = response["message"].toString();
+            emit actionFinished(success, message);//(response["success"].toBool(), response["message"].toString());
+        }
+        else if (type == "save_genres_response") {
+            emit genresSaved(response["success"].toBool());
+        }
+        else if (type == "books_list") {
+            emit booksReceived(response["books"].toArray());
+        }
+        else if (type == "search_result") {
+            emit searchResultReceived(response["books"].toArray());
+        }
 
-    else if (type == "add_to_cart_response") {
-        emit itemAddedToCart(response["success"].toBool(), response["message"].toString());
-    }
-    else if (type == "cart_list" || type == "cart_response") {   // ⬅️ پشتیبانی از هر دو
-        emit cartReceived(response["items"].toArray());
-        emit cartSummaryReceived(response["itemCount"].toInt(),
-                                  response["total"].toDouble(),
-                                  response["discountAmount"].toDouble(),
-                                  response["finalAmount"].toDouble());
-    }
+        else if (type == "add_to_cart_response") {
+            emit itemAddedToCart(response["success"].toBool(), response["message"].toString());
+        }
+        else if (type == "cart_list" || type == "cart_response") {   // ⬅️ پشتیبانی از هر دو
+            emit cartReceived(response["items"].toArray());
+            emit cartSummaryReceived(response["itemCount"].toInt(),
+                                     response["total"].toDouble(),
+                                     response["discountAmount"].toDouble(),
+                                     response["finalAmount"].toDouble());
+        }
 
-    else if (type == "remove_from_cart_response") {
-        emit itemRemovedFromCart(response["success"].toBool(), response["message"].toString());
-    }
-    else if (type == "get_security_question_response") {
-        emit securityQuestionReceived(response["success"].toBool(), response["question"].toString());
-    }
-    else if (type == "verify_security_answer_response") {
-        emit securityAnswerVerified(response["success"].toBool(), response["message"].toString() );
-    }
-    else if (type == "reset_password_response") {
-        emit passwordResetFinished(response["success"].toBool(), response["message"].toString());
-    }
-    else if (type == "checkout_response") {
-        emit checkoutFinished(response["success"].toBool(), response["message"].toString());
-        bool success = response["success"].toBool();
-        QString message = response["message"].toString();
-        double total = response["total"].toDouble();
-        double discount = response["discountAmount"].toDouble();
-        double finalAmount = response["finalAmount"].toDouble();
-        emit checkoutFinished(success, message, total, discount, finalAmount);
-    }
-    else if (type == "library_response") {
-        emit libraryReceived(response);
-    }
-    else if (type == "purchase_history_response") {
-        emit purchaseHistoryReceived(response["items"].toArray());
-    }
-      else if (type == "review_posted")
-        emit reviewPosted(response["success"].toBool(), response["message"].toString());
-    else if (type == "reviews_list")
-        emit reviewsReceived(response["book_id"].toString(), response["reviews"].toArray());
-    else if (type == "review_edited")
-        emit reviewEdited(response["success"].toBool(), response["message"].toString());
-    else if (type == "review_deleted")
-        emit reviewDeleted(response["success"].toBool(), response["message"].toString());
-    else if (type == "profile_response")
-        emit profileReceived(response);
-    else if (type == "change_password_response")
-        emit passwordChanged(response["success"].toBool(), response["message"].toString());
-    else if (type == "save_book_response" || type == "unsave_book_response")
-        emit savedBookChanged(response["success"].toBool(), response["message"].toString());
-    else if (type == "saved_books_response")
-        emit savedBooksReceived(response["items"].toArray());
-    else if (type == "shelves_response")
-        emit shelvesReceived(response["success"].toBool(), response["message"].toString(), response["shelves"].toArray());
-    else if (type == "reading_progress_response")
-        emit readingProgressReceived(response["book_id"].toString(), response["page"].toInt());
-    else if (type == "publish_book_response")
-        emit bookPublished(response["success"].toBool(), response["message"].toString(), response["book"].toObject());
-    else if (type == "update_book_response")
-        emit bookUpdated(response["success"].toBool(), response["message"].toString());
-    else if (type == "activate_book_response" || type == "deactivate_book_response")
-        emit bookActiveStatusChanged(response["success"].toBool(), response["message"].toString());
-    else if (type == "publisher_books_response")
-        emit publisherBooksReceived(response["books"].toArray());
-    else if (type == "publisher_stats_response")
-        emit publisherStatsReceived(response);
-    else if (type == "admin_books_response")
-        emit adminBooksReceived(response["books"].toArray());
-    else if (type == "admin_update_book_response")
-        emit adminBookUpdated(response["success"].toBool(), response["message"].toString());
-    else if (type == "admin_delete_book_response")
-        emit adminBookDeleted(response["success"].toBool(), response["message"].toString());
-    else if (type == "admin_reviews_response")
-        emit adminReviewsReceived(response["reviews"].toArray());
-    else if (type == "admin_delete_review_response")
-        emit adminReviewDeleted(response["success"].toBool(), response["message"].toString());
-    else if (type == "notification") {
+        else if (type == "remove_from_cart_response") {
+            emit itemRemovedFromCart(response["success"].toBool(), response["message"].toString());
+        }
+        else if (type == "get_security_question_response") {
+            emit securityQuestionReceived(response["success"].toBool(), response["question"].toString());
+        }
+        else if (type == "verify_security_answer_response") {
+            emit securityAnswerVerified(response["success"].toBool(), response["message"].toString() );
+        }
+        else if (type == "reset_password_response") {
+            emit passwordResetFinished(response["success"].toBool(), response["message"].toString());
+        }
+        else if (type == "checkout_response") {
+            emit checkoutFinished(response["success"].toBool(), response["message"].toString());
+            bool success = response["success"].toBool();
+            QString message = response["message"].toString();
+            double total = response["total"].toDouble();
+            double discount = response["discountAmount"].toDouble();
+            double finalAmount = response["finalAmount"].toDouble();
+            emit checkoutFinished(success, message, total, discount, finalAmount);
+        }
+        else if (type == "library_response") {
+            emit libraryReceived(response);
+        }
+        else if (type == "purchase_history_response") {
+            emit purchaseHistoryReceived(response["items"].toArray());
+        }
+        else if (type == "review_posted")
+            emit reviewPosted(response["success"].toBool(), response["message"].toString());
+        else if (type == "reviews_list")
+            emit reviewsReceived(response["book_id"].toString(), response["reviews"].toArray());
+        else if (type == "review_edited")
+            emit reviewEdited(response["success"].toBool(), response["message"].toString());
+        else if (type == "review_deleted")
+            emit reviewDeleted(response["success"].toBool(), response["message"].toString());
+        else if (type == "profile_response")
+            emit profileReceived(response);
+        else if (type == "change_password_response")
+            emit passwordChanged(response["success"].toBool(), response["message"].toString());
+        else if (type == "save_book_response" || type == "unsave_book_response")
+            emit savedBookChanged(response["success"].toBool(), response["message"].toString());
+        else if (type == "saved_books_response")
+            emit savedBooksReceived(response["items"].toArray());
+        else if (type == "shelves_response")
+            emit shelvesReceived(response["success"].toBool(), response["message"].toString(), response["shelves"].toArray());
+        else if (type == "reading_progress_response")
+            emit readingProgressReceived(response["book_id"].toString(), response["page"].toInt());
+        else if (type == "publish_book_response")
+            emit bookPublished(response["success"].toBool(), response["message"].toString(), response["book"].toObject());
+        else if (type == "update_book_response")
+            emit bookUpdated(response["success"].toBool(), response["message"].toString());
+        else if (type == "activate_book_response" || type == "deactivate_book_response")
+            emit bookActiveStatusChanged(response["success"].toBool(), response["message"].toString());
+        else if (type == "publisher_books_response")
+            emit publisherBooksReceived(response["books"].toArray());
+        else if (type == "publisher_stats_response")
+            emit publisherStatsReceived(response);
+        else if (type == "admin_books_response")
+            emit adminBooksReceived(response["books"].toArray());
+        else if (type == "admin_update_book_response")
+            emit adminBookUpdated(response["success"].toBool(), response["message"].toString());
+        else if (type == "admin_delete_book_response")
+            emit adminBookDeleted(response["success"].toBool(), response["message"].toString());
+        else if (type == "admin_reviews_response")
+            emit adminReviewsReceived(response["reviews"].toArray());
+        else if (type == "admin_delete_review_response")
+            emit adminReviewDeleted(response["success"].toBool(), response["message"].toString());
+        else if (type == "notification") {
             QString title = response["title"].toString();
             QString message = response["message"].toString();
             emit notificationReceived(title, message);}
-    else if (type == "toggle_favorite_response") {
-        emit favoriteToggled(
-            response["success"].toBool(),
-            response["message"].toString(),
-            response["book_id"].toString(),
-            response["action"].toString());}
-  }
+        else if (type == "toggle_favorite_response") {
+            emit favoriteToggled(
+                response["success"].toBool(),
+                response["message"].toString(),
+                response["book_id"].toString(),
+                response["action"].toString());}
+
+
+        else if (type == "get_notifications_response") {
+            QJsonArray notifs = doc.object()["notifications"].toArray();
+            emit notificationsListReceived(notifs);
+        }
+        else if (type == "mark_notification_read_response") {
+            if (doc.object()["status"].toString() == "success") {
+                fetchNotifications();
+            }
+        }
+
+    }
 }
 
 // ---------------- Admin / Users ----------------
@@ -541,3 +559,16 @@ void AuthManager::toggleFavorite(const QString &username, const QString &bookId)
     sendJson(request);
 }
 
+void AuthManager::fetchNotifications() {
+    QJsonObject req;
+    req["action"] = "get_notifications";
+    req["username"] = m_currentUsername; // اصلاح نام متغیر
+    sendJson(req);                        // اصلاح نام تابع ارسال
+}
+
+void AuthManager::markNotificationAsRead(const QString &notifId) {
+    QJsonObject req;
+    req["action"] = "mark_notification_read";
+    req["notif_id"] = notifId;
+    sendJson(req);                        // اصلاح نام تابع ارسال
+}

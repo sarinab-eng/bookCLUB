@@ -8,6 +8,7 @@
 #include <QTableWidgetItem>
 #include <QMessageBox>
 
+
 PublisherPage::PublisherPage(AuthManager *authManager, QWidget *parent)
     : QWidget(parent), m_authManager(authManager)
 {
@@ -20,6 +21,17 @@ PublisherPage::PublisherPage(AuthManager *authManager, QWidget *parent)
     connect(m_authManager, &AuthManager::bookUpdated, this, &PublisherPage::onBookUpdated);
     connect(m_authManager, &AuthManager::bookActiveStatusChanged, this, &PublisherPage::onBookActiveStatusChanged);
     connect(m_authManager, &AuthManager::publisherStatsReceived, this, &PublisherPage::onPublisherStatsReceived);
+    connect(m_authManager, &AuthManager::notificationsListReceived,
+            this, &PublisherPage::onNotificationsListReceived);
+    connect(m_notificationsList, &QListWidget::itemClicked,
+            this, &PublisherPage::onNotificationItemClicked);
+    connect(m_authManager, &AuthManager::notificationReceived, this, [this](const QString &, const QString &) {
+        if (m_authManager) {
+            m_authManager->fetchNotifications();
+        }
+    });
+
+
 }
 
 void PublisherPage::setUsername(const QString &username)
@@ -32,10 +44,15 @@ void PublisherPage::setUsername(const QString &username)
 void PublisherPage::refresh()
 {
     if (m_username.isEmpty()) return;
+
     m_authManager->requestProfile(m_username);
     m_authManager->requestPublisherBooks(m_username);
     m_authManager->requestPublisherStats(m_username);
+    m_authManager->fetchNotifications();
+
 }
+
+
 
 void PublisherPage::setupUi()
 {
@@ -182,6 +199,33 @@ void PublisherPage::setupUi()
     statsLayout->addWidget(m_worstSellersTable);
 
     tabs->addTab(statsTab, "آمار و گزارش");
+
+    // ==================== تب اعلان‌ها ====================
+    QWidget *notificationsTab = new QWidget;
+    QVBoxLayout *notifLayout = new QVBoxLayout(notificationsTab);
+
+    m_notificationsList = new QListWidget;
+    m_notificationsList->setStyleSheet(
+        "QListWidget {"
+        "   background-color: #FFFFFF;"
+        "   border: 2px solid #FFB6C1;"
+        "   border-radius: 10px;"
+        "   padding: 5px;"
+        "}"
+        "QListWidget::item {"
+        "   border-bottom: 1px solid #FFE4E1;"
+        "   padding: 10px;"
+        "   margin-bottom: 4px;"
+        "   border-radius: 6px;"
+        "}"
+        "QListWidget::item:hover {"
+        "   background-color: #FFECF2;"
+        "}"
+        );
+
+    notifLayout->addWidget(m_notificationsList);
+    tabs->addTab(notificationsTab, "اعلان‌ها");
+
 }
 
 // ================= حساب کاربری =================
@@ -299,8 +343,8 @@ void PublisherPage::onToggleActiveClicked()
 
     if (active) {
         if (QMessageBox::question(this, "غیرفعال‌سازی کتاب",
-                "این کتاب از فروشگاه و نتایج جستجو حذف می‌شود؛ کاربرانی که قبلاً خریده‌اند "
-                "همچنان به آن دسترسی دارند. ادامه می‌دهید؟") != QMessageBox::Yes)
+                                  "این کتاب از فروشگاه و نتایج جستجو حذف می‌شود؛ کاربرانی که قبلاً خریده‌اند "
+                                  "همچنان به آن دسترسی دارند. ادامه می‌دهید؟") != QMessageBox::Yes)
             return;
         m_authManager->deactivateBook(m_username, bookId);
     } else {
@@ -357,8 +401,77 @@ void PublisherPage::onPublisherStatsReceived(const QJsonObject &stats)
 {
     m_totalBooksLabel->setText(QString("تعداد کل کتاب‌های منتشرشده: %1").arg(stats.value("totalBooksCount").toInt()));
     m_totalRevenueLabel->setText(QString("مجموع درآمد: %1 تومان")
-                                      .arg(QString::number(stats.value("totalRevenue").toDouble(), 'f', 0)));
+                                     .arg(QString::number(stats.value("totalRevenue").toDouble(), 'f', 0)));
 
     populateStatsTable(m_bestSellersTable, stats.value("bestSellers").toArray());
     populateStatsTable(m_worstSellersTable, stats.value("worstSellers").toArray());
 }
+
+void PublisherPage::onNotificationsListReceived(const QJsonArray &notifications)
+{
+    if (!m_notificationsList) return;
+
+    m_notificationsList->clear();
+    m_notificationsList->setLayoutDirection(Qt::RightToLeft); // جهت کل لیست راست به چپ
+
+    for (const QJsonValue &val : notifications) {
+        QJsonObject notif = val.toObject();
+        QString id = notif["id"].toString();
+        QString title = notif["title"].toString();
+        QString message = notif["message"].toString();
+        bool read = notif["read"].toBool();
+
+        // انتخاب آیکون
+        QString icon = "🔔";
+        if (title.contains("فروش") || title.contains("خرید")) {
+            icon = "💰";
+        } else if (title.contains("دیدگاه") || title.contains("نظر")) {
+            icon = "💬";
+        }
+
+        // ساخت متن منظم (عنوان در خط اول، پیام در خط دوم)
+        QString itemText = QString("%1 %2\n%3").arg(icon, title, message);
+
+        QListWidgetItem *item = new QListWidgetItem(itemText, m_notificationsList);
+        item->setData(Qt::UserRole, id);
+        item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter); // راست‌چین کردن دقیق متن
+
+        // تنظیمات فونت و رنگ
+        QFont font("Tahoma", 9);
+        if (!read) {
+            font.setBold(true);
+            item->setFont(font);
+            item->setBackground(QColor("#FFF0F5"));
+            item->setForeground(QBrush(QColor("#C71585")));
+        } else {
+            font.setBold(false);
+            item->setFont(font);
+            item->setBackground(QColor("#FAFAFA"));
+            item->setForeground(QBrush(QColor("#555555")));
+        }
+    }
+}
+
+
+void PublisherPage::onNotificationItemClicked(QListWidgetItem *item)
+{
+    if (!item) return;
+
+    QString notifId = item->data(Qt::UserRole).toString();
+    if (!notifId.isEmpty() && m_authManager) {
+        // علامت‌گذاری به عنوان خوانده‌شده
+        m_authManager->markNotificationAsRead(notifId);
+
+        // تغییر ظاهری به حالت خوانده‌شده
+        item->setBackground(Qt::white);
+        QFont font = item->font();
+        font.setBold(false);
+        item->setFont(font);
+    }
+}
+
+
+
+
+
+

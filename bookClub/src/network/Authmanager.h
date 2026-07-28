@@ -47,7 +47,7 @@ public:
     void requestCart(const QString &username);
     void removeFromCart(const QString &username, const QString &bookId);
     void checkout(const QString &username);
-    
+
     void searchBooks(const QString &query, const QString &field);
     void postReview(const QString &username, const QString &bookId, int rating, const QString &comment);
     void getReviews(const QString &bookId);
@@ -87,6 +87,12 @@ public:
     void requestAllReviewsForAdmin();
     void adminDeleteReview(const QString &reviewId);
 
+
+    void fetchNotifications();
+    void markNotificationAsRead(const QString &notifId);
+
+
+
 private slots:
     void onReadyRead();
 
@@ -108,6 +114,9 @@ signals:
                           double finalAmount);
     void libraryReceived(const QJsonObject &response);
     void purchaseHistoryReceived(const QJsonArray &history);
+
+    void notificationsListReceived(const QJsonArray &notifications);
+    void notificationMarkedAsRead(const QString &notifId);
 
     // ---- Books ----
     void booksReceived(const QJsonArray &books);
@@ -152,10 +161,16 @@ signals:
     void notificationReceived(const QString &title, const QString &message);
     void favoriteToggled(bool success, const QString &message, const QString &bookId, const QString &action);
 
+
+
 private:
     QString m_currentUserRole;
     QTcpSocket *m_socket;
     QByteArray m_buffer;
     void sendJson(const QJsonObject &json);
-    };
+    QString m_currentUsername;
+
+
+
+};
 #endif
