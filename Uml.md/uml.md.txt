@@ -1,0 +1,106 @@
+classDiagram
+    %% --- LAYER 1: SERVER SIDE ---
+    class BookClubServer {
+        - QTcpServer* m_server
+        - QList~QTcpSocket*~ m_clients
+        + startServer(quint16 port) : void
+        + incomingConnection(qintptr handle) : void
+        - onReadyRead() : void
+        - onClientDisconnected() : void
+        - sendResponse(QTcpSocket* socket, QJsonObject response) : void
+        
+        %% Handlers
+        - handleLogin(QTcpSocket* socket, QJsonObject data) : void
+        - handleRegister(QTcpSocket* socket, QJsonObject data) : void
+        - handlePostReview(QTcpSocket* socket, QJsonObject data) : void
+        - handleCheckout(QTcpSocket* socket, QJsonObject data) : void
+        - handleFetchNotifications(QTcpSocket* socket, QJsonObject data) : void
+        - handleMarkNotificationRead(QTcpSocket* socket, QJsonObject data) : void
+        
+        %% Notification & Helpers
+        + sendNotificationToPublisher(QString publisher, QString title, QString message) : void
+        - saveNotificationToFile(QString username, QString title, QString message) : void
+        - broadcastReviewsUpdate(QString bookId) : void
+        - loadJsonArray(QString filePath) : QJsonArray
+        - saveJsonArray(QString filePath, QJsonArray array) : void
+    }
+
+    %% --- LAYER 2: CLIENT NETWORK & AUTH ---
+    class AuthManager {
+        - QTcpSocket* m_socket
+        - QString m_currentUsername
+        - QString m_userRole
+        
+        + connectToServer(QString host, quint16 port) : void
+        + login(QString username, QString password) : void
+        + registerUser(QJsonObject userData) : void
+        + postReview(QString bookId, int rating, QString comment) : void
+        + checkoutCart(QJsonArray cartItems) : void
+        + fetchNotifications() : void
+        + markNotificationAsRead(QString notifId) : void
+        - sendRequest(QJsonObject request) : void
+        - onReadyRead() : void
+        
+        %% Signals
+        + loginResult(bool success, QString message, QString role) : signal
+        + notificationReceived(QString title, QString message) : signal
+        + notificationsListReceived(QJsonArray notifications) : signal
+        + reviewsUpdated(QString bookId, QJsonArray reviews) : signal
+    }
+
+    %% --- LAYER 3: CLIENT UI PAGES ---
+    class PublisherPage {
+        - AuthManager* m_authManager
+        - QString m_username
+        - QListWidget* m_notificationsList
+        - QTableWidget* m_booksTable
+        
+        + refresh() : void
+        + setAuthManager(AuthManager* authManager) : void
+        - onNotificationsListReceived(QJsonArray notifications) : slot
+        - onNotificationItemClicked(QListWidgetItem* item) : slot
+    }
+
+    class BookDetailPage {
+        - AuthManager* m_authManager
+        - QString m_bookId
+        - QLineEdit* m_commentInput
+        - QSpinBox* m_ratingSpinBox
+        
+        + submitReview() : void
+        - onReviewsUpdated(QJsonArray reviews) : slot
+    }
+
+    class CartPage {
+        - AuthManager* m_authManager
+        + processCheckout() : void
+    }
+
+    %% --- LAYER 4: DATA MODELS (JSON Mappings) ---
+    class ReviewModel {
+        + QString reviewId
+        + QString bookId
+        + QString username
+        + int rating
+        + QString comment
+        + QString timestamp
+    }
+
+    class NotificationModel {
+        + QString id
+        + QString username
+        + QString title
+        + QString message
+        + bool read
+        + QString timestamp
+    }
+
+    %% --- RELATIONSHIPS & ASSOCIATIONS ---
+    BookClubServer ..> ReviewModel : Persists/Loads (reviews.json)
+    BookClubServer ..> NotificationModel : Persists/Loads (notifications.json)
+    
+    BookClubServer "1" <.. "N" AuthManager : TCP Socket (JSON Protocol)
+    
+    PublisherPage "1" --> "1" AuthManager : Listens to Signals / Sends Requests
+    BookDetailPage "1" --> "1" AuthManager : Listens to Signals / Sends Requests
+    CartPage "1" --> "1" AuthManager : Sends Requests
